@@ -3,9 +3,8 @@ import controller from '../controller/controller.js'
 
 const router = express.Router();
 
-const { getResource } = controller; // destructure
+const { getResource } = controller;
 
-// GET is HTTP method, /resource1 is "endpoint"
 router.get("/resource", getResource);
 
 export default router;
