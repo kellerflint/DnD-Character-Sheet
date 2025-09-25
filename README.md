@@ -71,3 +71,23 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 2.  When a user selects an interactive element, relevant information and options will be presented in a pop-up or modal.
 3.  The options presented to the user will be intelligently filtered based on previous decisions. For example, a level 1 wizard will only be shown level 1 spells to choose from.
 4.  For new users, an optional guided experience will walk them through the character creation process step-by-step.
+
+---
+
+## Sprint 1
+
+#### Group B (Tyler & Raymond)
+
+### Goals
+* Set up the backend server with Node.js and Express.
+* Design and implement the database schema in MySQL.
+* Create RESTful API endpoints for CRUD operations on character sheets.
+* Implement user authentication and session management.
+* Integrate with an external D&D API to fetch necessary game data (e.g., spells, items).
+* Set up the React frontend with a basic layout and navigation.
+* Create the character creation form with interactive fields.
+* Implement data persistence to save character sheets to the database.
+* Ensure the frontend can fetch and display character data from the backend.
+* Basic styling for the application to ensure a user-friendly interface.
+* Write unit tests for backend API endpoints and frontend components.
+* Deploy the application to a cloud platform (e.g., Heroku, Vercel).
