@@ -65,6 +65,13 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 
 ## User Flow
 
+---
+## Wireframe
+
+![alt text](./Wireframe.jpg)
+
+---
+
 ### How do they accomplish key tasks?
 
 1.  Interactive fields and boxes will be visually distinct (e.g., highlighted with color) to indicate they can be modified.
