@@ -1,0 +1,10 @@
+# What this file is doing is so that there isn't too many "noisy diffs" for other people using different Operating Systems when pushing changes.
+
+# Enforce LF endings in repo, but let Windows devs use CRLF locally
+* text=auto eol=lf
+
+# Explicitly set file types
+*.js text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.md text eol=lf

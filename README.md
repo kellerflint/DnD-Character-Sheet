@@ -78,7 +78,7 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 
 #### Group B (Tyler & Raymond)
 
-### Goals
+### Overall Goals
 * Set up the backend server with Node.js and Express.
 * Design and implement the database schema in MySQL.
 * Create RESTful API endpoints for CRUD operations on character sheets.
