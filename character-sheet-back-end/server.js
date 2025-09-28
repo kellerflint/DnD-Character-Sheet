@@ -23,7 +23,7 @@ app.use(express.json());
 // Back-end route health check - using /api to differentiate from front-end routes (if any are added later)
 app.get("/api/check", async (req, res) => {
    try {
-      const response = await axios.get('https://api.open5e.com/v2/documents/');
+      const response = await axios.get('https://api.open5e.com/documents/');
       res.json(response.data);
    } catch (error) {
       console.error('Error, cannot connect and fetch from external API: ', error);
