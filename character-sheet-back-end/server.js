@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { default: axios } = require("axios");
+const axios = require("axios");
 
 // Short hand to load variables from .env file
 require("dotenv").config();
@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 // Back-end route health check - using /api to differentiate from front-end routes (if any are added later)
-app.get("/api/check", async (req, res) => {
+app.get("/api/health-check", async (req, res) => {
    try {
       const response = await axios.get('https://api.open5e.com/documents/');
       res.json(response.data);
@@ -30,6 +30,10 @@ app.get("/api/check", async (req, res) => {
       res.status(500).json({message: 'Error fetching data'});
    }
 });
+
+// Routes
+const authRoutes = require("./routes/authenticateRoutes");
+app.use("/", authRoutes);
 
 // Start the server
 app.listen(PORT, () => {

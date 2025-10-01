@@ -1,29 +1,48 @@
-import { useState, useEffect } from "react";
-import { getApiCheck } from "./api/index";
+import { useState } from "react";
+import { useAuth } from "./context/AuthenticateContext";
+import UserLogin from "./components/UserLogin";
+import UserRegister from "./components/UserRegister";
 import "./App.css";
 
 function App() {
-   const [message, setMessage] = useState("");
-
-   useEffect(() => {
-      getApiCheck()
-         .then((data) => {
-            setMessage(data);
-         })
-         .catch((err) => {
-            console.error(err);
-            setMessage("Failed to connect to the backend.");
-         });
-   }, []);
+   const { isAuthenticated, logout } = useAuth();
+   const [showLoginModal, setShowLoginModal] = useState(false);
+   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
    return (
       <>
-         <h1>Vite + React</h1>
-         <div className="card">
-            <p>
-               <strong>{message}</strong>
-            </p>
-         </div>
+         <header>
+            {!isAuthenticated ? (
+               <div>
+                  <button onClick={() => setShowLoginModal(true)}>Login</button>
+                  <button onClick={() => setShowRegisterModal(true)}>
+                     Register
+                  </button>
+               </div>
+            ) : (
+               <button onClick={logout}>Logout</button>
+            )}
+         </header>
+
+         <main>
+            <h1>D&D Character Sheet</h1>
+            <p>Character Name: Loginius Testingomar</p>
+
+            {isAuthenticated ? (
+               <button>Save Character</button>
+            ) : (
+               <p>
+                  <i>Please log in to save your character.</i>
+               </p>
+            )}
+         </main>
+
+         {showLoginModal && (
+            <UserLogin closeModal={() => setShowLoginModal(false)} />
+         )}
+         {showRegisterModal && (
+            <UserRegister closeModal={() => setShowRegisterModal(false)} />
+         )}
       </>
    );
 }
