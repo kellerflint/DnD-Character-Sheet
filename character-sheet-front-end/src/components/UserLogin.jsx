@@ -2,8 +2,15 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthenticateContext";
 import { loginUser } from "../api";
 
-function UserLogin({ closeModal }) {
+// MUI Component Imports
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 
+function UserLogin({ open, closeModal, switchToRegister }) {
    const { login } = useAuth();
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
@@ -11,7 +18,6 @@ function UserLogin({ closeModal }) {
 
    // Handles login form submission
    const handleSubmit = (event) => {
-
       // Stop the page from reloading
       event.preventDefault();
 
@@ -33,30 +39,49 @@ function UserLogin({ closeModal }) {
    };
 
    return (
-      <div>
-         <h2>Login</h2>
+      <Dialog open={open} onClose={closeModal}>
          <form onSubmit={handleSubmit}>
-            <input
-               type="email"
-               value={email}
-               onChange={(event) => setEmail(event.target.value)}
-               placeholder="Enter Your Email"
-            />
-            <br />
-            <input
-               type="password"
-               value={password}
-               onChange={(event) => setPassword(event.target.value)}
-               placeholder="Enter Your Password"
-            />
-            <br />
-            <button type="submit">Login</button>
+            <DialogTitle>Login</DialogTitle>
+            <DialogContent>
+               {error && (
+                  <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+               )}
+
+               <TextField
+                  autoFocus
+                  required
+                  margin="dense"
+                  id="email"
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  variant="standard"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+               />
+               <TextField
+                  required
+                  margin="dense"
+                  id="password"
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  variant="standard"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+               />
+            </DialogContent>
+            <DialogActions>
+               <Button onClick={switchToRegister} color="secondary">
+                  Need to Register?
+               </Button>
+               <Button type="submit" variant="contained">
+                  Login
+               </Button>
+               <Button onClick={closeModal}>Cancel</Button>
+            </DialogActions>
          </form>
-         {error && <p style={{ color: "red" }}>{error}</p>}
-         <p>
-            Don't have an account? <Link to="/register">Register here</Link>
-         </p>
-      </div>
+      </Dialog>
    );
 }
 

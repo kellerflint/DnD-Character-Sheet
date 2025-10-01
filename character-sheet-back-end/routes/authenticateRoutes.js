@@ -7,23 +7,23 @@ const authenticateToken = require("../middleware/authenticateToken");
 
 // User Registration
 router.post("/api/register", async (req, res) => {
-   const { email, password } = req.body;
+   const { username, firstName, lastName, email, password } = req.body;
 
    // Basic validation
-   if (!email || !password) {
-      return res
-         .status(400)
-         .json({ message: "Email and password are required." });
+   if (!username || !firstName || !lastName || !email || !password) {
+      return res.status(400).json({ message: "All fields are required." });
    }
 
    try {
       // Check if user already exists
       const [existingUsers] = await dbPool.query(
-         "SELECT email FROM users WHERE email = ?",
-         [email]
+         "SELECT email, username FROM users WHERE email = ? OR username = ?",
+         [email, username]
       );
       if (existingUsers.length > 0) {
-         return res.status(409).json({ message: "Email already in use." });
+         return res
+            .status(409)
+            .json({ message: "Email and/or Username already in use." });
       }
 
       // Hash the password
@@ -32,8 +32,8 @@ router.post("/api/register", async (req, res) => {
 
       // Store new user in the database
       const [result] = await dbPool.query(
-         "INSERT INTO users (email, password_hash) VALUES (?, ?)",
-         [email, password_hash]
+         "INSERT INTO users (username, first_name, last_name, email, password_hash) VALUES (?, ?, ?, ?, ?)",
+         [username, firstName, lastName, email, password_hash]
       );
 
       res.status(201).json({
@@ -75,7 +75,11 @@ router.post("/api/login", async (req, res) => {
       }
 
       // Create JWT
-      const payload = { id: user.id, email: user.email };
+      const payload = {
+         id: user.id,
+         email: user.email,
+         username: user.username,
+      };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
          expiresIn: "1h",
       });
