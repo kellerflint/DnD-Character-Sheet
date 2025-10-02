@@ -10,6 +10,7 @@ const app = express();
 // Adding this information since we will be using multiple api connections
 // We will use a set that we can use to check the different apis
 const BASE_API = 'https://api.open5e.com';
+// We can add more to the set as the project progresses
 const classInfo = new Set(['races', 'classes', 'backgrounds']);
 
 // Uses the PORT from .env or defaults to 3001
