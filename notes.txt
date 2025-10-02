@@ -1,0 +1,11 @@
+Local: workbench, express, db (connect workbench db to vm)
+VM: express, db
+
+Objectives:
+1. GitHub Flow + VM Setup
+2. Connect express server to VM
+3. MySQL + Workbench working
+4. Backend + DB integration (CRUD)
+5. React frontend
+6. Deployment (Digital Ocean with PM2)
+7. Polish
