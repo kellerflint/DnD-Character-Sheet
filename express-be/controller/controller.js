@@ -1,10 +1,12 @@
-const status200 = 200;
+const getHome = (req, res) => {
+    res.status(200).send("Hello world!");
+};
 
 const getResource = (req, res) => {
-    res.status(status200);
-    res.send("Hello world!");
+    res.status(200).send("Resource retrieved!");
 };
 
 export default {
-    getResource,
+    getHome,
+    getResource
 };
