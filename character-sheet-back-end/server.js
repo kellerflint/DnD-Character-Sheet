@@ -25,7 +25,7 @@ app.get("/api/health-check/:reference", async (req, res) => {
    try {
       // Saving the parameter into a reference variable
       const { reference } = req.params;
-      // If the reference api is not available or not available throught the available class information, send 404 error
+      // If the reference api is not available or not available through the available class information, send 404 error
       if (!classInfo.has(reference)) {
          return res.status(404).json({error:"Reference is not available"})
       }
