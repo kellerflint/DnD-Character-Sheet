@@ -1,15 +1,16 @@
 // database connection config file
-// need env variables
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
-import { Sequelize, sequelize } from 'sequelize';
+dotenv.config();
 
 // create sequelize instance with db credentials
 const sequelize = new Sequelize(
-    'db name',   // db name
-    'user name', // user name
-    'password',  // password
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
     {
-        host: 'localhost',
+        host: process.env.DB_HOST,
         dialect: 'mysql'
     }
 )
