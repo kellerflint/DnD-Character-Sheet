@@ -3,9 +3,26 @@ import controller from '../controller/controller.js'
 
 const router = express.Router();
 
-const { getResource, getHome } = controller;
+const { 
+    getResource, 
+    getHome, 
+    login, 
+    createCharacter, 
+    getAllCharacters, 
+    getCharacterById, 
+    updateCharacter, 
+    deleteCharacter 
+} = controller;
 
 router.get("/", getHome);
 router.get("/resource", getResource);
+router.post("/api/login", login);
+
+// Character CRUD routes
+router.post("/api/characters", createCharacter);
+router.get("/api/characters", getAllCharacters);
+router.get("/api/characters/:id", getCharacterById);
+router.put("/api/characters/:id", updateCharacter);
+router.delete("/api/characters/:id", deleteCharacter);
 
 export default router;
