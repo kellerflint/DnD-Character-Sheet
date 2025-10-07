@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 import axios from 'axios';
-import sequelize from './database/db.js'
+import sequelize from './database/connect.js'
 
 dotenv.config();
 const app = express();
