@@ -42,11 +42,15 @@ const User = db.sequelize.define('user', {
         type: DataTypes.DATE,
         allowNull: true
     },
+    /*
+    This should be implemented once Characters are implemented. -Raymond
+
     role: {
         type: DataTypes.ENUM('player', 'dm', 'admin'),
         defaultValue: 'player',
         allowNull: false
     }
+        */
 }, {
     tableName: 'Users',
     timestamps: true,
