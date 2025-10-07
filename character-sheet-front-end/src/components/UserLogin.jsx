@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthenticateContext";
 import { loginUser } from "../api";
 
-// MUI Component Imports
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -16,23 +15,17 @@ function UserLogin({ open, closeModal, switchToRegister }) {
    const [password, setPassword] = useState("");
    const [error, setError] = useState("");
 
-   // Handles login form submission
    const handleSubmit = (event) => {
-      // Stop the page from reloading
       event.preventDefault();
 
-      // Clear any previous errors
       setError("");
 
-      // Calls the login function
       loginUser({ email, password })
          .then((data) => {
-            // If the login works
             login(data.token);
             closeModal();
          })
          .catch((err) => {
-            // If the login fails
             console.error("Login failed:", err);
             setError("Login failed. Please check your email and password.");
          });

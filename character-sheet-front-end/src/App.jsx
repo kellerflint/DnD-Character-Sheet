@@ -3,7 +3,6 @@ import { useAuth } from "./context/AuthenticateContext";
 import UserLogin from "./components/UserLogin";
 import UserRegister from "./components/UserRegister";
 
-// MUI Component Imports
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -17,13 +16,11 @@ function App() {
    const [showLoginModal, setShowLoginModal] = useState(false);
    const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-   // Handler to close the register modal and open the login modal
    const handleSwitchToLogin = () => {
       setShowRegisterModal(false);
       setShowLoginModal(true);
    };
 
-   // Handler to close the login modal and open the register modal
    const handleSwitchToRegister = () => {
       setShowLoginModal(false);
       setShowRegisterModal(true);
