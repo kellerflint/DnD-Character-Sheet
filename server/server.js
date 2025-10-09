@@ -46,7 +46,7 @@ app.get("/api/dnd/:reference", async (req, res) => {
         });
     }
 
-        const url = `${BASE_API}/${reference}`;
+        const url = `${OPEN5E_BASE}/${reference}`;
         const response = await axios.get(url);
         res.json(response.data);
     } catch (error) {
