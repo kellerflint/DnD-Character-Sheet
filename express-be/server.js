@@ -14,7 +14,7 @@ app.use("/api", router);
 app.use(express.static('public'));
 
 // Catch-all handler: send back React's index.html file for any non-API routes
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
     res.sendFile('index.html', { root: 'public' });
 });
 
