@@ -11,8 +11,10 @@ export default function AuthForms() {
 
     return (
         <div>
-            <LoginForm onRegisterClick={() => setShowRegistration(true)}/>
-            <RegistrationForm onBackToLogin={() => SetShowRegistrationForm(true)}/>
+            {showRegistrationForm ? <LoginForm/> : <RegistrationForm />}
+            <button onClick={() => SetShowRegistrationForm(!showRegistrationForm)}>
+                {showRegistrationForm ? "Register" : "Login"}
+            </button>
         </div>
     )
 }
