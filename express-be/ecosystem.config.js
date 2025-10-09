@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   apps: [{
     name: 'dnd-character-sheet',
     script: './server.js',
