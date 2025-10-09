@@ -14,9 +14,9 @@ const {
     deleteCharacter 
 } = controller;
 
-router.get("/", getHome);
+router.get("/test", getHome);
 router.get("/resource", getResource);
-router.post("/api/login", login);
+router.post("/login", login);
 
 // Character CRUD routes
 router.post("/api/characters", createCharacter);
