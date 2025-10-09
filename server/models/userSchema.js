@@ -1,4 +1,4 @@
-import db from './database/db.js';
+import db from './database/connect.js';
 import { DataTypes } from 'sequelize';
 
 /**
@@ -7,7 +7,7 @@ import { DataTypes } from 'sequelize';
  * Notes:
  * - uses underscored + timestamps to create created_at/updated_at columns automatically
  */
-const User = db.sequelize.define('user', {
+const UserSchema = db.sequelize.define('user', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -69,4 +69,4 @@ const User = db.sequelize.define('user', {
     }
 });
 
-// TODO: Finish the rest of the other tables..
+export default UserSchema;
