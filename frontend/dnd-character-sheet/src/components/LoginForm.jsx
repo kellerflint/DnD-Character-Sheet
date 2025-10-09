@@ -49,7 +49,6 @@ export default function LoginForm() {
             <br />
 
             <button type="submit">Login</button>
-            <button type="button" onClick={handleRegister}>Register</button>
         </form>
     )
 }

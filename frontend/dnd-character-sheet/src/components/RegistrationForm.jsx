@@ -143,7 +143,6 @@ export default function RegistrationForm() {
             <br />
             
             <button type="submit">Register</button>
-            <button type="button" onClick={handleBackToLogin}>Back to Login</button>
         </form>
     )
 }
