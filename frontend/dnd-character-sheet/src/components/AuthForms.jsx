@@ -11,9 +11,9 @@ export default function AuthForms() {
 
     return (
         <div>
-            {showRegistrationForm ? <LoginForm/> : <RegistrationForm />}
+            {showRegistrationForm ? <RegistrationForm/> : <LoginForm />}
             <button onClick={() => SetShowRegistrationForm(!showRegistrationForm)}>
-                {showRegistrationForm ? "Register" : "Login"}
+                {showRegistrationForm ? "Login" : "Register"}
             </button>
         </div>
     )
