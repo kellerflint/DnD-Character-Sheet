@@ -1,4 +1,5 @@
 import "./globals.css";
+import AuthForms from "@/components/AuthForms";
 
 export const metadata = {
   title: "Create Next App",
@@ -8,8 +9,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body>
+        <h1>Dungeons and Dragons Character Sheet</h1>
+        <AuthForms />
       </body>
     </html>
   );
