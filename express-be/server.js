@@ -2,18 +2,17 @@ import express from 'express';
 import router from './router/router.js';
 
 const app = express();
-const port = 3001;
-
-// Serve static files from public directory
-app.use(express.static('public'));
+const port = process.env.PORT || 3000;
 
 // Parse JSON bodies
 app.use(express.json());
 
-app.use("/", router);
+// API routes
+app.use("/api", router);
 
-app.listen(port, () => console.log(`Server started on http://localhost:${port}`));
+// Serve static files from public directory (this should be last)
+app.use(express.static('public'));
 
-app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
-    console.log('Server up');
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server started on http://0.0.0.0:${port}`);
 });
