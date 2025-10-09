@@ -21,7 +21,7 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 
 ## Feature Breakdown
 
-### Core (MVP) Features
+### Core (MVP) Features (Completed)
 
 * **Character Creation:** Users can create a new character.
 * **Data Persistence:** All character sheets and information are savable.
@@ -49,12 +49,12 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 
 ### Core Entities
 
-* **Users:** Manages login, sessions, and owns character sheets.
-* **Character Sheets:** The central object where all character data is stored and manipulated.
-* **API Data:** Fetches information about weapons, items, classes, and spells from an external D&D API.
-* **Media Query (for Printing):** Converts the character sheet's web view into a print-friendly PDF format.
+* **Users:** Manages login, sessions, and owns character sheets. (Not yet implemented.)
+* **Character Sheets:** The central object where all character data is stored and manipulated. (Not yet implemented)
+* **API Data:** Fetches information about weapons, items, classes, and spells from an external D&D API. (Not yet implemented)
+* **Media Query (for Printing):** Converts the character sheet's web view into a print-friendly PDF format. (Not yet implemented)
 
-### Core Functionality (CRUD)
+### Core Functionality (CRUD) (Completed)
 
 * **Create:** Users can create new character sheets.
 * **Read:** Users can view all saved information on their character sheet as well as short excerpts for spells, items, etc.
