@@ -11,7 +11,7 @@ export default function RegistrationForm() {
     const [success, setSuccess] = useState(false);
 
     // Handle form submission
-    const handleSubmit = async (e) => {
+    const handle = async (e) => {
     e.preventDefault();
     setError(""); // Clear previous errors
 
@@ -89,9 +89,20 @@ export default function RegistrationForm() {
             </div>
         );
     }
-
+    async function loginAttempt(e) {
+        e.preventDefault();
+        try {
+            await fetch("http://localhost:3001/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({username, password: pw})
+            });
+        } finally {
+            setPassword("")
+        }
+    }
     return (
-        <form id="registration-form" onSubmit={handleSubmit}>
+        <form id="registration-form" onSubmit={handle}>
             <h2>Register</h2>
             
             {error && <div className="error-message">{error}</div>}

@@ -23,9 +23,21 @@ export default function LoginForm() {
 
         console.log('Navigating to registration form.')
     }
+    async function loginAttempt(e) {
+        e.preventDefault();
+        try {
+            await fetch("http://localhost:3001/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({username, password: pw})
+            });
+        } finally {
+            setPassword("")
+        }
+    }
 
     return (
-        <form id="login-form">
+        <form id="login-form" onSubmit={loginAttempt}>
             <h2>Login</h2>
 
             <label htmlFor="username">Username:</label>
@@ -43,7 +55,7 @@ export default function LoginForm() {
                 type="password" 
                 id="password" 
                 name="password"
-                value={password}
+                value={pw}
                 onChange={(e) => setPassword(e.target.value)}
             />
             <br />
