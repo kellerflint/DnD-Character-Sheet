@@ -55,7 +55,7 @@ export default function LoginForm() {
                 type="password" 
                 id="password" 
                 name="password"
-                value={pw}
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
             <br />
