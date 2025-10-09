@@ -19,10 +19,10 @@ router.get("/resource", getResource);
 router.post("/login", login);
 
 // Character CRUD routes
-router.post("/api/characters", createCharacter);
-router.get("/api/characters", getAllCharacters);
-router.get("/api/characters/:id", getCharacterById);
-router.put("/api/characters/:id", updateCharacter);
-router.delete("/api/characters/:id", deleteCharacter);
+router.post("/characters", createCharacter);
+router.get("/characters", getAllCharacters);
+router.get("/characters/:id", getCharacterById);
+router.put("/characters/:id", updateCharacter);
+router.delete("/characters/:id", deleteCharacter);
 
 export default router;
