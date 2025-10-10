@@ -16,12 +16,12 @@ yes | sudo apt install nodejs npm
 
 
 # Install frontend node dependencies
-cd frontend/dnd-character-sheet
+cd frontend/dnd-character-sheet/
 npm install react react-dom next
 
 # Install backend node dependencies
 cd ../..
-cd backend
+cd server
 npm install express dotenv #Important node stuff
 npm install cors axios #Connectivity
 npm install sequelize #DB
