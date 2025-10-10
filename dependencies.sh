@@ -24,7 +24,7 @@ yes | sudo apt install nodejs npm
 # Install frontend node dependencies
 echo "Install front-end dependencies"
 
-cd frontend/dnd-character-sheet/
+cd frontend/dnd-character-sheet
 npm install react react-dom next
 
 # Install backend node dependencies
