@@ -34,7 +34,7 @@ EOF
 
 #Need this to setup root user of mysql.
 sudo mysql_secure_installation
-
+#I'm worried about SQL injections here.
 sudo mysql -u root -p -e "
 CREATE USER IF NOT EXISTS '$5'@'localhost' IDENTIFIED BY '$6'; 
 CREATE DATABASE IF NOT EXISTS $7;
