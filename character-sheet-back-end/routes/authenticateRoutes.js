@@ -46,6 +46,11 @@ router.post("/api/register", async (req, res) => {
    }
 });
 
+// Update Password
+router.post("api/update-password", async (req, res) => {
+   
+});
+
 // User Login
 router.post("/api/login", async (req, res) => {
    const { email, password } = req.body;
