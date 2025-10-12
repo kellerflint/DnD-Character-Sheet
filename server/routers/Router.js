@@ -9,7 +9,7 @@ apiRouter.get('/health', (req, res) => {
     res.json({
         status: 'OK',
         message: 'D&D Character Sheet API is running',
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString()
     });
 });
 

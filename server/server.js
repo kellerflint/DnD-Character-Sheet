@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import axios from 'axios';
 import sequelize from './database/connect.js'
+import apiRouter from './routers/Router.js';
 
 dotenv.config();
 const app = express();
@@ -25,6 +26,8 @@ app.use(process.env.NODE_ENV === 'production' ? morgan('tiny') : morgan('dev'));
 // Sync database (creates tables if they don't exist)
 await sequelize.sync({ alter: true });
 console.log('Database synced successfully');
+
+app.use('/api', apiRouter);
 
 // Health check
 app.get("/api/health", (req, res) => {
