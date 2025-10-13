@@ -13,6 +13,7 @@ const CharactersPage = () => {
     const fetchCharacters = async () => {
         try {
             setLoading(true);
+            // NEED .ENV VARIABLE HERE ***
             const response = await fetch('http://<VM-IP>:3001/characters'); // IMPORTANT: Use your VM's IP address here to fetch from server
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
