@@ -129,7 +129,26 @@ sudo git clone https://github.com/TiaMarieG/DnD-Character-Sheet.git /var/www/dnd
 sudo chown -R www-data:www-data /var/www/dnd-app/
 ```
 
-### Step 4: Configure the Front-End
+### Step 4: Configure the Back-End
+
+We will install the back-end dependencies so it's ready to be run by PM2.
+
+```bash
+# Navigate to the back-end directory
+cd /var/www/dnd-app/DnD-Character-Sheet/character-sheet-back-end
+
+# Install npm packages
+sudo npm install
+
+# Start the application with PM2
+pm2 start server.js --name "dnd-backend"
+
+(Note: --name "dnd-backend" is only for the initial setup of PM2. For future starts, you can simply run pm2 start dnd-backend. 
+
+The reason for the name is to differentiate the server from the other projects running on your VM.)
+```
+
+### Step 5: Configure the Front-End
 
 We will step up the front-end to work with Nginx
 
@@ -140,18 +159,18 @@ sudo npm install
 sudo npm run build
 ```
 
-### Step 5: Configure Nginx
+### Step 6: Configure Nginx
 
 We will set up Nginx so that the front-end can continuously run without the terminal needing to be open
 
 ```bash
-# Copy the provided Nginx configuration into the system's sites-available directory.
+# Copy the provided Nginx configuration
 sudo cp /var/www/dnd-app/DnD-Character-Sheet/nginx/nginx.conf /etc/nginx/sites-available/dnd-app
 
-# You must edit the file to use your server's IP address.
+# IMPORTANT: You must edit the file to use your server's IP address.
 sudo nano /etc/nginx/sites-available/dnd-app
 
-# Verify the root directive is correct: 
+# IMPORTANT: Verify the root directive is correct: 
 root /var/www/dnd-app/DnD-Character-Sheet/character-sheet-front-end/dist;
 
 # Disable the default Nginx page
@@ -165,18 +184,6 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-### Step 6: Start the Application with PM2
-
-We will set up the back-end so that it can continuously run without the terminal needing to be open
-
-```bash
-# Navigate to the Back-End:
-cd /var/www/dnd-app/DnD-Character-Sheet/character-sheet-back-end
-
-# Start the application with PM2
-pm2 start server.js --name "dnd-backend"
-```
-
 ## You're Live!
 
 Your application should now be accessible by navigating to http://<your_server_ip> in a web browser.
@@ -187,13 +194,16 @@ To deploy new code from the Git repository, follow these steps:
 
 ```bash
 # Pull Changes
-cd /var/w ww/dnd-app/DnD-Character-Sheet
+cd /var/www/dnd-app/DnD-Character-Sheet
 sudo git pull
 
 # Update Back-End: If you changed back-end files, restart the PM2 process.
+cd character-sheet-back-end
+sudo npm install
 pm2 restart dnd-backend
 
 #Update Front-End: If you changed front-end files, you must rebuild the dist folder
-cd /var/www/dnd-app/DnD-Character-Sheet/character-sheet-front-end
+cd ../character-sheet-front-end
+sudo npm install
 sudo npm run build
 ```
