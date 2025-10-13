@@ -25,7 +25,17 @@ const HomePage = () => {
             backgroundColor: '#1a1a1a', // fallback color
             color: '#f5f5f5',
         }}>
-        <Container maxWidth="md">
+
+        <Box sx={{ // overlay to darken background
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        }} />
+
+        <Container sx={{ position: 'relative' }} maxWidth="md">
             <Typography 
                 variant="h1" 
                 component="h1" 
