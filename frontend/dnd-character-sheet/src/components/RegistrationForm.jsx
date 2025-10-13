@@ -40,7 +40,7 @@ export default function RegistrationForm() {
 
     try {
         // Send registration data to your backend API
-        const response = await fetch('/api/register', {
+        const response = await fetch('/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
