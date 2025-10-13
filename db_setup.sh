@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# USAGE: bash db_setup.sh {SERVER_PORT} {FE_ORIGIN} {VM_IP} {VM_PASS} {DB_USER} {DB_NAME} {DB_PORT}
+# USAGE: bash db_setup.sh {SERVER_PORT} {FE_ORIGIN} {VM_IP} {VM_PASS} {DB_USER} {DB_PASS} {DB_NAME} {DB_PORT}
 
 # ^ I really don't like the eight parameters but it will be what we have for now.
 # ill also need input validation.
