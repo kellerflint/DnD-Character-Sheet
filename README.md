@@ -131,7 +131,7 @@ sudo chown -R www-data:www-data /var/www/dnd-app/
 
 ### Step 4: Configure the Back-End
 
-We will install the back-end dependencies so it's ready to be run by PM2.
+We will install the back-end dependencies and run PM2.
 
 ```bash
 # Navigate to the back-end directory
