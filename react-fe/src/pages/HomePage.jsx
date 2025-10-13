@@ -19,9 +19,12 @@ const HomePage = () => {
             justifyContent: 'center',
             minHeight: '100vh',
             textAlign: 'center',
-            backgroundColor: '#1a1a1a',
-            color: '#f5f5f5'}}
-        >
+            backgroundImage: 'url(./dnd-wall1.jpg)', // background image
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundColor: '#1a1a1a', // fallback color
+            color: '#f5f5f5',
+        }}>
         <Container maxWidth="md">
             <Typography 
                 variant="h1" 
