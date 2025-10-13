@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Typography, TextField, Button, Stack, Box } from '@mui/material';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
 
 // create character form
 const CharacterForm = () => {
@@ -20,13 +20,13 @@ const CharacterForm = () => {
   // check the url for an id (/characters/edit/5) if exists -> edit mode
   const { id } = useParams();
 
-  // allows editing (PUT)
+  // if theres an ID  in URL, fetch to prefill form
   useEffect(() => {
     // runs this block if theres an id in the url
     if (id) {
       // an async function to grab the characters data from api
       const fetchCharacter = async () => {
-        const response = await fetch(`${API_URL}/characters/${id}`);
+        const response = await fetch(`http://${API_URL}:3001/characters/${id}`);
         const data = await response.json();
         // pre-fill the form with the data fetched
         setFormData(data);
@@ -51,7 +51,7 @@ const CharacterForm = () => {
     // edit vs create mode (if id exists put, else post)
     const method = id ? 'PUT' : 'POST';
     // set the right api endpoint depending on above
-    const url = id ? `${API_URL}/characters/${id}` : `${API_URL}/characters`;
+    const url = id ? `http://${API_URL}:3001/characters/${id}` : `http://${API_URL}:3001/characters`;
 
     // send the form data to backend and db
     await fetch(url, {
