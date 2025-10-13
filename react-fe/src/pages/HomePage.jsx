@@ -9,7 +9,7 @@ const HomePage = () => {
     borderColor: "#c5b358",
     color: "#c5b358",
     mx: 1,
-    "&:hover": { borderColor: "#9c1c1f", color: "#9c1c1f" },
+    "&:hover": { borderColor: "#ffd500ff", color: "#ffd500ff", backgroundColor: "#c5b35815" },
   };
 
   return (
