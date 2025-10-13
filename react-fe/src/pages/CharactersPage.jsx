@@ -3,7 +3,6 @@ import { Container, Typography, Grid, CircularProgress, Alert, Button } from "@m
 import { Link } from "react-router-dom";
 import CharacterCard from "../components/CharacterCard";
 
-
 const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
 
 const CharactersPage = () => {
@@ -13,9 +12,9 @@ const CharactersPage = () => {
 
   // function to handle deletion
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this character?')) {
+    if (window.confirm("Are you sure you want to delete this character?")) {
       await fetch(`http://${API_URL}:3001/characters/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
       // update the UI by filtering out the deleted character
       setCharacters(characters.filter((character) => character.id !== id));
@@ -63,11 +62,29 @@ const CharactersPage = () => {
 
   return (
     <Container sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h2" gutterBottom>
+      <Typography
+        variant="h2"
+        component="h1"
+        sx={{
+          fontFamily: '"Garamond", serif',
+          fontWeight: 700,
+          color: "#c5b358",
+        }}
+      >
         Character Sheets
       </Typography>
 
-      <Button component={Link} to="/" variant="outlined" sx={{ mb: 4 }}>
+      <Button
+        component={Link}
+        to="/"
+        variant="outlined"
+        sx={{ mb: 5, mt: 2, borderColor: "#c5b358", color: "#c5b358", 
+          "&:hover": {
+            borderColor: "#ffd500ff",
+            color: "#ffd500ff",
+            backgroundColor: "#c5b35815"} 
+          }}
+      >
         Back to Home
       </Button>
 
