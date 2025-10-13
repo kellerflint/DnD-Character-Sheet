@@ -2,27 +2,21 @@ import express from 'express';
 import controller from '../controller/controller.js'
 
 const router = express.Router();
+const { getHome, createCharacter, getAllCharacters, getCharacterById, 
+        updateCharacter, deleteCharacter } = controller;
 
-const { 
-    getResource, 
-    getHome, 
-    login, 
-    createCharacter, 
-    getAllCharacters, 
-    getCharacterById, 
-    updateCharacter, 
-    deleteCharacter 
-} = controller;
+// test
+router.get('/', getHome);
 
-router.get("/test", getHome);
-router.get("/resource", getResource);
-router.post("/login", login);
+// route for getting all and creating new characters
+router.route('/characters')
+    .get(getAllCharacters)
+    .post(createCharacter);
 
-// Character CRUD routes
-router.post("/characters", createCharacter);
-router.get("/characters", getAllCharacters);
-router.get("/characters/:id", getCharacterById);
-router.put("/characters/:id", updateCharacter);
-router.delete("/characters/:id", deleteCharacter);
+// route for getting, updating, and deleting a single character by ID
+router.route('/characters/:id')
+    .get(getCharacterById)
+    .put(updateCharacter)
+    .delete(deleteCharacter);
 
 export default router;

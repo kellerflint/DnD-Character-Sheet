@@ -2,6 +2,11 @@ import Character from '../models/Character.js';
 
 // Database interactions / CRUD
 
+// test
+const getHome = async (req, res) => {
+    res.status(200).send('Hello world!');
+}
+
 // create
 const createCharacter = async (req, res) => {
     try {
@@ -97,6 +102,7 @@ const deleteCharacter = async (req, res) => {
 
 
 export default {
+    getHome,
     createCharacter,
     getAllCharacters,
     getCharacterById,
