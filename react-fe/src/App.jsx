@@ -1,12 +1,11 @@
 // src/App.jsx
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import CharactersPage from './pages/CharactersPage';
-import NotFound from './pages/NotFound';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import CharactersPage from "./pages/CharactersPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
@@ -16,7 +15,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
