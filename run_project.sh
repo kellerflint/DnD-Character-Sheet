@@ -8,3 +8,6 @@ git pull 'https://github.com/tgillysuit/DnD-Character-Sheet.git' #Iffy if we hav
 # Run the frontend the way I did on the VM. 
 (cd ./frontend/dnd-character-sheet && npm run build && npm run start)
 
+# Run the backend.
+(cd ./backend && npm start)
+
