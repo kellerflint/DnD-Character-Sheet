@@ -1,4 +1,3 @@
-// src/pages/HomePage.jsx
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -9,7 +8,11 @@ const HomePage = () => {
     borderColor: "#c5b358",
     color: "#c5b358",
     mx: 1,
-    "&:hover": { borderColor: "#ffd500ff", color: "#ffd500ff", backgroundColor: "#c5b35815" },
+    "&:hover": {
+      borderColor: "#ffd500ff",
+      color: "#ffd500ff",
+      backgroundColor: "#c5b35815",
+    },
   };
 
   return (
@@ -75,7 +78,13 @@ const HomePage = () => {
           >
             View Character Sheets
           </Button>
-          <Button variant="outlined" size="large" sx={buttonStyle}>
+          <Button
+            component={Link}
+            to="/characters/new"
+            variant="outlined"
+            size="large"
+            sx={buttonStyle}
+          >
             Create New Character
           </Button>
         </Box>
