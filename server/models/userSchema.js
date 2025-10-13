@@ -10,7 +10,7 @@ const SALT_ROUNDS = 10;
  * Notes:
  * - uses underscored + timestamps to create created_at/updated_at columns automatically
  */
-const User = db.sequelize.define('user', {
+const User = sequelize.define('user', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
