@@ -1,7 +1,9 @@
 // Character model for D&D character sheets
+
 import { DataTypes } from "sequelize";
 import sequelize from "../database/database.js";
 
+// Define table
 const Character = sequelize.define('Character', {
     // Basic character info
     id: {
@@ -13,17 +15,17 @@ const Character = sequelize.define('Character', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    class: {
+    race: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    characterClass: {
         type: DataTypes.STRING,
         allowNull: false
     },
     level: {
         type: DataTypes.INTEGER,
         defaultValue: 1
-    },
-    race: {
-        type: DataTypes.STRING,
-        allowNull: false
     },
     background: {
         type: DataTypes.STRING,
