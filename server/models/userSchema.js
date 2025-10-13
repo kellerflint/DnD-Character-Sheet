@@ -1,4 +1,4 @@
-import db from '../database/connect.js';
+import sequelize from '../database/connect.js';
 import { DataTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
 

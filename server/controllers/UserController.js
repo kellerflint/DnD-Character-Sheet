@@ -125,7 +125,7 @@ const loginUser = async (req, res) => {
 
         await user.update({ last_login: new Date() });
 
-        const userResponse = User.findByPk(user.id);
+        const userResponse = await User.findByPk(user.id);
 
         res.json({
             message: 'Login successful',
