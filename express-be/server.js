@@ -1,18 +1,32 @@
 import express from 'express';
 import router from './router/router.js';
+import sequelize from './database/database.js';
+import Character from './models/Character.js'; // for sequelize to sync with model
+import chalk from 'chalk'; // cli cosmetic for dev logs readability
+import cors from 'cors';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
-// Parse JSON bodies
 app.use(express.json());
+app.use(cors());
 
-// API routes
-app.use("/api", router);
+app.use("/", router);
 
-// Serve static files from public directory (this should be last)
-app.use(express.static('public'));
+const startServer = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log(chalk.cyan("Connection to database established"));
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server started on http://0.0.0.0:${port}`);
-});
+        await sequelize.sync();
+        console.log(chalk.cyan("All models were synchronized"));
+        
+        app.listen(PORT, () => {
+            console.log(`Server started on http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error(`Unable to start the server: ${chalk.red(error)}`);
+    }
+};
+
+startServer();
