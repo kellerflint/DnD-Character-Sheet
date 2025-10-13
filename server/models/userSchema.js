@@ -1,5 +1,8 @@
 import db from './database/connect.js';
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
 
 /**
  * USERS
@@ -7,7 +10,7 @@ import { DataTypes } from 'sequelize';
  * Notes:
  * - uses underscored + timestamps to create created_at/updated_at columns automatically
  */
-const UserSchema = db.sequelize.define('user', {
+const User = db.sequelize.define('user', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -16,7 +19,8 @@ const UserSchema = db.sequelize.define('user', {
     username: {
         type: DataTypes.STRING(50),
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: { len: [3, 50] }
     },
     password_hash: {
         type: DataTypes.STRING(255),
@@ -27,13 +31,17 @@ const UserSchema = db.sequelize.define('user', {
         set(value) { this.setDataValue('password', value ); },
         validate: {
             isLongEnough(value) {
-               if (!value || value.length < 3) throw new Error('Password must be at least 3 characters.');
+               if (!value || value.length < 8) throw new Error('Password must be at least 8 characters.');
             }
         }
     },
-    email: { type: DataTypes.STRING(100),
+    email: { 
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
+        set(value) {
+            this.setDataValue('email', value ? String(value).toLowerCase().trim() : value);
+        },
         validate: {
             isEmail: true
         }
@@ -69,4 +77,19 @@ const UserSchema = db.sequelize.define('user', {
     }
 });
 
-export default UserSchema;
+// Instance methods to verify password
+User.prototype.checkPassword = async function(password) {
+    const hash = this.getDataValue('password_hash');
+    if (!hash) return false;
+    return await bcrypt.compare(password, hash);
+};
+
+// Ensure's password hash never leaks in JSON
+User.prototype.toJSON = function() {
+    const values = { ...this.get() };
+    delete values.password_hash;
+    delete values.password;
+    return values;
+};
+
+export default User;

@@ -61,6 +61,8 @@ const updateUser = async (req, res) => {
         // Don't allow updating id or created_at
         const { id, created_at, ...updateData } = req.body;
 
+        await user.update(updateData);
+
         res.json({
             message: 'User updated successfully',
             user
@@ -111,7 +113,7 @@ const loginUser = async (req, res) => {
             : { username: credential }
         })
         
-        if (!user || !(await user.validatePassword(password))) {
+        if (!user) {
             return res.status(401).json({ error: 'Invalid credentials.' });
         }
 
@@ -123,6 +125,8 @@ const loginUser = async (req, res) => {
 
         await user.update({ last_login: new Date() });
 
+        const userResponse = User.findByPk(user.id);
+
         res.json({
             message: 'Login successful',
             user: userResponse
@@ -133,7 +137,7 @@ const loginUser = async (req, res) => {
     }
 }
 
-export default {
+export {
     createUser,
     getAllUsers,
     getUserById,
