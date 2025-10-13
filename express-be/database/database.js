@@ -1,17 +1,25 @@
-// database connection config file
+// Database connection config file
+
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-dotenv.config();
+// Load .env file
+dotenv.config({ path: "./.env" });
+const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DIALECT } = process.env;
 
-// create sequelize instance with db credentials
+if (!DB_NAME || !DB_USER || !DB_PASSWORD || !DB_HOST || !DB_DIALECT || !DB_PORT) {
+    throw new Error("Please make sure you have a .env file with db credentials");
+}
+
+// MySQL database configuration - initializing Sequelize to connect to a MySQL database
 const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
+    DB_NAME,
+    DB_USER,
+    DB_PASSWORD,
     {
-        host: process.env.DB_HOST,
-        dialect: 'mysql'
+        host: DB_HOST,
+        port: DB_PORT,
+        dialect: DB_DIALECT
     }
 )
 
