@@ -146,6 +146,10 @@ pm2 start server.js --name "dnd-backend"
 (Note: --name "dnd-backend" is only for the initial setup of PM2. For future starts, you can simply run pm2 start dnd-backend. 
 
 The reason for the name is to differentiate the server from the other projects running on your VM.)
+
+# IMPORTANT: These next two commands ensure the app restarts on server reboot
+pm2 startup
+pm2 save
 ```
 
 ### Step 5: Configure the Front-End
