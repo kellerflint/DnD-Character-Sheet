@@ -7,7 +7,7 @@ const authenticateToken = require("../middleware/authenticateToken");
 
 // User Registration
 router.post("/api/register", async (req, res) => {
-   const { username, firstName, lastName, email, password } = req.body;
+   const { username, firstName, lastName, email, password, securityInfo } = req.body;
 
    // Basic validation
    if (!username || !firstName || !lastName || !email || !password) {
@@ -29,11 +29,12 @@ router.post("/api/register", async (req, res) => {
       // Hash the password
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(password, salt);
+      const security_hash = await bcrypt.hash(securityInfo, salt);
 
       // Store new user in the database
       const [result] = await dbPool.query(
-         "INSERT INTO users (username, first_name, last_name, email, password_hash) VALUES (?, ?, ?, ?, ?)",
-         [username, firstName, lastName, email, password_hash]
+         "INSERT INTO users (username, first_name, last_name, email, password_hash, security_hash) VALUES (?, ?, ?, ?, ?,?)",
+         [username, firstName, lastName, email, password_hash, security_hash]
       );
 
       res.status(201).json({
@@ -48,7 +49,27 @@ router.post("/api/register", async (req, res) => {
 
 // Update Password
 router.post("api/update-password", async (req, res) => {
-   
+   const { email, securityInfo } = req.body;
+   if (!email || securityInfo) {
+      return res.status(400).json({ message: "Email and security answer are required."})
+   }
+
+   try {
+      const [rows] = await dbPool.query("SELECT * FROM users WHERE email = ?", [
+         email
+      ]);
+
+      const user = rows[0];
+
+      if (!user) {
+         return res.status(401).json({ message: "Invalid credentials." });
+      }
+
+      const isMatch = await bcrypt.compare(securityInfo, user.security_hash);
+      if (!isMatch) {
+         return res.status(401).json({ message: "Incorrect answer." });
+      }
+   }
 });
 
 // User Login
