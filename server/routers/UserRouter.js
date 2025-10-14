@@ -8,13 +8,10 @@ import {
     loginUser
 } from '../controllers/UserController.js';
 
-const router = Router();
+const loginRouter = Router();
 
 // Auth routes
 router.post('/login', loginUser);
-router.get('/login', (req, res) =>  {
-    res.send("Sane.");
-});
 router.post('/signup', createUser);
 
 // CRUD routes
@@ -23,5 +20,5 @@ router.get('/:id', getUserById);
 router.put('/:id', updateUser);
 router.delete('/:id', deleteUser);
 
-export default router;
+export default loginRouter;
 

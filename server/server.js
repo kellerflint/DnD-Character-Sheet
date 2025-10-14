@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import axios from 'axios';
 import sequelize from './database/connect.js'
 import apiRouter from './routers/Router.js';
+import loginRouter from './routers/UserRouter.js';
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,7 @@ await sequelize.sync({ alter: true });
 console.log('Database synced successfully');
 
 app.use('/api', apiRouter);
+app.use('/', userRouter);
 
 // Health check
 app.get("/api/health", (req, res) => {
@@ -61,6 +63,7 @@ app.get("/api/dnd/:reference", async (req, res) => {
 // Start server
 app.listen(SERVER_PORT, () => {
     console.log(`Server is running on ${process.env.VM_IP}:${process.env.SERVER_PORT}`);
-        console.log(`FE_ORIGIN ${FE_ORIGIN}`);
+    console.log(`FE_ORIGIN ${FE_ORIGIN}`);
+
 });
 

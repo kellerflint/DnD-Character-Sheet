@@ -3,7 +3,7 @@ import userRouter from './UserRouter.js'
 
 const apiRouter = Router();
 
-apiRouter.use('/users', userRouter);
+//apiRouter.use('/users', userRouter);
 
 apiRouter.get('/health', (req, res) => {
     res.json({
