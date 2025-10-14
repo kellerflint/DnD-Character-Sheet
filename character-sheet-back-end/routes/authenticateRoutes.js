@@ -149,13 +149,13 @@ router.post("/api/login", async (req, res) => {
    }
 });
 
-<<<<<<< HEAD
 // User Login Health Check
 router.get("/api/check", authenticateToken, (req, res) => {
    res.json(
       `Hello, ${req.user.email}! You have successfully connected to the backend.`
    );
-=======
+});
+
 router.delete("/api/delete", authenticateToken, async (req, res) => {
    const userId = req.user.id;
 
@@ -175,7 +175,6 @@ router.delete("/api/delete", authenticateToken, async (req, res) => {
          message: "Server error during account deletion.",
       });
    }
->>>>>>> c8518e728af58cb1c577b4b9ff053656b5a9bb10
 });
 
 module.exports = router;

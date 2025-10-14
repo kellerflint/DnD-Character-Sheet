@@ -28,7 +28,6 @@ const formFields = [
    { id: "lastName", label: "Last Name", type: "text" },
    { id: "email", label: "Email Address", type: "email" },
    { id: "password", label: "Password", type: "password" },
-   { id: "securityAnswer", label: "Security Answer", type: "text" }
 ];
 
 function UserRegister({ open, closeModal, switchToLogin }) {
@@ -47,24 +46,14 @@ function UserRegister({ open, closeModal, switchToLogin }) {
    const [isLoading, setIsLoading] = useState(false);
 
    const handleChange = (event) => {
-      const { id, value } = event.target;
+      const { name, id, value } = event.target;
+      const fieldName = name || id;
+
       setFormData((prevData) => ({
          ...prevData,
-         [id]: value,
+         [fieldName]: value,
       }));
    };
-
-   const handleSelectChange = (event) => {
-      setFormData((prev) => ({ ...prev, securityQuestionId: event.target.value }));
-   };
-
-   if (!formData.securityQuestionId) {
-      throw new Error("Please select a security question.");
-   }
-
-   if (!formData.securityAnswer.trim()) {
-      throw new Error("Please provide a security answer.");
-   }
 
    const handleSubmit = (event) => {
 
