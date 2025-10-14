@@ -42,7 +42,7 @@ export default function RegistrationForm() {
 
     try {
         // Send registration data to your backend API
-        const response = await fetch('/signup', {
+        const response = await fetch(`${VM_IP}/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -23,7 +23,6 @@ cd ./frontend/dnd-character-sheet
 FE_VM_IP="vm_ip.js"
 cat <<EOF > $FE_VM_IP 
 export const VM_IP = "http://$VM_IP:$SERVER_PORT"
-
 EOF
 
 cd ../..
