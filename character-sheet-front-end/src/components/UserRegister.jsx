@@ -66,10 +66,13 @@ function UserRegister({ open, closeModal, switchToLogin }) {
          setError("Please select a security question.");
          return; 
       }
-      if (!formData.securityAnswer) {
+      if (!formData.securityAnswer.trim()) {
          setError("Please provide a security answer.");
          return; 
       }
+
+      const securityInfo = `${formData.securityQuestionId}:${formData.securityAnswer.trim().toLowerCase()}`;
+      formData.securityAnswer = securityInfo;
 
       setIsLoading(true);
 
@@ -127,6 +130,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                   <Select
                      labelId="security-question-label"
                      id="securityQuestionId"
+                     name="securityQuestionId"
                      value={formData.securityQuestionId}
                      onChange={handleChange}
                      label="Security Question"
