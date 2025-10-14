@@ -15,7 +15,7 @@ export const loginUser = async (credentials) => {
    return response.data;
 };
 
-export const updatePassword = async (/api/update-password) => {
-   const response = awaite apiConnection.post("/api/update-password", credentials);
+export const updatePassword = async (credentials) => {
+   const response = await apiConnection.post("/api/update-password", credentials);
    return response.data;
 };

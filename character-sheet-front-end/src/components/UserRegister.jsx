@@ -9,6 +9,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+
+const securityQuestions = [
+   { id: "pet", text: "What is the name of your first pet?" },
+   { id: "school", text: "What elementary school did you attend?" },
+   { id: "city", text: "In what city were you born?" },
+   { id: "car", text: "What was the model of your first car?" },
+];
 
 const formFields = [
    { id: "username", label: "Username", type: "text", autoFocus: true },
@@ -16,6 +28,7 @@ const formFields = [
    { id: "lastName", label: "Last Name", type: "text" },
    { id: "email", label: "Email Address", type: "email" },
    { id: "password", label: "Password", type: "password" },
+   { id: "securityAnswer", label: "Security Answer", type: "text" }
 ];
 
 function UserRegister({ open, closeModal, switchToLogin }) {
@@ -25,6 +38,8 @@ function UserRegister({ open, closeModal, switchToLogin }) {
       lastName: "",
       email: "",
       password: "",
+      securityQuestionId: "",
+      securityAnswer: ""
    });
 
    const [error, setError] = useState("");
@@ -38,6 +53,18 @@ function UserRegister({ open, closeModal, switchToLogin }) {
          [id]: value,
       }));
    };
+
+   const handleSelectChange = (event) => {
+      setFormData((prev) => ({ ...prev, securityQuestionId: event.target.value }));
+   };
+
+   if (!formData.securityQuestionId) {
+      throw new Error("Please select a security question.");
+   }
+
+   if (!formData.securityAnswer.trim()) {
+      throw new Error("Please provide a security answer.");
+   }
 
    const handleSubmit = (event) => {
 
@@ -97,6 +124,34 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                      onChange={handleChange}
                   />
                ))}
+               <FormControl fullWidth required margin="dense" variant="standard">
+                  <InputLabel id="security-question-label">Security Question</InputLabel>
+                  <Select
+                     labelId="security-question-label"
+                     id="securityQuestionId"
+                     value={formData.securityQuestionId}
+                     onChange={handleSelectChange}
+                     label="Security Question"
+                  >
+                     {SECURITY_QUESTIONS.map((q) => (
+                        <MenuItem key={q.id} value={q.id}>
+                           {q.text}
+                        </MenuItem>
+                     ))}
+                  </Select>
+                  <FormHelperText>Choose a question you’ll remember (not easily guessable).</FormHelperText>
+               </FormControl>
+               <TextField
+                  required
+                  margin="dense"
+                  id="securityAnswer"
+                  label="Security Answer"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={formData.securityAnswer}
+                  onChange={handleChange}
+               />
             </DialogContent>
             <DialogActions>
                <Button onClick={switchToLogin} color="secondary">
