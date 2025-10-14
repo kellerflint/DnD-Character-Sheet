@@ -27,7 +27,7 @@ VM_IP='$3'
 #DB Credentials
 DB_USER='$4'
 DB_PASS='$5'
-DB_NAME='$6'
+DB_DATABASE='$6'
 DB_PORT='$7'
 EOF
 
