@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Container, Typography, TextField, Button, Stack, Box, Paper, Grid, Divider } from '@mui/material';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
+const API_PORT = import.meta.env.VITE_API_PORT; // vm port
 
 // create character form
 const CharacterForm = () => {
@@ -37,7 +38,7 @@ const CharacterForm = () => {
     if (id) {
       // an async function to grab the characters data from api
       const fetchCharacter = async () => {
-        const response = await fetch(`http://${API_URL}:3001/characters/${id}`);
+        const response = await fetch(`http://${API_URL}:${API_PORT}/characters/${id}`);
         const data = await response.json();
         // pre-fill the form with the data fetched
         setFormData(data);
@@ -62,7 +63,7 @@ const CharacterForm = () => {
     // edit vs create mode (if id exists put, else post)
     const method = id ? 'PUT' : 'POST';
     // set the right api endpoint depending on above
-    const url = id ? `http://${API_URL}:3001/characters/${id}` : `http://${API_URL}:3001/characters`;
+    const url = id ? `http://${API_URL}:${API_PORT}/characters/${id}` : `http://${API_URL}:${API_PORT}/characters`;
 
     // send the form data to backend and db
     await fetch(url, {
