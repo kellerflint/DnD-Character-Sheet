@@ -109,8 +109,8 @@ const loginUser = async (req, res) => {
 
         const user = await User.findOne({
             where: isEmail
-            ? { email: credential.toLowerCase() }
-            : { username: credential }
+            ? { email: username.toLowerCase() }
+            : { username: username }
         })
         
         if (!user) {
