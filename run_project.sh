@@ -10,7 +10,7 @@ git pull 'https://github.com/tgillysuit/DnD-Character-Sheet.git' #Iffy if we hav
 
 # Run the backend.
 echo "Starting backend..."
-(cd ./server && pm2 start server.js --name DnD_Backend) &
+(cd ./server && pm2 start server.js --name DnD_Backend -f) &
 
 echo "Waiting for backend to initialize.."
 sleep 5
