@@ -62,6 +62,15 @@ function UserRegister({ open, closeModal, switchToLogin }) {
       setError("");
       setSuccess("");
 
+      if (!formData.securityQuestionId) {
+         setError("Please select a security question.");
+         return; 
+      }
+      if (!formData.securityAnswer) {
+         setError("Please provide a security answer.");
+         return; 
+      }
+
       setIsLoading(true);
 
       registerUser(formData)
@@ -119,10 +128,10 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                      labelId="security-question-label"
                      id="securityQuestionId"
                      value={formData.securityQuestionId}
-                     onChange={handleSelectChange}
+                     onChange={handleChange}
                      label="Security Question"
                   >
-                     {SECURITY_QUESTIONS.map((q) => (
+                     {securityQuestions.map((q) => (
                         <MenuItem key={q.id} value={q.id}>
                            {q.text}
                         </MenuItem>

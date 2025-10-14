@@ -5,16 +5,12 @@ const jwt = require("jsonwebtoken");
 const dbPool = require("../config/db");
 const authenticateToken = require("../middleware/authenticateToken");
 
-<<<<<<< HEAD
-// User Registration
-=======
 router.get("/api/check", authenticateToken, (req, res) => {
    res.json(
       `Hello, ${req.user.email}! You have successfully connected to the backend.`
    );
 });
 
->>>>>>> c8518e728af58cb1c577b4b9ff053656b5a9bb10
 router.post("/api/register", async (req, res) => {
    const { username, firstName, lastName, email, password, securityInfo } = req.body;
 
@@ -38,7 +34,7 @@ router.post("/api/register", async (req, res) => {
       // Hash the password
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(password, salt);
-      const security_hash = await bcrypt.hash(securityInfo, salt);
+      const security_hash = await bcrypt.hash(securityInfo.toLowerCase(), salt);
 
       // Store new user in the database
       const [result] = await dbPool.query(
