@@ -48,6 +48,8 @@ npm install -g pm2 # Server
 
 npm install morgan #Miscellaneous
 
+npm i
+
 
 
 
