@@ -29,7 +29,7 @@ await sequelize.sync({ alter: true });
 console.log('Database synced successfully');
 
 app.use('/api', apiRouter);
-app.use('/', userRouter);
+app.use('/', loginRouter);
 
 // Health check
 app.get("/api/health", (req, res) => {
