@@ -99,13 +99,13 @@ const deleteUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         // credential could be username or email
-        const { credential, password } = req.body;
+        const { username, password } = req.body;
 
-        if (!credential || !password) {
+        if (!username || !password) {
             return res.status(400).json({ error: 'Username/email and password are required.' });
         }
 
-        const isEmail = credential.includes('@');
+        const isEmail = username.includes('@');
 
         const user = await User.scope('withSecret').findOne({
             where: isEmail
