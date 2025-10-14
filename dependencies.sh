@@ -44,10 +44,7 @@ npm install express dotenv #Important node stuff
 npm install cors axios #Connectivity
 npm install sequelize #DB
 
-npm install -g PM2 # Server
-# Exporting pm2 to bin
-echo 'export PATH=$PATH:$(npm bin -g)' >> ~/.bashrc
-source ~/.bashrc
+npm install -g pm2 # Server
 
 npm install morgan #Miscellaneous
 
