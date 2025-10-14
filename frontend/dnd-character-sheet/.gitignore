@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Miscellaneous
+
+#Depends on whose VM is running it.
+vm_ip.js 

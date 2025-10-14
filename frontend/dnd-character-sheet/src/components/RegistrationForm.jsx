@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { VM_IP } from "../../vm_ip";
+
 export default function RegistrationForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -92,7 +94,7 @@ export default function RegistrationForm() {
     async function loginAttempt(e) {
         e.preventDefault();
         try {
-            await fetch("http://localhost:3001/login", {
+            await fetch(`${VM_IP}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify({username, password: password})
