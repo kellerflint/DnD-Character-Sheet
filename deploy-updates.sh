@@ -3,9 +3,9 @@
 set -e
 
 error_handler() {
-  echo "ERROR on line $LINENO"
-  echo "Command: '$BASH_COMMAND'"
-  echo "Exit Code: $?"
+   echo "ERROR on line $LINENO"
+   echo "Command: '$BASH_COMMAND'"
+   echo "Exit Code: $?"
 }
 
 trap 'error_handler' ERR
