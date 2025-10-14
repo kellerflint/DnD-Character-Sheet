@@ -37,7 +37,7 @@ EOF
 
 # Create database if it doesn't exist.
 sudo mysql -u root -p -e "
-CREATE DATABASE IF NOT EXISTS \'$7\';
+CREATE DATABASE IF NOT EXISTS $7;
 "
 
 # Show executing query:
