@@ -5,7 +5,16 @@ const jwt = require("jsonwebtoken");
 const dbPool = require("../config/db");
 const authenticateToken = require("../middleware/authenticateToken");
 
+<<<<<<< HEAD
 // User Registration
+=======
+router.get("/api/check", authenticateToken, (req, res) => {
+   res.json(
+      `Hello, ${req.user.email}! You have successfully connected to the backend.`
+   );
+});
+
+>>>>>>> c8518e728af58cb1c577b4b9ff053656b5a9bb10
 router.post("/api/register", async (req, res) => {
    const { username, firstName, lastName, email, password, securityInfo } = req.body;
 
@@ -140,11 +149,33 @@ router.post("/api/login", async (req, res) => {
    }
 });
 
+<<<<<<< HEAD
 // User Login Health Check
 router.get("/api/check", authenticateToken, (req, res) => {
    res.json(
       `Hello, ${req.user.email}! You have successfully connected to the backend.`
    );
+=======
+router.delete("/api/delete", authenticateToken, async (req, res) => {
+   const userId = req.user.id;
+
+   try {
+      const [result] = await dbPool.query("DELETE FROM users WHERE id = ?", [
+         userId,
+      ]);
+
+      if (result.affectedRows === 0) {
+         return res.status(404).json({ message: "User not found." });
+      }
+
+      res.status(200).json({ message: "User account deleted successfully." });
+   } catch (error) {
+      console.error("Delete error:", error);
+      res.status(500).json({
+         message: "Server error during account deletion.",
+      });
+   }
+>>>>>>> c8518e728af58cb1c577b4b9ff053656b5a9bb10
 });
 
 module.exports = router;
