@@ -43,6 +43,7 @@ cd server
 npm install express dotenv #Important node stuff
 npm install cors axios #Connectivity
 npm install sequelize #DB
+npm install -g PM2 # Server
 npm install morgan #Miscellaneous
 
 
