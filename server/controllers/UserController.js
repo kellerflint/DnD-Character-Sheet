@@ -107,7 +107,7 @@ const loginUser = async (req, res) => {
 
         const isEmail = username.includes('@');
 
-        const user = await User.scope('withSecret').findOne({
+        const user = await User.findOne({
             where: isEmail
             ? { email: credential.toLowerCase() }
             : { username: credential }
