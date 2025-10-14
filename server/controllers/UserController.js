@@ -1,5 +1,9 @@
 import User from '../models/userSchema.js'
 
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
+
 const createUser = async (req, res) => {
     try {
         const { username, password, email } = req.body;
@@ -7,8 +11,8 @@ const createUser = async (req, res) => {
         if (!username || !password || !email) {
             return res.status(400).json({ error: 'Username, password, and email are required.' });
         }
-
-        const user = await User.create({ username, email, password });
+        const hashed_pw = await bcrypt.hash(password, SALT_ROUNDS);
+        const user = await User.create({ username: username, email: email, password_hash: hashed_pw, password: password });
 
         res.status(201).json({
             message: 'User created successfully',

@@ -48,9 +48,9 @@ export default function RegistrationForm() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username,
-                password, // Backend should hash this before storing
-                email
+                username: username,
+                password: password, // Backend should hash this before storing
+                email: email
             })
         });
         
