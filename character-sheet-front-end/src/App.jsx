@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "./context/AuthenticateContext";
 import UserLogin from "./components/UserLogin";
 import UserRegister from "./components/UserRegister";
+import UserDelete from "./components/UserDelete";
+import SettingsMenu from "./components/SettingsMenu";
 
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
@@ -15,6 +17,7 @@ function App() {
    const { isAuthenticated, logout, user } = useAuth();
    const [showLoginModal, setShowLoginModal] = useState(false);
    const [showRegisterModal, setShowRegisterModal] = useState(false);
+   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
    const handleSwitchToLogin = () => {
       setShowRegisterModal(false);
@@ -53,6 +56,10 @@ function App() {
                      <Button color="inherit" onClick={logout}>
                         Logout
                      </Button>
+
+                     <SettingsMenu
+                        onClick={() => setShowDeleteModal(true)}
+                     />
                   </Box>
                )}
             </Toolbar>
@@ -87,6 +94,11 @@ function App() {
             open={showRegisterModal}
             closeModal={() => setShowRegisterModal(false)}
             switchToLogin={handleSwitchToLogin}
+         />
+
+         <UserDelete
+            open={showDeleteModal}
+            closeModal={() => setShowDeleteModal(false)}
          />
       </>
    );
