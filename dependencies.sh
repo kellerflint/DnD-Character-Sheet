@@ -50,13 +50,8 @@ npm install morgan #Miscellaneous
 
 npm i
 
+cd ../
 
-
-
-# You'll need to put the github repo link between the single quotes and uncomment before running this script 
-# git clone 'github repo link'
-
-cd DnD-Character-Sheet
 cd frontend/dnd-character-sheet
 
 npm install
@@ -65,6 +60,7 @@ cd ../../server
 
 npm install
 npm i -g nodemon
+npm i -g next
 
 cd ..
 
