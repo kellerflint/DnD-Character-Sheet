@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { VM_IP } from "../../vm_ip";
+
 export default function RegistrationForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -40,15 +42,15 @@ export default function RegistrationForm() {
 
     try {
         // Send registration data to your backend API
-        const response = await fetch('/api/register', {
+        const response = await fetch(`${VM_IP}/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username,
-                password, // Backend should hash this before storing
-                email
+                username: username,
+                password: password, // Backend should hash this before storing
+                email: email
             })
         });
         
@@ -92,10 +94,10 @@ export default function RegistrationForm() {
     async function loginAttempt(e) {
         e.preventDefault();
         try {
-            await fetch("http://localhost:3001/login", {
+            await fetch(`${VM_IP}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({username, password: pw})
+                body: JSON.stringify({username, password: password})
             });
         } finally {
             setPassword("")

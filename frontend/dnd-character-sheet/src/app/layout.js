@@ -12,6 +12,7 @@ export default function RootLayout({ children }) {
       <body>
         <h1>Dungeons and Dragons Character Sheet</h1>
         <AuthForms />
+        {children}
       </body>
     </html>
   );
