@@ -11,14 +11,14 @@ import {
 const loginRouter = Router();
 
 // Auth routes
-router.post('/login', loginUser);
-router.post('/signup', createUser);
+loginRouter.post('/login', loginUser);
+loginRouter.post('/signup', createUser);
 
 // CRUD routes
-router.get('/', getAllUsers);
-router.get('/:id', getUserById);
-router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
+loginRouter.get('/', getAllUsers);
+loginRouter.get('/:id', getUserById);
+loginRouter.put('/:id', updateUser);
+loginRouter.delete('/:id', deleteUser);
 
 export default loginRouter;
 
