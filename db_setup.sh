@@ -36,9 +36,7 @@ EOF
 #I'm worried about SQL injections for this section, but only the people WITH ACCESS the VM will be using this.
 
 # Create database if it doesn't exist.
-sudo mysql -u root -p -e "
-CREATE DATABASE IF NOT EXISTS $7;
-"
+sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS $7;"
 
 # Show executing query:
 echo "Executing:

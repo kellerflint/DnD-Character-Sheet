@@ -95,7 +95,7 @@ export default function RegistrationForm() {
             await fetch("http://localhost:3001/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
-                body: JSON.stringify({username, password: pw})
+                body: JSON.stringify({username, password: password})
             });
         } finally {
             setPassword("")
