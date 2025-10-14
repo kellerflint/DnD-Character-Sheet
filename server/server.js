@@ -60,6 +60,7 @@ app.get("/api/dnd/:reference", async (req, res) => {
 
 // Start server
 app.listen(SERVER_PORT, () => {
-    console.log(`Server is running on http://localhost:${SERVER_PORT}`);
+    console.log(`Server is running on ${process.env.VM_IP}:${process.env.SERVER_PORT}`);
+        console.log(`FE_ORIGIN ${FE_ORIGIN}`);
 });
 
