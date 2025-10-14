@@ -12,6 +12,9 @@ const router = Router();
 
 // Auth routes
 router.post('/login', loginUser);
+router.get('/login', (req, res) =>  {
+    res.send("Sane.");
+});
 router.post('/signup', createUser);
 
 // CRUD routes
