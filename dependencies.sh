@@ -33,21 +33,21 @@ node -v #Show updated version
 echo "Install front-end dependencies"
 
 cd frontend/dnd-character-sheet
-npm install -g next
-npm install react react-dom
+sudo npm install -g next
+sudo npm install react react-dom
 
 # Install backend node dependencies
 echo "Install backend depdendencies"
 
 cd ../..
 cd server
-npm install express dotenv #Important node stuff
-npm install cors axios #Connectivity
-npm install sequelize #DB
+sudo npm install express dotenv #Important node stuff
+sudo npm install cors axios #Connectivity
+sudo npm install sequelize #DB
 
-npm install -g pm2 # Server
+sudo npm install -g pm2 # Server
 
-npm install morgan #Miscellaneous
+sudo npm install morgan #Miscellaneous
 
 cd ..
 
