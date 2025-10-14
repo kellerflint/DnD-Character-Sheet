@@ -33,7 +33,7 @@ node -v #Show updated version
 echo "Install front-end dependencies"
 
 cd frontend/dnd-character-sheet
-npm install react react-dom -g next
+npm install react react-dom next
 
 # Install backend node dependencies
 echo "Install backend depdendencies"
