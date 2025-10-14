@@ -49,13 +49,14 @@ router.post("/api/register", async (req, res) => {
 
 // Update Password
 router.post("/api/update-password", async (req, res) => {
-   const { email, securityInfo, newPassword } = req.body;
-   if (!email || !securityInfo || newPassword) {
-      return res.status(400).json({ message: "Email and security answer are required."})
-   }
-
    try {
-      const [rows] = await dbPool.query("SELECT * FROM users WHERE email = ? AND security_hash = ?", [
+      const { email, answer, newPassword } = req.body;
+      
+      if (!email || !answer || newPassword) {
+         return res.status(400).json({ message: "Email, security answer, and new password are required."})
+      }
+
+      const [rows] = await dbPool.query("SELECT id FROM users WHERE email = ?", [
          email
       ]);
 
@@ -65,7 +66,9 @@ router.post("/api/update-password", async (req, res) => {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
+      const baseAnswer = answer.trim().toLowerCase();
       const isMatch = await bcrypt.compare(securityInfo, user.security_hash);
+      
       if (!isMatch) {
          return res.status(401).json({ message: "Incorrect answer." });
       }
