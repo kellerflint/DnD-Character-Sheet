@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CharacterCard from "../components/CharacterCard";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
+const API_PORT = import.meta.env.VITE_API_PORT; // vm port
 
 const CharactersPage = () => {
   const [characters, setCharacters] = useState([]);
@@ -13,7 +14,7 @@ const CharactersPage = () => {
   // function to handle deletion
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this character?")) {
-      await fetch(`http://${API_URL}:3001/characters/${id}`, {
+      await fetch(`http://${API_URL}:${API_PORT}/characters/${id}`, {
         method: "DELETE",
       });
       // update the UI by filtering out the deleted character
@@ -26,7 +27,7 @@ const CharactersPage = () => {
     const fetchCharacters = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://${API_URL}:3001/characters`);
+        const response = await fetch(`http://${API_URL}:${API_PORT}/characters`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
