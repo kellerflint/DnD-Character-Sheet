@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Typography, TextField, Button, Stack, Box } from '@mui/material';
+import { useNavigate, useParams, Link } from 'react-router-dom';
+import { Container, Typography, TextField, Button, Stack, Box, Paper, Grid, Divider } from '@mui/material';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
 
@@ -8,11 +8,22 @@ const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
 const CharacterForm = () => {
   // form fields state
   const [formData, setFormData] = useState({
-    name: '',
-    race: '',
-    characterClass: '',
-    background: '',
-  });
+      name: '',
+      race: '',
+      characterClass: '',
+      background: '',
+      level: 1,
+      alignment: 'True Neutral',
+      strength: 10,
+      dexterity: 10,
+      constitution: 10,
+      intelligence: 10,
+      wisdom: 10,
+      charisma: 10,
+      hitPoints: 10,
+      armorClass: 10,
+      speed: 30,
+    });
 
   // tool from react-router to redirect the user
   const navigate = useNavigate();
@@ -64,28 +75,70 @@ const CharacterForm = () => {
     navigate('/characters');
   };
 
-  return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        {/* show a different title depending on if theres an id or not */}
-        {id ? 'Edit Character' : 'Create New Character'}
-      </Typography>
-      {/* form calls handleSubmit function when submitted */}
-      <Box component="form" onSubmit={handleSubmit}>
-        <Stack spacing={2}>
-          {/* each text field is controlled by formData state and handleChange function */}
-          <TextField required label="Name" name="name" value={formData.name} onChange={handleChange} />
-          <TextField required label="Race" name="race" value={formData.race} onChange={handleChange} />
-          <TextField required label="Class" name="characterClass" value={formData.characterClass} onChange={handleChange} />
-          <TextField required label="Background" name="background" value={formData.background} onChange={handleChange} />
-          <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-            {/* same thing for the button text, changes based on if creating vs editing */}
-            {id ? 'Save Changes' : 'Create Character'}
-          </Button>
-        </Stack>
-      </Box>
-    </Container>
-  );
-};
+  const buttonStyle = {
+    borderColor: '#c5b358',
+    color: '#c5b358',
+    '&:hover': {
+      borderColor: '#ffd500ff',
+      color: '#ffd500ff',
+      backgroundColor: '#c5b35815',
+    },
+  };
 
-export default CharacterForm;
+  return (
+      <Box sx={{ backgroundColor: '#1a1a1a', minHeight: '100vh', py: 4, display: 'flex', alignItems: 'center' }}>
+        <Container maxWidth="sm">
+          <Paper sx={{ p: 4, backgroundColor: '#2c2c2c', color: '#f5f5f5', border: '1px solid #c5b358' }}>
+            <Typography variant="h4" gutterBottom sx={{ fontFamily: '"Garamond", serif', color: '#c5b358' }}>
+              {id ? 'Edit Character' : 'Create New Character'}
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit}>
+              <Stack spacing={3}>
+                {/* Basic info */}
+                <TextField required label="Name" name="name" value={formData.name} onChange={handleChange} sx={{}} />
+                <TextField required label="Race" name="race" value={formData.race} onChange={handleChange} sx={{}} />
+                <TextField required label="Class" name="characterClass" value={formData.characterClass} onChange={handleChange} sx={{}} />
+                <TextField required label="Background" name="background" value={formData.background} onChange={handleChange} sx={{}} />
+                <TextField label="Alignment" name="alignment" value={formData.alignment} onChange={handleChange} sx={{}} />
+                <TextField label="Level" name="level" type="number" value={formData.level} onChange={handleChange} sx={{}} />
+  
+                <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
+                <Typography variant="h6" sx={{ color: '#c5b358' }}>Ability Scores</Typography>
+                
+                {/* Ability scores */}
+                <Grid container spacing={2}>
+                  <Grid item xs={6}><TextField label="Strength" name="strength" type="number" value={formData.strength} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Dexterity" name="dexterity" type="number" value={formData.dexterity} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Constitution" name="constitution" type="number" value={formData.constitution} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Intelligence" name="intelligence" type="number" value={formData.intelligence} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Wisdom" name="wisdom" type="number" value={formData.wisdom} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Charisma" name="charisma" type="number" value={formData.charisma} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                </Grid>
+  
+                <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
+                <Typography variant="h6" sx={{ color: '#c5b358' }}>Combat Stats</Typography>
+  
+                {/* Combat stats */}
+                <Grid container spacing={2}>
+                  <Grid item xs={6}><TextField label="Hit Points" name="hitPoints" type="number" value={formData.hitPoints} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Armor Class" name="armorClass" type="number" value={formData.armorClass} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Speed" name="speed" type="number" value={formData.speed} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                </Grid>
+  
+                <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+                  <Button type="submit" variant="outlined" sx={buttonStyle}>
+                    {id ? 'Save Changes' : 'Create Character'}
+                  </Button>
+                  <Button component={Link} to="/characters" variant="outlined" sx={buttonStyle}>
+                    Cancel
+                  </Button>
+                </Stack>
+              </Stack>
+            </Box>
+          </Paper>
+        </Container>
+      </Box>
+    );
+  };
+  
+  export default CharacterForm;
