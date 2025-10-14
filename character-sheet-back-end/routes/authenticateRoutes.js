@@ -74,11 +74,24 @@ router.post("/api/update-password", async (req, res) => {
       }
 
       const salt = await bcrypt.genSalt(10);
-      const password_hash = await bcrypt.hash(securityInfo, salt);
+      const password_hash = await bcrypt.hash(newPassword, salt);
+
+      const isAnswerAsPassword = await bcrypt.compare(baseAnswer, password_hash);
+      
+      if (isAnswerAsPassword) {
+         return res.status(400).json({ message: "New password cannot match your security answer." });
+      }
 
       const [result] = await dbPool.query(
-         "UPDATE users SET password"
-      )
+      "UPDATE users SET password_hash = ?, password_updated_at = NOW() WHERE id = ?",
+      [password_hash, user.id]
+      );
+
+      return res.status(200).json({ message: "Password updated successfully." });
+
+   } catch (err) {
+      console.error("Error updating password: ", err);
+      return res.status(500).json({ message: "Server Error." });
    }
 });
 
