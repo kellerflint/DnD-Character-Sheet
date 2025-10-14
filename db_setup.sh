@@ -33,9 +33,14 @@ DB_PORT='$8'
 EOF
 
 
-#I'm worried about SQL injections here.
+#I'm worried about SQL injections for this section, but only the people WITH ACCESS the VM will be using this.
 
-# Show query:
+# Create database if it doesn't exist.
+sudo mysql -u root -p -e "
+CREATE DATABASE IF NOT EXISTS \'$7\';
+"
+
+# Show executing query:
 echo "Executing:
 CREATE USER IF NOT EXISTS '$5'@'localhost' IDENTIFIED BY '$6'; 
 CREATE DATABASE IF NOT EXISTS \`$7\`;
@@ -43,6 +48,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, EXECUTE, REFERENCES, CREATE TEMPOR
 FLUSH PRIVILEGES;
 "
 
+# Create user to access DB
 sudo mysql -u root -p -e "
 CREATE USER IF NOT EXISTS '$5'@'localhost' IDENTIFIED BY '$6'; 
 CREATE DATABASE IF NOT EXISTS \`$7\`;
