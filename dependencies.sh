@@ -33,7 +33,8 @@ node -v #Show updated version
 echo "Install front-end dependencies"
 
 cd frontend/dnd-character-sheet
-npm install react react-dom next
+npm install -g next
+npm install react react-dom
 
 # Install backend node dependencies
 echo "Install backend depdendencies"
@@ -48,19 +49,6 @@ npm install -g pm2 # Server
 
 npm install morgan #Miscellaneous
 
-npm i
-
-cd ../
-
-cd frontend/dnd-character-sheet
-
-npm install
-
-cd ../../server
-
-npm install
-npm i -g nodemon
-npm i -g next
-
 cd ..
+
 
