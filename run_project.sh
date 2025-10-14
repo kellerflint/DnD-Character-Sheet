@@ -10,11 +10,10 @@ git pull 'https://github.com/tgillysuit/DnD-Character-Sheet.git' #Iffy if we hav
 
 # Run the backend.
 echo "Starting backend..."
-(cd ./server && npm start)
+(cd ./server && npm start) &
 
 echo "Waiting for backend to initialize.."
-# ChatGPT said this was a better way to wait for the server to finish starting.
-
+sleep 5
 
 # Run the frontend the way I did on the VM. 
 echo "Starting frontend..."
