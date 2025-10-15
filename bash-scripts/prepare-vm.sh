@@ -33,11 +33,13 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_R
 FLUSH PRIVILEGES;
 EOF
 
+sudo chown mysql:mysql "$INIT_FILE"
+
 sudo systemctl stop mysql
 sudo pkill -f mysqld || true
 sleep 2
 
-sudo mysqld --init-file="$INIT_FILE" --skip-grant-tables &
+sudo mysqld --init-file="$INIT_FILE" &
 sleep 10
 
 sudo mysqladmin shutdown || true
