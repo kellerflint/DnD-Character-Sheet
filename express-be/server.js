@@ -26,7 +26,8 @@ app.use("/", router);
 if (shouldServeClient) {
     app.use(express.static(clientDistPath));
     // Serve index.html for any GET route not handled by the API (SPA fallback)
-    app.get('/*', (req, res, next) => {
+    // Use a middleware without a route pattern to avoid path-to-regexp parsing issues.
+    app.use((req, res, next) => {
         if (req.method !== 'GET') return next();
         const acceptsHtml = req.accepts('html');
         if (!acceptsHtml) return next();
