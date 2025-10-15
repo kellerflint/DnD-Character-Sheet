@@ -60,7 +60,7 @@ const User = sequelize.define('user', {
     }
         */
 }, {
-    tableName: 'Users',
+    tableName: 'users',
     timestamps: true,
     underscored: true, // => created_at, updated_at
     hooks: {
