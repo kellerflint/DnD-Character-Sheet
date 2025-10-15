@@ -25,7 +25,6 @@ app.use(cors({  origin: FE_ORIGIN, methods: ['GET', 'POST', 'PUT', 'DELETE'], cr
 app.use(process.env.NODE_ENV === 'production' ? morgan('tiny') : morgan('dev'));
 
 // Sync database (creates tables if they don't exist)
-await sequelize.sync({ alter: true });
 console.log('Database synced successfully');
 
 app.use('/api', apiRouter);
@@ -64,6 +63,5 @@ app.get("/api/dnd/:reference", async (req, res) => {
 app.listen(SERVER_PORT, () => {
     console.log(`Server is running on ${process.env.VM_IP}:${process.env.SERVER_PORT}`);
     console.log(`FE_ORIGIN ${FE_ORIGIN}`);
-
 });
 
