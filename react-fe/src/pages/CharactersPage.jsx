@@ -3,8 +3,10 @@ import { Container, Typography, Grid, CircularProgress, Alert, Button } from "@m
 import { Link } from "react-router-dom";
 import CharacterCard from "../components/CharacterCard";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url
-const API_PORT = import.meta.env.VITE_API_PORT; // vm port
+const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url (dev)
+const API_PORT = import.meta.env.VITE_API_PORT; // vm port (dev)
+// Use relative paths in production (app served from same origin). In dev use VITE vars.
+const API_BASE = import.meta.env.PROD ? '' : `http://${API_URL}:${API_PORT}`;
 
 const CharactersPage = () => {
   const [characters, setCharacters] = useState([]);
@@ -14,7 +16,7 @@ const CharactersPage = () => {
   // function to handle deletion
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this character?")) {
-      await fetch(`http://${API_URL}:${API_PORT}/characters/${id}`, {
+  await fetch(`${API_BASE}/characters/${id}`, {
         method: "DELETE",
       });
       // update the UI by filtering out the deleted character
@@ -27,7 +29,7 @@ const CharactersPage = () => {
     const fetchCharacters = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://${API_URL}:${API_PORT}/characters`);
+  const response = await fetch(`${API_BASE}/characters`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
