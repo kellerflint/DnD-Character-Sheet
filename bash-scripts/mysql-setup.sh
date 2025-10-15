@@ -10,16 +10,37 @@ error_handler() {
 
 trap 'error_handler' ERR
 
+if [ -f "/tmp/mysql_root_credentials.txt" ]; then
+   source "/tmp/mysql_root_credentials.txt"
+else
+   echo "ERROR: MySQL root credentials not found."
+   exit 1
+fi
+
 DB_NAME="character_sheet_db"
-DB_USER="appuser"
-DB_PASSWORD=$(openssl rand -base64 16)
-CREDENTIALS_FILE="/tmp/db_credentials.txt"
+APP_USER="appuser"
+APP_PASSWORD=$(openssl rand -base64 16)
+DEV_USER="devuser"
+DEV_PASSWORD=$(openssl rand -base64 16)
+SQL_FILE="/var/www/dnd-app/DnD-Character-Sheet/sql/db.sql"
 
-echo "Configuring MySQL database and user..."
+{
+   echo "export DB_NAME='$DB_NAME'"
+   echo "export DB_USER='$APP_USER'"
+   echo "export DB_PASSWORD='$APP_PASSWORD'"
+   echo "export DEV_USER='$DEV_USER'"
+   echo "export DEV_PASSWORD='$DEV_PASSWORD'"
+} > /tmp/db_credentials.txt
 
-sudo mysql -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-sudo mysql -e "CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';"
-sudo mysql -e "GRANT SELECT, INSERT, UPDATE, DELETE ON $DB_NAME.* TO '$DB_USER'@'%';"
-sudo mysql -e "FLUSH PRIVILEGES;"
+echo "Configuring MySQL database and users..."
 
-echo "Database '$DB_NAME' and user '$DB_USER' configured for remote access."
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$APP_USER'@'%' IDENTIFIED BY '$APP_PASSWORD';"
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "GRANT SELECT, INSERT, UPDATE, DELETE ON $DB_NAME.* TO '$APP_USER'@'%';"
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER IF NOT EXISTS '$DEV_USER'@'%' IDENTIFIED BY '$DEV_PASSWORD';"
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DEV_USER'@'%';"
+
+echo "Importing database schema from $SQL_FILE..."
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$DB_NAME" < "$SQL_FILE"
+
+sudo mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "FLUSH PRIVILEGES;"

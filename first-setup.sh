@@ -20,9 +20,6 @@ if [ "$(pwd)" != "$DEST_DIR" ]; then
    sudo mv "$(pwd)" /var/www/dnd-app/
 
    cd "$DEST_DIR"
-   echo "Project moved successfully."
-else
-   echo "Project is in the correct directory."
 fi
 
 echo "Starting D&D Character Sheet application setup"
@@ -58,10 +55,11 @@ if [ -f "$ROOT_CRED_FILE" ] && [ -f "$APP_CRED_FILE" ]; then
    source "$APP_CRED_FILE"
 
    {
-      echo "--- Credentials for Remote Access (MySQL Workbench) ---"
+      echo "--- Credentials for Development Team (MySQL Workbench) ---"
       echo "Hostname/IP: $IP_ADDRESS"
-      echo "Username:    $DB_USER"
-      echo "Password:    $DB_PASSWORD"
+      echo "Database:    $DB_NAME"
+      echo "Username:    $DEV_USER"
+      echo "Password:    $DEV_PASSWORD"
       echo ""
       echo "--- Credentials for Server Administration (Root User) ---"
       echo "Username:    root"
