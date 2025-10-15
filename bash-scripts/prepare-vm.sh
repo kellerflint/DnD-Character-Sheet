@@ -30,7 +30,11 @@ echo "export MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'" > /tmp/mysql_root_crede
 
 sudo systemctl stop mysql
 sudo pkill -f mysqld || true
+sudo rm -f /var/lib/mysql/*.pid
 sleep 2
+
+sudo mkdir -p /var/run/mysqld
+sudo chown mysql:mysql /var/run/mysqld
 
 sudo mysqld_safe --skip-grant-tables --skip-networking &
 sleep 5
