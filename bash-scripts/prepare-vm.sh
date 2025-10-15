@@ -25,25 +25,26 @@ sudo apt -y install nodejs nginx mysql-server git
 
 echo "--- Securing MySQL root user ---"
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
+INIT_FILE=$(mktemp)
 
 echo "export MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'" > /tmp/mysql_root_credentials.txt
 
+cat << EOF > "$INIT_FILE"
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
+FLUSH PRIVILEGES;
+EOF
+
 sudo systemctl stop mysql
 sudo pkill -f mysqld || true
-sudo rm -f /var/lib/mysql/*.pid
 sleep 2
 
-sudo mkdir -p /var/run/mysqld
-sudo chown mysql:mysql /var/run/mysqld
-
-sudo mysqld_safe --skip-grant-tables --skip-networking &
-sleep 5
-
-sudo mysql -e "FLUSH PRIVILEGES;"
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
+sudo mysqld --init-file="$INIT_FILE" --skip-grant-tables &
+sleep 10
 
 sudo mysqladmin shutdown
 sleep 2
+
+sudo rm "$INIT_FILE"
 
 sudo systemctl start mysql
 
