@@ -20,8 +20,9 @@ echo "--- Securing MySQL root user ---"
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
 
 sudo systemctl stop mysql
-sudo systemctl disable mysql
-sudo pkill mysqld || true
+sudo pkill -9 mysqld || true
+sudo rm -f /var/lib/mysql/*.pid
+sleep 2
 
 sudo mkdir -p /var/run/mysqld
 sudo chown mysql:mysql /var/run/mysqld
@@ -33,7 +34,6 @@ sudo mysql -e "UPDATE mysql.user SET authentication_string=PASSWORD('$MYSQL_ROOT
 
 sudo mysqladmin shutdown
 
-sudo systemctl enable mysql
 sudo systemctl start mysql
 
 echo "--- Configuring MySQL for remote access ---"
