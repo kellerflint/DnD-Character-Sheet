@@ -96,24 +96,24 @@ const CharacterForm = () => {
             <Box component="form" onSubmit={handleSubmit}>
               <Stack spacing={3}>
                 {/* Basic info */}
-                <TextField required label="Name" name="name" value={formData.name} onChange={handleChange} sx={{}} />
-                <TextField required label="Race" name="race" value={formData.race} onChange={handleChange} sx={{}} />
-                <TextField required label="Class" name="characterClass" value={formData.characterClass} onChange={handleChange} sx={{}} />
-                <TextField required label="Background" name="background" value={formData.background} onChange={handleChange} sx={{}} />
-                <TextField label="Alignment" name="alignment" value={formData.alignment} onChange={handleChange} sx={{}} />
-                <TextField label="Level" name="level" type="number" value={formData.level} onChange={handleChange} sx={{}} />
+                <TextField required label="Name" name="name" value={formData.name} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} />
+                <TextField required label="Race" name="race" value={formData.race} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} />
+                <TextField required label="Class" name="characterClass" value={formData.characterClass} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} />
+                <TextField required label="Background" name="background" value={formData.background} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} />
+                <TextField label="Alignment" name="alignment" value={formData.alignment} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} />
+                <TextField label="Level" name="level" type="number" value={formData.level} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} />
   
                 <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
                 <Typography variant="h6" sx={{ color: '#c5b358' }}>Ability Scores</Typography>
                 
                 {/* Ability scores */}
                 <Grid container spacing={2}>
-                  <Grid item xs={6}><TextField label="Strength" name="strength" type="number" value={formData.strength} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Dexterity" name="dexterity" type="number" value={formData.dexterity} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Constitution" name="constitution" type="number" value={formData.constitution} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Intelligence" name="intelligence" type="number" value={formData.intelligence} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Wisdom" name="wisdom" type="number" value={formData.wisdom} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Charisma" name="charisma" type="number" value={formData.charisma} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Strength" name="strength" type="number" value={formData.strength} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Dexterity" name="dexterity" type="number" value={formData.dexterity} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Constitution" name="constitution" type="number" value={formData.constitution} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Intelligence" name="intelligence" type="number" value={formData.intelligence} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Wisdom" name="wisdom" type="number" value={formData.wisdom} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Charisma" name="charisma" type="number" value={formData.charisma} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
                 </Grid>
   
                 <Divider sx={{ my: 2, borderColor: 'rgba(255, 255, 255, 0.2)' }} />
@@ -121,9 +121,9 @@ const CharacterForm = () => {
   
                 {/* Combat stats */}
                 <Grid container spacing={2}>
-                  <Grid item xs={6}><TextField label="Hit Points" name="hitPoints" type="number" value={formData.hitPoints} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Armor Class" name="armorClass" type="number" value={formData.armorClass} onChange={handleChange} sx={{}} fullWidth /></Grid>
-                  <Grid item xs={6}><TextField label="Speed" name="speed" type="number" value={formData.speed} onChange={handleChange} sx={{}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Hit Points" name="hitPoints" type="number" value={formData.hitPoints} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Armor Class" name="armorClass" type="number" value={formData.armorClass} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
+                  <Grid item xs={6}><TextField label="Speed" name="speed" type="number" value={formData.speed} onChange={handleChange} sx={{backgroundColor: "#c6c6c6ff"}} fullWidth /></Grid>
                 </Grid>
   
                 <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
