@@ -10,9 +10,8 @@ error_handler() {
 
 trap 'error_handler' ERR
 
-echo "Waiting for apt lock to be released..."
 while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 || sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do
-  sleep 5
+   sleep 5
 done
 
 export DEBIAN_FRONTEND=noninteractive
@@ -41,7 +40,7 @@ sleep 2
 sudo mysqld --init-file="$INIT_FILE" --skip-grant-tables &
 sleep 10
 
-sudo mysqladmin shutdown
+sudo mysqladmin shutdown || true
 sleep 2
 
 sudo rm "$INIT_FILE"
