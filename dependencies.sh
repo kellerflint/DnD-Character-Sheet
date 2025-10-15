@@ -33,7 +33,7 @@ node -v #Show updated version
 echo "Install front-end dependencies"
 
 cd frontend/dnd-character-sheet
-sudo npm install -g next
+sudo npm install next
 sudo npm install react react-dom
 
 # Install backend node dependencies
