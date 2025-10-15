@@ -30,10 +30,11 @@ sudo chown mysql:mysql /var/run/mysqld
 sudo mysqld_safe --skip-grant-tables --skip-networking &
 sleep 5
 
-sudo mysql -e "FLUSH PRIVILEGES;"
 sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
+sudo mysql -e "FLUSH PRIVILEGES;"
 
 sudo mysqladmin shutdown
+
 sudo systemctl start mysql
 
 echo "--- Configuring MySQL for remote access ---"
