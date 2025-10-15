@@ -18,7 +18,8 @@ sudo apt -y install nodejs nginx mysql-server git
 
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
 
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
+sudo mysql -e "CREATE USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;" || \
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
 
 echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" > /tmp/mysql_root_credentials.txt
 
