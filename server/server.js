@@ -17,7 +17,12 @@ const FE_ORIGIN = process.env.FE_ORIGIN || 'http://localhost:3000'  // frontend'
 app.use(express.json());
 
 // Middleware: allow cross-origin requests from the Next.js frontend
-app.use(cors({  origin: FE_ORIGIN, methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
+app.use(cors({  
+    origin: [FE_ORIGIN, 'http://localhost:3000', 'http://127.0.0.1:3000'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Middleware: log requests
 // - "dev" gives detailed colored logs (for development)
@@ -25,7 +30,9 @@ app.use(cors({  origin: FE_ORIGIN, methods: ['GET', 'POST', 'PUT', 'DELETE'], cr
 app.use(process.env.NODE_ENV === 'production' ? morgan('tiny') : morgan('dev'));
 
 // Sync database (creates tables if they don't exist)
-console.log('Database synced successfully');
+sequelize.sync({ alter: false })
+    .then(() => console.log('Database synced successfully'))
+    .catch(err => console.error('Error syncing database:', err));
 
 app.use('/api', apiRouter);
 app.use('/', loginRouter);
