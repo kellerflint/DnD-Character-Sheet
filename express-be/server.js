@@ -20,7 +20,8 @@ const shouldServeClient = fs.existsSync(clientDistPath) && fs.existsSync(clientI
 app.use(express.json());
 app.use(cors());
 
-app.use("/", router);
+// Mount API routes under /api so the SPA root (/) serves the frontend index.html
+app.use("/api", router);
 
 // Serve the client after API routes so API has precedence. Use '/*' for the SPA fallback.
 if (shouldServeClient) {
