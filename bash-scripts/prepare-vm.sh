@@ -10,30 +10,33 @@ error_handler() {
 
 trap 'error_handler' ERR
 
-sudo apt update && sudo apt -y upgrade
+echo "Waiting for apt lock to be released..."
+while sudo fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1 || sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do
+  sleep 5
+done
+
+export DEBIAN_FRONTEND=noninteractive
+
+sudo apt update
+sudo apt -y upgrade
 
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-
 sudo apt -y install nodejs nginx mysql-server git
 
 echo "--- Securing MySQL root user ---"
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
 
+echo "export MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'" > /tmp/mysql_root_credentials.txt
+
 sudo systemctl stop mysql
-sudo pkill -9 mysqld || true
-sudo rm -f /var/lib/mysql/*.pid
-sleep 2
-
-sudo mkdir -p /var/run/mysqld
-sudo chown mysql:mysql /var/run/mysqld
-
 sudo mysqld_safe --skip-grant-tables --skip-networking &
 sleep 5
 
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
 sudo mysql -e "FLUSH PRIVILEGES;"
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
 
 sudo mysqladmin shutdown
+sleep 2
 
 sudo systemctl start mysql
 
