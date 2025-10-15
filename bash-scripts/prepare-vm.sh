@@ -24,30 +24,10 @@ sudo apt -y install nodejs nginx mysql-server git
 
 echo "--- Securing MySQL root user ---"
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
-INIT_FILE=$(mktemp)
 
 echo "export MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'" > /tmp/mysql_root_credentials.txt
 
-cat << EOF > "$INIT_FILE"
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';
-FLUSH PRIVILEGES;
-EOF
-
-sudo chown mysql:mysql "$INIT_FILE"
-
-sudo systemctl stop mysql
-sudo pkill -f mysqld || true
-sleep 2
-
-sudo -u mysql mysqld --init-file="$INIT_FILE" --skip-grant-tables &
-sleep 10
-
-sudo mysqladmin shutdown || true
-sleep 2
-
-sudo rm "$INIT_FILE"
-
-sudo systemctl start mysql
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
 
 echo "--- Configuring MySQL for remote access ---"
 sudo sed -i "s/bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
