@@ -17,22 +17,25 @@ const __dirname = path.dirname(__filename);
 const clientDistPath = path.join(__dirname, '..', 'react-fe', 'dist');
 const clientIndex = path.join(clientDistPath, 'index.html');
 const shouldServeClient = fs.existsSync(clientDistPath) && fs.existsSync(clientIndex);
-if (shouldServeClient) {
-    app.use(express.static(clientDistPath));
-    // Serve index.html for any route not handled by the API (SPA fallback)
-    app.get('*', (req, res, next) => {
-        // If request path starts with /api or /characters or similar, skip to API router
-        // Our API routes are mounted at '/' in router; to avoid conflicts, only serve index for non-API
-        const acceptsHtml = req.accepts('html');
-        if (!acceptsHtml) return next();
-        res.sendFile(clientIndex);
-    });
-}
-
 app.use(express.json());
 app.use(cors());
 
 app.use("/", router);
+
+// Serve the client after API routes so API has precedence. Use '/*' for the SPA fallback.
+if (shouldServeClient) {
+    app.use(express.static(clientDistPath));
+    // Serve index.html for any GET route not handled by the API (SPA fallback)
+    app.get('/*', (req, res, next) => {
+        if (req.method !== 'GET') return next();
+        const acceptsHtml = req.accepts('html');
+        if (!acceptsHtml) return next();
+        // Avoid serving index for API routes that start with known prefixes
+        const apiPrefixes = ['/characters', '/api'];
+        if (apiPrefixes.some(pref => req.path.startsWith(pref))) return next();
+        res.sendFile(clientIndex);
+    });
+}
 
 const startServer = async () => {
     try {
