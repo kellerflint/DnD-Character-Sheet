@@ -29,6 +29,8 @@ echo "Starting D&D Character Sheet application setup"
 
 sudo chown -R www-data:www-data .
 
+cd bash-scripts
+
 chmod +x prepare-vm.sh
 chmod +x mysql-setup.sh
 chmod +x config-back.sh
