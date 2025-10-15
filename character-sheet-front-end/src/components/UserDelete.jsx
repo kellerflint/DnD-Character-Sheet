@@ -9,6 +9,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Alert from "@mui/material/Alert";
 
 function UserDelete({ open, closeModal }) {
    const { logout } = useAuth();
@@ -54,7 +55,9 @@ function UserDelete({ open, closeModal }) {
                box below.
             </DialogContentText>
             {error && (
-               <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+               <Alert severity="warning" sx={{ mt: 2 }}>
+                  {error}
+               </Alert>
             )}
             <TextField
                autoFocus
