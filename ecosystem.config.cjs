@@ -13,33 +13,13 @@ module.exports = {
       },
       env_production: {
         NODE_ENV: 'production',
-        PORT: 3001
+        PORT: 3000
       },
       error_file: '../logs/backend-err.log',
       out_file: '../logs/backend-out.log',
       log_file: '../logs/backend-combined.log',
       time: true
     },
-    {
-      name: 'dnd-frontend',
-      script: 'npm',
-      args: 'run start:prod',
-      cwd: './react-fe',
-      instances: 1,
-      autorestart: true,
-      watch: false,
-      env: {
-        NODE_ENV: 'development',
-        PORT: 3000
-      },
-      env_production: {
-        NODE_ENV: 'production',
-        PORT: 3000
-      },
-      error_file: '../logs/frontend-err.log',
-      out_file: '../logs/frontend-out.log',
-      log_file: '../logs/frontend-combined.log',
-      time: true
-    }
+    // Frontend is served as static files from the backend when built. No separate PM2 process needed.
   ]
 };
