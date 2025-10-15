@@ -1,0 +1,11 @@
+Local: workbench, express, db (connect workbench db to vm)
+VM: express, db
+API: api.open5e.com (to pull data for character sheet)
+Objectives:
+1. GitHub Flow + VM Setup ✅
+2. Connect express server to VM droplet ✅
+3. MySQL + Workbench working ⌛
+4. Backend + DB integration (CRUD)
+5. React frontend
+6. Deployment (Digital Ocean with PM2)
+7. Polish
