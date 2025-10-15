@@ -4,7 +4,7 @@ import { Container, Typography, TextField, Button, Stack, Box, Paper, Grid, Divi
 
 const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url (dev)
 const API_PORT = import.meta.env.VITE_API_PORT; // vm port (dev)
-const API_BASE = import.meta.env.PROD ? '' : `http://${API_URL}:${API_PORT}`;
+const API_BASE = import.meta.env.PROD ? '/api' : `http://${API_URL}:${API_PORT}/api`;
 
 // create character form
 const CharacterForm = () => {

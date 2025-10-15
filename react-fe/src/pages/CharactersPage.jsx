@@ -5,8 +5,8 @@ import CharacterCard from "../components/CharacterCard";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL; // vm ip url (dev)
 const API_PORT = import.meta.env.VITE_API_PORT; // vm port (dev)
-// Use relative paths in production (app served from same origin). In dev use VITE vars.
-const API_BASE = import.meta.env.PROD ? '' : `http://${API_URL}:${API_PORT}`;
+// Use /api in production (app served from same origin). In dev use VITE vars and include /api.
+const API_BASE = import.meta.env.PROD ? '/api' : `http://${API_URL}:${API_PORT}/api`;
 
 const CharactersPage = () => {
   const [characters, setCharacters] = useState([]);
