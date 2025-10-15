@@ -45,6 +45,10 @@ echo "--- Configuring Back-End ---"
 echo "--- Configuring Front-End ---"
 ./config-front.sh
 
+# Temporary lines to show setup is finished until mysql-setup is debugged
+echo "--- Setup Complete ---"
+echo "Access the application at http://$(curl -s ifconfig.me)/"
+
 ROOT_CRED_FILE="/tmp/mysql_root_credentials.txt"
 APP_CRED_FILE="/tmp/db_credentials.txt"
 PERMANENT_FILE="/root/database_credentials.txt"
