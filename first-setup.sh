@@ -36,8 +36,8 @@ chmod +x config-front.sh
 echo "--- Preparing Virtual Machine ---"
 ./prepare-vm.sh
 
-echo "--- Setting up MySQL ---"
-./mysql-setup.sh
+# echo "--- Setting up MySQL ---"
+# ./mysql-setup.sh
 
 echo "--- Configuring Back-End ---"
 ./config-back.sh
@@ -50,37 +50,37 @@ APP_CRED_FILE="/tmp/db_credentials.txt"
 PERMANENT_FILE="/root/database_credentials.txt"
 IP_ADDRESS=$(curl -s ifconfig.me)
 
-if [ -f "$ROOT_CRED_FILE" ] && [ -f "$APP_CRED_FILE" ]; then
-   source "$ROOT_CRED_FILE"
-   source "$APP_CRED_FILE"
+# if [ -f "$ROOT_CRED_FILE" ] && [ -f "$APP_CRED_FILE" ]; then
+#    source "$ROOT_CRED_FILE"
+#    source "$APP_CRED_FILE"
 
-   {
-      echo "--- Credentials for Development Team (MySQL Workbench) ---"
-      echo "Hostname/IP: $IP_ADDRESS"
-      echo "Database:    $DB_NAME"
-      echo "Username:    $DEV_USER"
-      echo "Password:    $DEV_PASSWORD"
-      echo ""
-      echo "--- Credentials for Server Administration (Root User) ---"
-      echo "Username:    root"
-      echo "Password:    $MYSQL_ROOT_PASSWORD"
-   } > "$PERMANENT_FILE"
+#    {
+#       echo "--- Credentials for Development Team (MySQL Workbench) ---"
+#       echo "Hostname/IP: $IP_ADDRESS"
+#       echo "Database:    $DB_NAME"
+#       echo "Username:    $DEV_USER"
+#       echo "Password:    $DEV_PASSWORD"
+#       echo ""
+#       echo "--- Credentials for Server Administration (Root User) ---"
+#       echo "Username:    root"
+#       echo "Password:    $MYSQL_ROOT_PASSWORD"
+#    } > "$PERMANENT_FILE"
 
-   sudo chmod 600 "$PERMANENT_FILE"
+#    sudo chmod 600 "$PERMANENT_FILE"
 
-   echo "================================================================"
-   echo "SETUP COMPLETE"
-   echo ""
-   echo "All database credentials have been saved to:"
-   echo "  $PERMANENT_FILE"
-   echo ""
-   echo "You can view them anytime on the VM by running:"
-   echo "  sudo cat $PERMANENT_FILE"
-   echo ""
-   echo "------------------ FILE CONTENTS ------------------"
-   sudo cat "$PERMANENT_FILE"
-   echo "---------------------------------------------------"
-   echo "================================================================"
+#    echo "================================================================"
+#    echo "SETUP COMPLETE"
+#    echo ""
+#    echo "All database credentials have been saved to:"
+#    echo "  $PERMANENT_FILE"
+#    echo ""
+#    echo "You can view them anytime on the VM by running:"
+#    echo "  sudo cat $PERMANENT_FILE"
+#    echo ""
+#    echo "------------------ FILE CONTENTS ------------------"
+#    sudo cat "$PERMANENT_FILE"
+#    echo "---------------------------------------------------"
+#    echo "================================================================"
 
-   sudo rm "$ROOT_CRED_FILE" "$APP_CRED_FILE"
-fi
+#    sudo rm "$ROOT_CRED_FILE" "$APP_CRED_FILE"
+# fi
