@@ -27,8 +27,7 @@ sudo chown mysql:mysql /var/run/mysqld
 sudo mysqld_safe --skip-grant-tables --skip-networking &
 sleep 5
 
-sudo mysql -e "FLUSH PRIVILEGES;"
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
+sudo mysql -e "UPDATE mysql.user SET authentication_string=PASSWORD('$MYSQL_ROOT_PASSWORD'), plugin='mysql_native_password' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;"
 
 sudo mysqladmin shutdown
 
