@@ -29,6 +29,9 @@ MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
 echo "export MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'" > /tmp/mysql_root_credentials.txt
 
 sudo systemctl stop mysql
+sudo pkill -f mysqld || true
+sleep 2
+
 sudo mysqld_safe --skip-grant-tables --skip-networking &
 sleep 5
 
