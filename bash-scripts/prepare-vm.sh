@@ -16,13 +16,22 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 
 sudo apt -y install nodejs nginx mysql-server git
 
+echo "--- Securing MySQL root user ---"
 MYSQL_ROOT_PASSWORD=$(openssl rand -base64 16)
 
-sudo mysql -e "CREATE USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION; FLUSH PRIVILEGES;" || \
-sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
+sudo systemctl stop mysql
 
-echo "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" > /tmp/mysql_root_credentials.txt
+sudo mysqld_safe --skip-grant-tables --skip-networking &
+sleep 5
 
+sudo mysql -e "FLUSH PRIVILEGES;"
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_ROOT_PASSWORD';"
+
+sudo mysqladmin shutdown
+
+sudo systemctl start mysql
+
+echo "--- Configuring MySQL for remote access ---"
 sudo sed -i "s/bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 sudo systemctl restart mysql
 
