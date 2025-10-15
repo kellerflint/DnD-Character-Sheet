@@ -39,7 +39,7 @@ sudo systemctl stop mysql
 sudo pkill -f mysqld || true
 sleep 2
 
-sudo mysqld --init-file="$INIT_FILE" &
+sudo -u mysql mysqld --init-file="$INIT_FILE" --skip-grant-tables &
 sleep 10
 
 sudo mysqladmin shutdown || true
