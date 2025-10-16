@@ -1,5 +1,6 @@
 import "./globals.css";
 import AuthForms from "@/components/AuthForms";
+import NavBar from '@/components/NavBar';
 
 export const metadata = {
   title: "Dungeons and Dragons Character Sheet App",
@@ -11,7 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <h1>Dungeons and Dragons Character Sheet</h1>
-        <AuthForms />
+        <NavBar />
         {children}
       </body>
     </html>
