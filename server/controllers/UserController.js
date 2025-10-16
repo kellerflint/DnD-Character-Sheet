@@ -133,7 +133,11 @@ const loginUser = async (req, res) => {
 
         res.status(200).json({
             message: 'Login successful',
-            user: userResponse
+            user: {
+                id: userResponse,
+                username: userResponse.username,
+                email: userResponse.email
+            }
         });
     } catch (err) {
         console.log("Error logging in user:", err);
@@ -141,10 +145,27 @@ const loginUser = async (req, res) => {
     }
 }
 
+const getUserByUsername = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: { username: req.params.username }
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+} 
+
 export {
     createUser,
     getAllUsers,
     getUserById,
+    getUserByUsername,
     updateUser,
     deleteUser,
     loginUser
