@@ -64,19 +64,25 @@ function UserRegister({ open, closeModal, switchToLogin }) {
 
       if (!formData.securityQuestionId) {
          setError("Please select a security question.");
-         return; 
+         return;
       }
       if (!formData.securityAnswer.trim()) {
          setError("Please provide a security answer.");
-         return; 
+         return;
       }
 
-      const securityInfo = `${formData.securityQuestionId}:${formData.securityAnswer.trim().toLowerCase()}`;
-      formData.securityAnswer = securityInfo;
+      const payload = {
+         username: formData.username,
+         firstName: formData.firstName,
+         lastName: formData.lastName,
+         email: formData.email,
+         password: formData.password,
+         securityAnswer: formData.securityAnswer.trim().toLowerCase(),
+      };
 
       setIsLoading(true);
 
-      registerUser(formData)
+      registerUser(payload)
          .then((data) => {
             console.log("Registration successful!", data);
             setSuccess("Success! Redirecting to login...");

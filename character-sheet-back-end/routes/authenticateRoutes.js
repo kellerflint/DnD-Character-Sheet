@@ -12,7 +12,7 @@ router.get("/api/check", authenticateToken, (req, res) => {
 });
 
 router.post("/api/register", async (req, res) => {
-   const { username, firstName, lastName, email, password, securityInfo } = req.body;
+   const { username, firstName, lastName, email, password, securityAnswer } = req.body;
 
    // Basic validation
    if (!username || !firstName || !lastName || !email || !password) {
@@ -34,7 +34,7 @@ router.post("/api/register", async (req, res) => {
       // Hash the password
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(password, salt);
-      const security_hash = await bcrypt.hash(securityInfo.toLowerCase(), salt);
+      const security_hash = await bcrypt.hash(securityAnswer.toLowerCase(), salt);
 
       // Store new user in the database
       const [result] = await dbPool.query(
@@ -55,9 +55,9 @@ router.post("/api/register", async (req, res) => {
 // Update Password
 router.post("/api/update-password", async (req, res) => {
    try {
-      const { email, securityInfo, newPassword } = req.body;
+      const { email, securityAnswer, newPassword } = req.body;
       
-      if (!email || !securityInfo || !newPassword) {
+      if (!email || !securityAnswer || !newPassword) {
          return res.status(400).json({ message: "Email, security answer, and new password are required."})
       }
 
@@ -71,7 +71,7 @@ router.post("/api/update-password", async (req, res) => {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      const isMatch = await bcrypt.compare(securityInfo, user.security_hash);
+      const isMatch = await bcrypt.compare(securityAnswer, user.security_hash);
       
       if (!isMatch) {
          return res.status(401).json({ message: "Incorrect security answer." });
