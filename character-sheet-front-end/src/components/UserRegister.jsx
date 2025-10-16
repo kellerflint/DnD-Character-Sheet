@@ -1,25 +1,26 @@
+import { useState } from "react";
 import { registerUser } from "../api";
-import { securityQuestions } from "../utils/securityQuestions";
-import { useModalForm } from "../hooks/useModalForm";
 
-import {
-   Alert,
-   Button,
-   TextField,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle,
-   CircularProgress,
-   Box,
-   FormControl,
-   InputLabel,
-   Select,
-   MenuItem,
-   FormHelperText,
-   IconButton
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+
+const securityQuestions = [
+   { id: "pet", text: "What is the name of your first pet?" },
+   { id: "school", text: "What elementary school did you attend?" },
+   { id: "city", text: "In what city were you born?" },
+   { id: "car", text: "What was the model of your first car?" },
+];
 
 const formFields = [
    { id: "username", label: "Username", type: "text", autoFocus: true },
@@ -29,32 +30,25 @@ const formFields = [
    { id: "password", label: "Password", type: "password" },
 ];
 
-const initialFormState = {
-   username: "",
-   firstName: "",
-   lastName: "",
-   email: "",
-   password: "",
-   securityQuestionId: "",
-   securityAnswer: "",
-};
-
 function UserRegister({ open, closeModal, switchToLogin }) {
-   const {
-      formData,
-      setFormData,
-      error,
-      setError,
-      success,
-      setSuccess,
-      isLoading,
-      setIsLoading,
-      handleClose,
-   } = useModalForm(initialFormState, closeModal);
+   const [formData, setFormData] = useState({
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      securityQuestionId: "",
+      securityAnswer: ""
+   });
+
+   const [error, setError] = useState("");
+   const [success, setSuccess] = useState("");
+   const [isLoading, setIsLoading] = useState(false);
 
    const handleChange = (event) => {
       const { name, id, value } = event.target;
       const fieldName = name || id;
+
       setFormData((prevData) => ({
          ...prevData,
          [fieldName]: value,
@@ -62,36 +56,27 @@ function UserRegister({ open, closeModal, switchToLogin }) {
    };
 
    const handleSubmit = (event) => {
+
       event.preventDefault();
+
       setError("");
       setSuccess("");
 
       if (!formData.securityQuestionId) {
          setError("Please select a security question.");
-         return;
+         return; 
       }
       if (!formData.securityAnswer.trim()) {
          setError("Please provide a security answer.");
-         return;
+         return; 
       }
+
+      const securityInfo = `${formData.securityQuestionId}:${formData.securityAnswer.trim().toLowerCase()}`;
+      formData.securityAnswer = securityInfo;
 
       setIsLoading(true);
 
-      const questionText = securityQuestions.find(
-         (q) => q.id === formData.securityQuestionId
-      )?.text;
-
-      const payload = {
-         username: formData.username,
-         firstName: formData.firstName,
-         lastName: formData.lastName,
-         email: formData.email,
-         password: formData.password,
-         securityQuestion: questionText,
-         securityAnswer: formData.securityAnswer.trim().toLowerCase(),
-      };
-
-      registerUser(payload)
+      registerUser(formData)
          .then((data) => {
             console.log("Registration successful!", data);
             setSuccess("Success! Redirecting to login...");
@@ -102,6 +87,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             }, 2000);
          })
          .catch((err) => {
+
             console.error("Registration failed:", err);
             setError(
                "Registration failed. This email or username may already be in use."
@@ -111,33 +97,17 @@ function UserRegister({ open, closeModal, switchToLogin }) {
    };
 
    return (
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={closeModal}>
          <form onSubmit={handleSubmit}>
-            <DialogTitle>
-               Register
-               <IconButton
-                  aria-label="close"
-                  onClick={handleClose}
-                  sx={{
-                     position: "absolute",
-                     right: 8,
-                     top: 8,
-                     color: (theme) => theme.palette.grey[500],
-                  }}
-               >
-                  <CloseIcon />
-               </IconButton>
-            </DialogTitle>
+            <DialogTitle>Register</DialogTitle>
             <DialogContent>
                {error && (
-                  <Alert severity="error" sx={{ mb: 2 }}>
-                     {error}
-                  </Alert>
+                  <p style={{ color: "red", textAlign: "center" }}>{error}</p>
                )}
                {success && (
-                  <Alert severity="success" sx={{ mb: 2 }}>
+                  <p style={{ color: "green", textAlign: "center" }}>
                      {success}
-                  </Alert>
+                  </p>
                )}
 
                {formFields.map((field) => (
@@ -155,15 +125,8 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                      onChange={handleChange}
                   />
                ))}
-               <FormControl
-                  fullWidth
-                  required
-                  margin="dense"
-                  variant="standard"
-               >
-                  <InputLabel id="security-question-label">
-                     Security Question
-                  </InputLabel>
+               <FormControl fullWidth required margin="dense" variant="standard">
+                  <InputLabel id="security-question-label">Security Question</InputLabel>
                   <Select
                      labelId="security-question-label"
                      id="securityQuestionId"
@@ -178,10 +141,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                         </MenuItem>
                      ))}
                   </Select>
-                  <FormHelperText>
-                     Choose a question you’ll remember (But not easily
-                     guessable).
-                  </FormHelperText>
+                  <FormHelperText>Choose a question you’ll remember (not easily guessable).</FormHelperText>
                </FormControl>
                <TextField
                   required
@@ -199,6 +159,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                <Button onClick={switchToLogin} color="secondary">
                   Already have an account?
                </Button>
+               <Button onClick={closeModal}>Cancel</Button>
                <Box sx={{ position: "relative" }}>
                   <Button
                      type="submit"
