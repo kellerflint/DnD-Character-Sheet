@@ -79,14 +79,12 @@ function App() {
          <main>
             <Box sx={{ textAlign: "center", my: 2 }}>
                {isAuthenticated ? (
-                  // Does not work yet
-                  // If user is logged in, shows the save button
+                  // Character saving functionality not yet implemented
                   <Button variant="contained" color="primary">
                      Save Character
                   </Button>
                ) : (
                   <p>
-                     {/* Else prompts the user to login */}
                      <i>Please log in to save your character.</i>
                   </p>
                )}
