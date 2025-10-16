@@ -1,5 +1,3 @@
-CREATE DATABASE character_sheet_db;
-
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
