@@ -1,8 +1,7 @@
 'use client'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import RegistrationForm from './RegistrationForm';
 import UserContext from "../context/UserContext";
-
 import { VM_IP } from "../../vm_ip";
 
 export default function LoginForm() {
