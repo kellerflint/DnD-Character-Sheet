@@ -12,15 +12,14 @@ router.get("/api/check", authenticateToken, (req, res) => {
 });
 
 router.post("/api/register", async (req, res) => {
-   const { username, firstName, lastName, email, password, securityAnswer } = req.body;
+   const { username, firstName, lastName, email, password, securityAnswer } =
+      req.body;
 
-   // Basic validation
    if (!username || !firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "All fields are required." });
    }
 
    try {
-      // Check if user already exists
       const [existingUsers] = await dbPool.query(
          "SELECT email, username FROM users WHERE email = ? OR username = ?",
          [email, username]
@@ -31,14 +30,15 @@ router.post("/api/register", async (req, res) => {
             .json({ message: "Email and/or Username already in use." });
       }
 
-      // Hash the password
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(password, salt);
-      const security_hash = await bcrypt.hash(securityAnswer.toLowerCase(), salt);
+      const security_hash = await bcrypt.hash(
+         securityAnswer.toLowerCase(),
+         salt
+      );
 
-      // Store new user in the database
       const [result] = await dbPool.query(
-         "INSERT INTO users (username, first_name, last_name, email, password_hash, security_hash) VALUES (?, ?, ?, ?, ?,?)",
+         "INSERT INTO users (username, first_name, last_name, email, password_hash, security_hash) VALUES (?, ?, ?, ?, ?, ?)",
          [username, firstName, lastName, email, password_hash, security_hash]
       );
 
@@ -52,20 +52,22 @@ router.post("/api/register", async (req, res) => {
    }
 });
 
-// Update Password
 router.post("/api/update-password", async (req, res) => {
    try {
       const { email, securityAnswer, newPassword } = req.body;
 
       if (!email || !securityAnswer || !newPassword) {
-         return res.status(400).json({ message: "Email, security answer, and new password are required." })
+         return res.status(400).json({
+            message: "Email, security answer, and new password are required.",
+         });
       }
 
       const normalizedAnswer = String(securityAnswer).trim().toLowerCase();
 
-      const [rows] = await dbPool.query("SELECT id, security_hash FROM users WHERE email = ?", [
-         email
-      ]);
+      const [rows] = await dbPool.query(
+         "SELECT id, password_hash, security_hash FROM users WHERE email = ?",
+         [email]
+      );
 
       const user = rows[0];
 
@@ -73,44 +75,54 @@ router.post("/api/update-password", async (req, res) => {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      const isMatch = await bcrypt.compare(normalizedAnswer, user.security_hash);
+      const isMatch = await bcrypt.compare(
+         normalizedAnswer,
+         user.security_hash
+      );
 
       if (!isMatch) {
          return res.status(401).json({ message: "Incorrect security answer." });
       }
 
-      if (normalizedAnswer && newPassword.trim().toLowerCase() === normalizedAnswer) {
-         return res
-            .status(400)
-            .json({ message: "New password cannot match your security answer." });
+      if (
+         normalizedAnswer &&
+         newPassword.trim().toLowerCase() === normalizedAnswer
+      ) {
+         return res.status(400).json({
+            message: "New password cannot match your security answer.",
+         });
       }
 
-      const isSameAsCurrent = await bcrypt.compare(newPassword, user.password_hash);
+      const isSameAsCurrent = await bcrypt.compare(
+         newPassword,
+         user.password_hash
+      );
       if (isSameAsCurrent) {
-         return res.status(400).json({ message: "New password cannot be the same as the current password." });
+         return res.status(400).json({
+            message: "New password cannot be the same as the current password.",
+         });
       }
 
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(newPassword, salt);
 
-      await dbPool.query(
-         "UPDATE users SET password_hash = ?, password_updated_at = NOW() WHERE id = ?",
-         [password_hash, user.id]
-      );
+      await dbPool.query("UPDATE users SET password_hash = ? WHERE id = ?", [
+         password_hash,
+         user.id,
+      ]);
 
-      return res.status(200).json({ message: "Password updated successfully." });
-
+      return res
+         .status(200)
+         .json({ message: "Password updated successfully." });
    } catch (err) {
       console.error("Error updating password: ", err);
       return res.status(500).json({ message: "Server Error." });
    }
 });
 
-// User Login
 router.post("/api/login", async (req, res) => {
    const { email, password } = req.body;
 
-   // Basic validation
    if (!email || !password) {
       return res
          .status(400)
@@ -118,7 +130,6 @@ router.post("/api/login", async (req, res) => {
    }
 
    try {
-      // Find user by email
       const [rows] = await dbPool.query("SELECT * FROM users WHERE email = ?", [
          email,
       ]);
@@ -128,13 +139,11 @@ router.post("/api/login", async (req, res) => {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      // Compare submitted password with stored hash
       const isMatch = await bcrypt.compare(password, user.password_hash);
       if (!isMatch) {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      // Create JWT
       const payload = {
          id: user.id,
          email: user.email,
@@ -150,7 +159,6 @@ router.post("/api/login", async (req, res) => {
       res.status(500).json({ message: "Server error during login." });
    }
 });
-
 
 router.delete("/api/delete", authenticateToken, async (req, res) => {
    const userId = req.user.id;

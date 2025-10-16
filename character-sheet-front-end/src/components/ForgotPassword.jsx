@@ -56,16 +56,11 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
          return;
       }
 
-      const questionText = securityQuestions.find(
-         (q) => q.id === formData.securityQuestionId
-      )?.text;
-
       const cleanedAnswer = formData.securityAnswer.trim().toLowerCase();
 
       const payload = {
          email: formData.email,
-         question: questionText,
-         answer: cleanedAnswer,
+         securityAnswer: cleanedAnswer,
          newPassword: formData.newPassword,
       };
 
