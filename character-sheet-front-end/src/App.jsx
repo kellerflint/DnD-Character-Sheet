@@ -4,6 +4,7 @@ import UserLogin from "./components/UserLogin";
 import UserRegister from "./components/UserRegister";
 import UserDelete from "./components/UserDelete";
 import SettingsMenu from "./components/SettingsMenu";
+import CharacterSheet from "./components/CharacterSheet";
 
 import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
@@ -32,7 +33,8 @@ function App() {
    return (
       <>
          <AppBar position="static">
-            <Toolbar>
+            <Toolbar sx={{ justifyContent: "space-between" }}>
+               <Typography variant="h6">D&D Character Sheet</Typography>
                {!isAuthenticated ? (
                   <Box>
                      <Button
@@ -58,7 +60,7 @@ function App() {
                      </Button>
 
                      <SettingsMenu
-                        onClick={() => setShowDeleteModal(true)}
+                        onDeleteAccount={() => setShowDeleteModal(true)}
                      />
                   </Box>
                )}
@@ -66,22 +68,22 @@ function App() {
          </AppBar>
 
          <main>
-            <h1>D&D Character Sheet</h1>
-            {/* Hardcoded for now until character creation is implemented */}
-            <p>Character Name: Loginius Testingomar</p>
+            <Box sx={{ textAlign: "center", my: 2 }}>
+               {isAuthenticated ? (
+                  // Does not work yet
+                  // If user is logged in, shows the save button
+                  <Button variant="contained" color="primary">
+                     Save Character
+                  </Button>
+               ) : (
+                  <p>
+                     {/* Else prompts the user to login */}
+                     <i>Please log in to save your character.</i>
+                  </p>
+               )}
+            </Box>
 
-            {isAuthenticated ? (
-               // Does not work yet
-               // If user is logged in, shows the save button
-               <Button variant="contained" color="primary">
-                  Save Character
-               </Button>
-            ) : (
-               <p>
-                  {/* Else prompts the user to login */}
-                  <i>Please log in to save your character.</i>
-               </p>
-            )}
+            <CharacterSheet />
          </main>
 
          <UserLogin
