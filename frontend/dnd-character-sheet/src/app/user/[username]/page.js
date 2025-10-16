@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { useParams, userParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Access from "../../../components/Access"
 import { VM_IP } from "../../../../vm_ip";
 

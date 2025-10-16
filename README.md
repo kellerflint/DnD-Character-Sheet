@@ -74,23 +74,23 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 
 ---
 
-## Sprint 1
+## Sprint 1 + 2
 
 #### Group B (Tyler & Raymond)
 
 ### Overall Goals
-* Set up the backend server with Node.js and Express.
-* Design and implement the database schema in MySQL.
-* Create RESTful API endpoints for CRUD operations on character sheets.
-* Implement user authentication and session management.
-* Integrate with an external D&D API to fetch necessary game data (e.g., spells, items).
-* Set up the React frontend with a basic layout and navigation.
-* Create the character creation form with interactive fields.
-* Implement data persistence to save character sheets to the database.
-* Ensure the frontend can fetch and display character data from the backend.
-* Basic styling for the application to ensure a user-friendly interface.
-* Write unit tests for backend API endpoints and frontend components.
-* Deploy the application to a cloud platform (e.g., Heroku, Vercel).
+- [x] Set up the backend server with Node.js and Express.
+- [x] Design and implement the database schema in MySQL.
+- [x] Create RESTful API endpoints for CRUD operations on character sheets.
+- [] Implement user authentication and session management.
+- [] Integrate with an external D&D API to fetch necessary game data (e.g., spells, items).
+- [x] Set up the React frontend with a basic layout and navigation.
+- [] Create the character creation form with interactive fields.
+- [] Implement data persistence to save character sheets to the database.
+- [] Ensure the frontend can fetch and display character data from the backend.
+- [] Basic styling for the application to ensure a user-friendly interface.
+- [] Write unit tests for backend API endpoints and frontend components.
+- [] Deploy the application to a cloud platform (e.g., Heroku, Vercel).
 
 -------------------------------------
 
