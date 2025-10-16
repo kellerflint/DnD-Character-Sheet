@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react';
 import RegistrationForm from './RegistrationForm';
+import UserContext from "../context/UserContext";
 
 import { VM_IP } from "../../vm_ip";
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { setUser } = useContext(UserContext);
     
     // Handle login submission
     const handleSubmit = async (e) => {
@@ -19,20 +21,23 @@ export default function LoginForm() {
         const response = await fetch(`${VM_IP}/login`)
     }
 
-    // Handle register button click
-    const handleRegister = async (e) => {
-        e.preventDefault();
-
-        console.log('Navigating to registration form.')
-    }
     async function loginAttempt(e) {
         e.preventDefault();
         try {
-            await fetch(`${VM_IP}/login`, {
+            const resp = await fetch(`${VM_IP}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify({username, password: password})
             });
+
+            if(resp.ok) {
+                setUser({user: {username: username, password: password}});
+            }
+            //Dodgy for now; covers all status codes that AREN'T 200
+            else {
+                setUser(null);
+            }
+
         } finally {
             setPassword("")
         }

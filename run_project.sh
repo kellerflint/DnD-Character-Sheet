@@ -27,5 +27,5 @@ EOF
 
 cd ../..
 
-(cd ./frontend/dnd-character-sheet && npm run build && npm run start)
+(cd ./frontend/dnd-character-sheet && npm i && npm run build && npm run start)
 
