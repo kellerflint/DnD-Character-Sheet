@@ -9,6 +9,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+
+const securityQuestions = [
+   { id: "pet", text: "What is the name of your first pet?" },
+   { id: "school", text: "What elementary school did you attend?" },
+   { id: "city", text: "In what city were you born?" },
+   { id: "car", text: "What was the model of your first car?" },
+];
 
 const formFields = [
    { id: "username", label: "Username", type: "text", autoFocus: true },
@@ -25,6 +37,8 @@ function UserRegister({ open, closeModal, switchToLogin }) {
       lastName: "",
       email: "",
       password: "",
+      securityQuestionId: "",
+      securityAnswer: ""
    });
 
    const [error, setError] = useState("");
@@ -32,10 +46,12 @@ function UserRegister({ open, closeModal, switchToLogin }) {
    const [isLoading, setIsLoading] = useState(false);
 
    const handleChange = (event) => {
-      const { id, value } = event.target;
+      const { name, id, value } = event.target;
+      const fieldName = name || id;
+
       setFormData((prevData) => ({
          ...prevData,
-         [id]: value,
+         [fieldName]: value,
       }));
    };
 
@@ -46,9 +62,27 @@ function UserRegister({ open, closeModal, switchToLogin }) {
       setError("");
       setSuccess("");
 
+      if (!formData.securityQuestionId) {
+         setError("Please select a security question.");
+         return;
+      }
+      if (!formData.securityAnswer.trim()) {
+         setError("Please provide a security answer.");
+         return;
+      }
+
+      const payload = {
+         username: formData.username,
+         firstName: formData.firstName,
+         lastName: formData.lastName,
+         email: formData.email,
+         password: formData.password,
+         securityAnswer: formData.securityAnswer.trim().toLowerCase(),
+      };
+
       setIsLoading(true);
 
-      registerUser(formData)
+      registerUser(payload)
          .then((data) => {
             console.log("Registration successful!", data);
             setSuccess("Success! Redirecting to login...");
@@ -97,6 +131,35 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                      onChange={handleChange}
                   />
                ))}
+               <FormControl fullWidth required margin="dense" variant="standard">
+                  <InputLabel id="security-question-label">Security Question</InputLabel>
+                  <Select
+                     labelId="security-question-label"
+                     id="securityQuestionId"
+                     name="securityQuestionId"
+                     value={formData.securityQuestionId}
+                     onChange={handleChange}
+                     label="Security Question"
+                  >
+                     {securityQuestions.map((q) => (
+                        <MenuItem key={q.id} value={q.id}>
+                           {q.text}
+                        </MenuItem>
+                     ))}
+                  </Select>
+                  <FormHelperText>Choose a question you’ll remember (not easily guessable).</FormHelperText>
+               </FormControl>
+               <TextField
+                  required
+                  margin="dense"
+                  id="securityAnswer"
+                  label="Security Answer"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  value={formData.securityAnswer}
+                  onChange={handleChange}
+               />
             </DialogContent>
             <DialogActions>
                <Button onClick={switchToLogin} color="secondary">

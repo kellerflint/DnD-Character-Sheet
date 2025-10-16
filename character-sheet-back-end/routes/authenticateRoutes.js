@@ -12,7 +12,8 @@ router.get("/api/check", authenticateToken, (req, res) => {
 });
 
 router.post("/api/register", async (req, res) => {
-   const { username, firstName, lastName, email, password } = req.body;
+   const { username, firstName, lastName, email, password, securityAnswer } =
+      req.body;
 
    if (!username || !firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "All fields are required." });
@@ -23,7 +24,6 @@ router.post("/api/register", async (req, res) => {
          "SELECT email, username FROM users WHERE email = ? OR username = ?",
          [email, username]
       );
-
       if (existingUsers.length > 0) {
          return res
             .status(409)
@@ -32,9 +32,14 @@ router.post("/api/register", async (req, res) => {
 
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(password, salt);
+      const security_hash = await bcrypt.hash(
+         securityAnswer.toLowerCase(),
+         salt
+      );
+
       const [result] = await dbPool.query(
-         "INSERT INTO users (username, first_name, last_name, email, password_hash) VALUES (?, ?, ?, ?, ?)",
-         [username, firstName, lastName, email, password_hash]
+         "INSERT INTO users (username, first_name, last_name, email, password_hash, security_hash) VALUES (?, ?, ?, ?, ?, ?)",
+         [username, firstName, lastName, email, password_hash, security_hash]
       );
 
       res.status(201).json({
@@ -44,6 +49,74 @@ router.post("/api/register", async (req, res) => {
    } catch (error) {
       console.error("Registration error:", error);
       res.status(500).json({ message: "Server error during registration." });
+   }
+});
+
+router.post("/api/update-password", async (req, res) => {
+   try {
+      const { email, securityAnswer, newPassword } = req.body;
+
+      if (!email || !securityAnswer || !newPassword) {
+         return res.status(400).json({
+            message: "Email, security answer, and new password are required.",
+         });
+      }
+
+      const normalizedAnswer = String(securityAnswer).trim().toLowerCase();
+
+      const [rows] = await dbPool.query(
+         "SELECT id, password_hash, security_hash FROM users WHERE email = ?",
+         [email]
+      );
+
+      const user = rows[0];
+
+      if (!user) {
+         return res.status(401).json({ message: "Invalid credentials." });
+      }
+
+      const isMatch = await bcrypt.compare(
+         normalizedAnswer,
+         user.security_hash
+      );
+
+      if (!isMatch) {
+         return res.status(401).json({ message: "Incorrect security answer." });
+      }
+
+      if (
+         normalizedAnswer &&
+         newPassword.trim().toLowerCase() === normalizedAnswer
+      ) {
+         return res.status(400).json({
+            message: "New password cannot match your security answer.",
+         });
+      }
+
+      const isSameAsCurrent = await bcrypt.compare(
+         newPassword,
+         user.password_hash
+      );
+      if (isSameAsCurrent) {
+         return res.status(400).json({
+            message: "New password cannot be the same as the current password.",
+         });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const password_hash = await bcrypt.hash(newPassword, salt);
+
+      await dbPool.query("UPDATE users SET password_hash = ? WHERE id = ?", [
+         password_hash,
+         user.id,
+      ]);
+
+      return res
+         .status(200)
+         .json({ message: "Password updated successfully." });
+   } catch (err) {
+      console.error("Error updating password: ", err);
+      return res.status(500).json({ message: "Server Error." });
    }
 });
 
@@ -60,7 +133,6 @@ router.post("/api/login", async (req, res) => {
       const [rows] = await dbPool.query("SELECT * FROM users WHERE email = ?", [
          email,
       ]);
-
       const user = rows[0];
 
       if (!user) {
@@ -68,18 +140,16 @@ router.post("/api/login", async (req, res) => {
       }
 
       const isMatch = await bcrypt.compare(password, user.password_hash);
-
       if (!isMatch) {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      const userInfo = {
+      const payload = {
          id: user.id,
          email: user.email,
          username: user.username,
       };
-
-      const token = jwt.sign(userInfo, process.env.JWT_SECRET, {
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
          expiresIn: "1h",
       });
 

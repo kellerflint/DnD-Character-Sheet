@@ -3,6 +3,7 @@ import { useAuth } from "./context/AuthenticateContext";
 import UserLogin from "./components/UserLogin";
 import UserRegister from "./components/UserRegister";
 import UserDelete from "./components/UserDelete";
+import ForgotPassword from "./components/ForgotPassword";
 import SettingsMenu from "./components/SettingsMenu";
 import CharacterSheet from "./components/CharacterSheet";
 
@@ -19,15 +20,23 @@ function App() {
    const [showLoginModal, setShowLoginModal] = useState(false);
    const [showRegisterModal, setShowRegisterModal] = useState(false);
    const [showDeleteModal, setShowDeleteModal] = useState(false);
+   const [showForgotPasswordModal, setShowForgotPasswordModal] =
+      useState(false);
 
    const handleSwitchToLogin = () => {
       setShowRegisterModal(false);
+      setShowForgotPasswordModal(false);
       setShowLoginModal(true);
    };
 
    const handleSwitchToRegister = () => {
       setShowLoginModal(false);
       setShowRegisterModal(true);
+   };
+
+   const handleSwitchToForgotPassword = () => {
+      setShowLoginModal(false);
+      setShowForgotPasswordModal(true);
    };
 
    return (
@@ -90,6 +99,7 @@ function App() {
             open={showLoginModal}
             closeModal={() => setShowLoginModal(false)}
             switchToRegister={handleSwitchToRegister}
+            switchToForgotPassword={handleSwitchToForgotPassword}
          />
 
          <UserRegister
@@ -101,6 +111,12 @@ function App() {
          <UserDelete
             open={showDeleteModal}
             closeModal={() => setShowDeleteModal(false)}
+         />
+
+         <ForgotPassword
+            open={showForgotPasswordModal}
+            closeModal={() => setShowForgotPasswordModal(false)}
+            switchToLogin={handleSwitchToLogin}
          />
       </>
    );
