@@ -31,9 +31,20 @@ export default function LoginForm() {
             });
 
             if(resp.ok) {
-                setUser({user: {username: username, password: password}});
+                const data = await resp.json();
+
+                setUser({
+                    id: data.user.id,
+                    username: data.user.username,
+                    email: data.user.email
+                });
+                
+                // Store in localStorage for persistence
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Redirect to user page
+                window.location.setItem(`/user/${data.user.username}`);
             }
-            //Dodgy for now; covers all status codes that AREN'T 200
             else {
                 setUser(null);
             }
