@@ -35,6 +35,8 @@ echo "Install front-end dependencies"
 cd frontend/dnd-character-sheet
 sudo npm install next
 sudo npm install react react-dom
+# Project-specific installs.
+sudo npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 
 # Install backend node dependencies
 echo "Install backend depdendencies"

@@ -1,12 +1,13 @@
 'use client'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import RegistrationForm from './RegistrationForm';
-
+import UserContext from "../context/UserContext";
 import { VM_IP } from "../../vm_ip";
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { setUser } = useContext(UserContext);
     
     // Handle login submission
     const handleSubmit = async (e) => {
@@ -19,20 +20,34 @@ export default function LoginForm() {
         const response = await fetch(`${VM_IP}/login`)
     }
 
-    // Handle register button click
-    const handleRegister = async (e) => {
-        e.preventDefault();
-
-        console.log('Navigating to registration form.')
-    }
     async function loginAttempt(e) {
         e.preventDefault();
         try {
-            await fetch(`${VM_IP}/login`, {
+            const resp = await fetch(`${VM_IP}/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify({username, password: password})
             });
+
+            if(resp.ok) {
+                const data = await resp.json();
+
+                setUser({
+                    id: data.user.id,
+                    username: data.user.username,
+                    email: data.user.email
+                });
+                
+                // Store in localStorage for persistence
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Redirect to user page
+                window.location.setItem(`/user/${data.user.username}`);
+            }
+            else {
+                setUser(null);
+            }
+
         } finally {
             setPassword("")
         }

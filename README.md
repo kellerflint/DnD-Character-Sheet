@@ -91,3 +91,59 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 * Basic styling for the application to ensure a user-friendly interface.
 * Write unit tests for backend API endpoints and frontend components.
 * Deploy the application to a cloud platform (e.g., Heroku, Vercel).
+
+-------------------------------------
+
+### Project Formatting and Setting Up Instructions
+
+#### Format and Structure
+The approach that we took was doing a simple/complex ***Node.js*** backend as well as a ***Next.js*** project as the frontend. You’ll see a folder named ***“server,”*** which is the backend and a folder named ***“frontend/dnd-character-sheet”*** which is the frontend. We chose Next.js, because it’s fast and you don’t have to worry about a React Router. 
+Setting-up
+Before setting up, go through the folder structure and check out what you’ll be dealing with. There are numerous files in the frontend and backend. Be sure to read the comments in the files to get a sense of what’s going on in this project.
+
+Down below you can follow the setup guide on how to get this project setup on your machine and your virtual machines.
+
+#### Local Setup:
+
+1. First, you’re going to need to ```cd``` into the server and do ```npm i``` to install dependencies.
+2. ```cd . .``` to get back to the main folder, then cd into the ***frontend/dnd-character-sheet*** and do a ```npm i to install``` those dependencies for your local machine.
+3. Take a look at the ***.example.env*** file where you’ll see some of the constant variables that you’ll need inside to run the program, be sure to create your **own** ***.env file*** and copy and paste those fill-in variables into your newly created .env file.
+4. Once you’ve got your credentials inputted into the .env file, go ahead and open up to two terminals, while using one terminal cd into the server folder and use the other terminal and cd into the frontend/dnd-character-sheet folder.
+5. Inside of the ***server*** terminal, do a nodemon server.js command, and hit enter.
+6. Inside of the ***frontend/dnd-character-sheet*** terminal, do a ```npm run dev```, and hit enter.
+7. Once the backend and frontend have loaded up locally, go ahead and try registering a test user from the frontend.
+8. Once the frontend has loaded up in your browser, click on register to create a **test** account. 
+
+    *Password is 8 characters minimum*
+
+9. After you get a successful registration, be sure to test the login feature to see if you login locally.
+
+<!-- ADD ADDITIONAL INSTRUCTIONS ON THIS BULLETIN -->
+
+#### Virtual-Machine Setup:
+
+Once you’ve tested or feel risky to move forward, here is how you set up your VM.
+
+1. Go ahead and login to your VM by doing ```ssh root@”YOUR_VM_IP”```, and enter your VM’s password.
+2. Once inside of your VM, be sure to git clone the project’s repo.
+3. Then ```cd``` into DnD-Character-Sheet
+4. Run the command ```bash dependencies.sh```
+5. This next command you’ll need to fill in some usage variables which are your variables that you filled into your ***.env file.*** 
+6. Here is the usage case: ```bash db_setup.sh {SERVER_PORT} {FE_ORIGIN} {VM_IP}  {DB_USER} {DB_PASS} {DB_NAME} {DB_PORT}```
+Then hit enter.
+7. You might be prompted to enter your password, enter your VM’s password.
+8. Lastly run the command ```bash run_project.sh```
+
+
+This should run the full program, be sure to test it on the frontend and register for account and follow the ***CRUD*** steps of ***Creating, Reading, Updating, and Deleting*** to test and see if this runs on your VM. Check mysql on your VM to see if users are being created, updated, and deleted. 
+
+## Next Steps:
+1. Extend functionality of run_project.sh to accomodate different branches, automatically allowlist YOUR OWN IP address as a host.
+2. Implement character creation through user page (IP:PORT/user/[username]). This can be done by creating a new table for the databse for characters, and having a new router and controller file that delineates the characters from the users.
+3. Modify DB schema to accomodate the instantiation of Admin users (users as in users within the database).
+4. Implement secure sessions (through JWTs or other ideas you have) as our local storage was used in lieu of more secure methods out of time constraints.
+5. Modify dependencies.sh to install more dependencies as needed/remove redundant ones. (Your discretion).
+6. Fix/improve/replace workaround solutions like the creation of vm_ip.js used for storing VM_IP locally.
+7. Strenghthen deployment pipeline (automate bash script running, modify scripts to avoid dependency errors, etc.)
+
+8. ***Important: Also finish what is asked of Sprint 3***
