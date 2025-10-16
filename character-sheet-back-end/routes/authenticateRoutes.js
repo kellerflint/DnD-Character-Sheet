@@ -56,10 +56,12 @@ router.post("/api/register", async (req, res) => {
 router.post("/api/update-password", async (req, res) => {
    try {
       const { email, securityAnswer, newPassword } = req.body;
-      
+
       if (!email || !securityAnswer || !newPassword) {
-         return res.status(400).json({ message: "Email, security answer, and new password are required."})
+         return res.status(400).json({ message: "Email, security answer, and new password are required." })
       }
+
+      const normalizedAnswer = String(securityAnswer).trim().toLowerCase();
 
       const [rows] = await dbPool.query("SELECT id, security_hash FROM users WHERE email = ?", [
          email
@@ -71,24 +73,29 @@ router.post("/api/update-password", async (req, res) => {
          return res.status(401).json({ message: "Invalid credentials." });
       }
 
-      const isMatch = await bcrypt.compare(securityAnswer, user.security_hash);
-      
+      const isMatch = await bcrypt.compare(normalizedAnswer, user.security_hash);
+
       if (!isMatch) {
          return res.status(401).json({ message: "Incorrect security answer." });
+      }
+
+      if (normalizedAnswer && newPassword.trim().toLowerCase() === normalizedAnswer) {
+         return res
+            .status(400)
+            .json({ message: "New password cannot match your security answer." });
+      }
+
+      const isSameAsCurrent = await bcrypt.compare(newPassword, user.password_hash);
+      if (isSameAsCurrent) {
+         return res.status(400).json({ message: "New password cannot be the same as the current password." });
       }
 
       const salt = await bcrypt.genSalt(10);
       const password_hash = await bcrypt.hash(newPassword, salt);
 
-      const isAnswerAsPassword = await bcrypt.compare(baseAnswer, password_hash);
-      
-      if (isAnswerAsPassword) {
-         return res.status(400).json({ message: "New password cannot match your security answer." });
-      }
-
       await dbPool.query(
-      "UPDATE users SET password_hash = ?, password_updated_at = NOW() WHERE id = ?",
-      [password_hash, user.id]
+         "UPDATE users SET password_hash = ?, password_updated_at = NOW() WHERE id = ?",
+         [password_hash, user.id]
       );
 
       return res.status(200).json({ message: "Password updated successfully." });
@@ -144,12 +151,6 @@ router.post("/api/login", async (req, res) => {
    }
 });
 
-// User Login Health Check
-router.get("/api/check", authenticateToken, (req, res) => {
-   res.json(
-      `Hello, ${req.user.email}! You have successfully connected to the backend.`
-   );
-});
 
 router.delete("/api/delete", authenticateToken, async (req, res) => {
    const userId = req.user.id;
