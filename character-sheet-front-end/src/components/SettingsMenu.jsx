@@ -18,19 +18,9 @@ function SettingsMenu({ onDeleteAccount }) {
       setMenuAnchor(null);
    };
 
-   const handleOptionSelection = (action) => {
-      handleMenuClose();
-      if (action) {
-         action();
-      }
-   };
-
    return (
       <>
-         <IconButton
-            color="inherit"
-            onClick={handleMenuOpen}
-         >
+         <IconButton color="inherit" onClick={handleMenuOpen}>
             <SettingsIcon />
          </IconButton>
          <Menu
@@ -40,7 +30,10 @@ function SettingsMenu({ onDeleteAccount }) {
             onClose={handleMenuClose}
          >
             <MenuItem
-               onClick={() => handleOptionSelection(onDeleteAccount)}
+               onClick={() => {
+                  onDeleteAccount();
+                  handleMenuClose();
+               }}
                sx={{ color: "error.main" }}
             >
                <DeleteForeverIcon sx={{ mr: 1 }} />
