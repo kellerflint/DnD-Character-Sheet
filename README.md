@@ -138,3 +138,12 @@ Then hit enter.
 This should run the full program, be sure to test it on the frontend and register for account and follow the ***CRUD*** steps of ***Creating, Reading, Updating, and Deleting*** to test and see if this runs on your VM. Check mysql on your VM to see if users are being created, updated, and deleted. 
 
 ## Next Steps:
+1. Extend functionality of run_project.sh to accomodate different branches, automatically allowlist YOUR OWN IP address as a host.
+2. Implement character creation through user page (IP:PORT/user/[username]). This can be done by creating a new table for the databse for characters, and having a new router and controller file that delineates the characters from the users.
+3. Modify DB schema to accomodate the instantiation of Admin users (users as in users within the database).
+4. Implement secure sessions (through JWTs or other ideas you have) as our local storage was used in lieu of more secure methods out of time constraints.
+5. Modify dependencies.sh to install more dependencies as needed/remove redundant ones. (Your discretion).
+6. Fix/improve/replace workaround solutions like the creation of vm_ip.js used for storing VM_IP locally.
+7. Strenghthen deployment pipeline (automate bash script running, modify scripts to avoid dependency errors, etc.)
+
+8. ***Important: Also finish what is asked of Sprint 3***
