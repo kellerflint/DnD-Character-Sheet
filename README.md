@@ -74,6 +74,19 @@ This application is designed for players of **Dungeons & Dragons 5th Edition (5E
 
 ---
 
+## Features Completed in First Sprint
+
+- User is able to create an account and data is stored in MySQL
+- User is able to log in and homepage displays their username
+- User is able to update their password from the login page
+- User is able to delete their account from MySQL
+- Developers are able to remotely connect to the database stored on the VM through workbench
+- Created bash scripts to automate the setup process - Note: The portion for MySQL is not working and is commented out - Keller is aware of this - MySQL will require manual setup. Please follow the manual steps for this part
+
+### Additional Features
+- Backend has API connections to third-party API's that allow access to DnD 5E character creation features - There is a limited set of features since more will be added in future sprints
+- There is a rough draft of a DnD character sheet that can be integrated with the API's mentioned before - This feature is currently hard coded and will need updates
+
 ## Deployment Guide
 
 This guide provides all the necessary steps to deploy the application on a fresh Ubuntu VM.
@@ -126,16 +139,16 @@ These commands will update your server and install all the required software: No
 
 ```bash
 # Update and upgrade all system packages
-sudo apt update && sudo apt -y upgrade
+apt update && sudo apt -y upgrade
 
 # Add the Node.js v20 repository
 curl -fsSL [https://deb.nodesource.com/setup_20.x](https://deb.nodesource.com/setup_20.x) | sudo -E bash -
 
 # Install Node.js, Nginx, and MySQL
-sudo apt -y install nodejs nginx mysql-server git
+apt -y install nodejs nginx mysql-server git
 
 # Install PM2 globally using npm
-sudo npm install pm2 -g
+npm install pm2 -g
 ```
 
 ### Step 2: Configure the Firewall (UFW)
@@ -144,16 +157,16 @@ This will secure your server by only allowing traffic on necessary ports.
 
 ```bash
 # Allow SSH connections so you don't get locked out
-sudo ufw allow OpenSSH
+ufw allow OpenSSH
 
 # Allow web traffic on ports 80 (HTTP) and 443 (HTTPS)
-sudo ufw allow 'Nginx Full'
+ufw allow 'Nginx Full'
 
 # Allow remote access to the database (optional, for development)
-sudo ufw allow 3306/tcp
+ufw allow 3306/tcp
 
 # Enable the firewall
-sudo ufw enable
+ufw enable
 ```
 
 ### Step 3: Configure the MySQL Database
@@ -162,7 +175,7 @@ After installing MySQL, you must log in to create the database and dedicated use
 
 ```Bash
 # Log into MySQL as the root user
-sudo mysql
+mysql -u root -p
 
 # Inside the MySQL prompt, run the following commands:
 CREATE DATABASE character_sheet_db;
@@ -185,13 +198,13 @@ We will clone the project into /var/www, the standard directory for web content,
 
 ```bash
 # Create a new directory for the project
-sudo mkdir -p /var/www/dnd-app
+mkdir -p /var/www/dnd-app
 
 # Clone the repository into the new directory
-sudo git clone https://github.com/TiaMarieG/DnD-Character-Sheet.git /var/www/dnd-app/DnD-Character-Sheet
+git clone https://github.com/kellerflint/DnD-Character-Sheet.git /var/www/dnd-app/DnD-Character-Sheet
 
 # Give the Nginx web server user ownership of the files
-sudo chown -R www-data:www-data /var/www/dnd-app/
+chown -R www-data:www-data /var/www/dnd-app/
 ```
 
 ### Step 5: Configure the Back-End
@@ -211,7 +224,7 @@ cp .env.example .env
 nano .env
 
 # Install npm packages
-sudo npm install
+npm install
 
 # IMPORTANT: Import the database table structure
 # This command uses the credentials from your .env file to create the 'users' table.
@@ -237,8 +250,8 @@ We will step up the front-end to work with Nginx
 ```bash
 # Navigate to the front-end directory, install dependencies, and create the static production build.
 cd /var/www/dnd-app/DnD-Character-Sheet/character-sheet-front-end
-sudo npm install
-sudo npm run build
+npm install
+npm run build
 ```
 
 ### Step 7: Configure Nginx
@@ -247,29 +260,29 @@ We will set up Nginx so that the front-end can continuously run without the term
 
 ```bash
 # Copy the provided Nginx configuration
-sudo cp /var/www/dnd-app/DnD-Character-Sheet/nginx/nginx.conf /etc/nginx/sites-available/dnd-app
+cp /var/www/dnd-app/DnD-Character-Sheet/nginx/nginx.conf /etc/nginx/sites-available/dnd-app
 
 # IMPORTANT: You must edit the file to use your server's IP address.
 # (Note: The automated script handles this step for you.)
-sudo nano /etc/nginx/sites-available/dnd-app
+nano /etc/nginx/sites-available/dnd-app
 
 # IMPORTANT: Verify the root directive is correct:
 root /var/www/dnd-app/DnD-Character-Sheet/character-sheet-front-end/dist;
 
 # Disable the default Nginx page
-sudo rm /etc/nginx/sites-enabled/default
+rm /etc/nginx/sites-enabled/default
 
 # Enable your site
-sudo ln -s /etc/nginx/sites-available/dnd-app /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/dnd-app /etc/nginx/sites-enabled/
 
 #Test and Restart Nginx:
-sudo nginx -t
-sudo systemctl restart nginx
+nginx -t
+systemctl restart nginx
 ```
 
 ## You're Live!
 
-Your application should now be accessible by navigating to http://<your_server_ip> in a web browser.
+Your application should now be accessible by navigating to your IP in a web browser.
 
 ### Deploying Updates
 
@@ -278,15 +291,15 @@ To deploy new code from the Git repository, follow these steps:
 ```bash
 # Pull Changes
 cd /var/www/dnd-app/DnD-Character-Sheet
-sudo git pull
+git pull
 
 # Update Back-End: If you changed back-end files, restart the PM2 process.
 cd character-sheet-back-end
-sudo npm install
+npm install
 pm2 restart dnd-backend
 
 #Update Front-End: If you changed front-end files, you must rebuild the dist folder
 cd ../character-sheet-front-end
-sudo npm install
-sudo npm run build
+npm install
+npm run build
 ```
