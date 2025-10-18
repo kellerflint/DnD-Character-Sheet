@@ -10,11 +10,13 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export default function ButtonAppBar() {
-
+  function onClickHome() {
+    window.location.href = "/";
+  }
   function onClickLogin() {
     window.location.href = "/login";
   }
-   function onClickRegister() {
+  function onClickRegister() {
     window.location.href = "/register";
   }
 
@@ -35,6 +37,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             
           </Typography>
+          <Button color="inherit" onClick ={onClickHome}>Home</Button>
           <Button color="inherit" onClick ={onClickLogin}>Login</Button>
           <Button color="inherit" onClick ={onClickRegister}>Register</Button>
         </Toolbar>

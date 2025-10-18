@@ -42,7 +42,7 @@ export default function LoginForm() {
                 localStorage.setItem('user', JSON.stringify(data.user));
 
                 // Redirect to user page
-                window.location.setItem(`/user/${data.user.username}`);
+                window.location.href=`/user/${data.user.username}`;
             }
             else {
                 setUser(null);
