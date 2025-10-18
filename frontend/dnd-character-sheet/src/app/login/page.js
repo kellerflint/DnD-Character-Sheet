@@ -1,10 +1,10 @@
-import AuthForms from "@/components/AuthForms"
+import LoginForm from "@/components/LoginForm"
 
 export default function LoginFormPage() {
     
     return (
         <>
-            <AuthForms />
+            <LoginForm />
         </>
     )
 }

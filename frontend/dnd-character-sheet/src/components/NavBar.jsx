@@ -9,8 +9,6 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { redirect, usePathName } from 'next/navigation';
-
 export default function ButtonAppBar() {
 
   function onClickLogin() {

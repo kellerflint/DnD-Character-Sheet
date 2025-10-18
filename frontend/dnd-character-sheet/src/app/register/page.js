@@ -1,10 +1,10 @@
-import AuthForms from "@/components/AuthForms"
+import RegistrationForm from "@/components/RegistrationForm"
 
 export default function RegisterFormPage() {
     
     return (
         <>
-            <AuthForms />
+            <RegistrationForm />
         </>
     )
 }
