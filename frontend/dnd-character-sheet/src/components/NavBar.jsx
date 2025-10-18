@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,8 +14,12 @@ import { redirect, usePathName } from 'next/navigation';
 export default function ButtonAppBar() {
 
   function onClickLogin() {
-    redirect('/login');
+    window.location.href = "/login";
   }
+   function onClickRegister() {
+    window.location.href = "/register";
+  }
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -31,7 +37,8 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             
           </Typography>
-          <Button color="inherit" onCLick ={onClickLogin}>Login</Button>
+          <Button color="inherit" onClick ={onClickLogin}>Login</Button>
+          <Button color="inherit" onClick ={onClickRegister}>Register</Button>
         </Toolbar>
       </AppBar>
     </Box>
