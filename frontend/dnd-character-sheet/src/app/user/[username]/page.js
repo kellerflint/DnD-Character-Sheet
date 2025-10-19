@@ -13,7 +13,7 @@ export default function UserPage() {
     const [viewPerms, setViewPerms] = useState(false);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [loggedInUser, setLoggedInUser] = userState(null);
+    const [loggedInUser, setLoggedInUser] = useState(null);
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -53,9 +53,12 @@ export default function UserPage() {
         }
 
         try {
-            const resp = await fetch(`${VM_IP}/${setLoggedInUser.id}`, {
+            //I can already see someone putting another user's username here and delete their account without consent.
+            //This would be exploited by placing the link in the address bar, bypassing the user page.
+            //Also the need for id.id is very weird.
+            const resp = await fetch(`${VM_IP}/${loggedInUser.id.id}`, {
                 method: 'DELETE'
-            })
+            });
 
             if (resp.ok) {
                 localStorage.removeItem('user');
