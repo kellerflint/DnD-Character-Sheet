@@ -43,6 +43,8 @@ function App() {
       <Box
          sx={{
             minHeight: "100vh",
+            width: "100vw",
+            overflowX: "hidden",
             textAlign: "center",
             backgroundImage: "url(/dnd-wall1.jpg)",
             backgroundSize: "cover",
@@ -73,16 +75,25 @@ function App() {
             >
                <Toolbar sx={{ justifyContent: "space-between" }}>
                   <Typography variant="h6">D&D Character Sheet</Typography>
+                  {isAuthenticated ? (
+                     <Button variant="contained" color="primary">
+                        Save Character
+                     </Button>
+                  ) : (
+                     <p style={{ color: '#c5b358', margin: 0 }}>
+                        <i>Please log in to save your character.</i>
+                     </p>
+                  )}
                   {!isAuthenticated ? (
                      <Box>
                         <Button
-                           color="inherit"
+                           color="primary"
                            onClick={() => setShowLoginModal(true)}
                         >
                            Login
                         </Button>
                         <Button
-                           color="inherit"
+                           color="primary"
                            onClick={() => setShowRegisterModal(true)}
                         >
                            Register
@@ -90,6 +101,7 @@ function App() {
                      </Box>
                   ) : (
                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        
                         <Typography sx={{ marginRight: 2 }}>
                            Welcome, {user.username}!
                         </Typography>
@@ -106,18 +118,6 @@ function App() {
             </AppBar>
 
             <main>
-               <Box sx={{ textAlign: "center", my: 2 }}>
-                  {isAuthenticated ? (
-                     <Button variant="contained" color="primary">
-                        Save Character
-                     </Button>
-                  ) : (
-                     <p>
-                        <i>Please log in to save your character.</i>
-                     </p>
-                  )}
-               </Box>
-
                <CharacterSheet />
             </main>
 

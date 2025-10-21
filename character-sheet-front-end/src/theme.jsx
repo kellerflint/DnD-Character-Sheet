@@ -1,18 +1,17 @@
-// src/theme.js (or src/theme.jsx)
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#c5b358', // Main gold/bronze color
+      main: '#c5b358',
       contrastText: '#1a1a1a', 
     },
     background: {
       default: '#1a1a1a', 
     },
     text: {
-      primary: '#f5f5f5',
-      secondary: '#d3d3d3',
+      primary: '#1a1a1a',
+      secondary: '#808080ff',
     },
   },
   typography: {
