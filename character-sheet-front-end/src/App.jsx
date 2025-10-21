@@ -74,7 +74,14 @@ function App() {
                sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
             >
                <Toolbar sx={{ justifyContent: "space-between" }}>
-                  <Typography variant="h6">D&D Character Sheet</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                     <img
+                     src="/dice3.png" 
+                     alt="Spinning Die"
+                     className="dice-spin" 
+                     />
+                     <Typography variant="h6">D&D Character Sheet</Typography>
+                  </Box>
                   {isAuthenticated ? (
                      <Button variant="contained" color="primary">
                         Save Character
