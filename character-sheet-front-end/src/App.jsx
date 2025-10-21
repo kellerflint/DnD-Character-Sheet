@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./context/AuthenticateContext";
 import UserLogin from "./components/UserLogin";
 import UserRegister from "./components/UserRegister";
@@ -15,6 +15,12 @@ import Box from "@mui/material/Box";
 
 import "./App.css";
 
+const backgroundImages = [
+    "/dnd-wall1.jpg",
+    "/dnd-wall2.jpg",
+    "/dnd-wall3.jpg",
+];
+
 function App() {
    const { isAuthenticated, logout, user } = useAuth();
    const [showLoginModal, setShowLoginModal] = useState(false);
@@ -22,6 +28,12 @@ function App() {
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [showForgotPasswordModal, setShowForgotPasswordModal] =
       useState(false);
+   const [currentBackground, setCurrentBackground] = useState("");
+
+   useEffect(() => {
+      const index = Math.floor(Math.random() * backgroundImages.length);
+      setCurrentBackground(backgroundImages[index]);
+   }, []);
 
    const handleSwitchToLogin = () => {
       setShowRegisterModal(false);
@@ -46,7 +58,7 @@ function App() {
             width: "100vw",
             overflowX: "hidden",
             textAlign: "center",
-            backgroundImage: "url(/dnd-wall1.jpg)",
+            backgroundImage: `url(${currentBackground})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundColor: "#1a1a1a",
