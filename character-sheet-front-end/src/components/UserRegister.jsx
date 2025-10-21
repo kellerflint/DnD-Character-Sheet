@@ -105,7 +105,16 @@ function UserRegister({ open, closeModal, switchToLogin }) {
    return (
       <Dialog open={open} onClose={closeModal}>
          <form onSubmit={handleSubmit}>
-            <DialogTitle>Register</DialogTitle>
+            <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}
+            >
+               <img
+                  src="/dice1.png"
+                  alt="Spinning D&D Die"
+                  className="dice-spin"
+                  style={{ width: 24, height: 24, marginRight: 8 }}
+               />
+               Register
+            </DialogTitle>
             <DialogContent>
                {error && (
                   <p style={{ color: "red", textAlign: "center" }}>{error}</p>
@@ -161,12 +170,9 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                   onChange={handleChange}
                />
             </DialogContent>
-            <DialogActions>
-               <Button onClick={switchToLogin} color="secondary">
-                  Already have an account?
-               </Button>
-               <Button onClick={closeModal}>Cancel</Button>
-               <Box sx={{ position: "relative" }}>
+            <DialogActions sx={{ justifyContent: "space-around", padding: "16px 24px" }}
+            >
+               <Box>
                   <Button
                      type="submit"
                      variant="contained"
@@ -188,6 +194,10 @@ function UserRegister({ open, closeModal, switchToLogin }) {
                      />
                   )}
                </Box>
+               <Button onClick={switchToLogin} color="primary">
+                  Already have an account?
+               </Button>
+               <Button onClick={closeModal}>Cancel</Button>
             </DialogActions>
          </form>
       </Dialog>

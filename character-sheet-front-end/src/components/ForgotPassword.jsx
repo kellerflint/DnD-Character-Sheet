@@ -80,7 +80,14 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
    return (
       <Dialog open={open} onClose={handleClose}>
          <form onSubmit={handleSubmit}>
-            <DialogTitle>
+            <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}
+            >
+               <img
+                  src="/dice2.png"
+                  alt="Spinning D&D Die"
+                  className="dice-spin"
+                  style={{ width: 24, height: 24, marginRight: 8 }}
+               />
                Reset Password
                <IconButton
                   aria-label="close"

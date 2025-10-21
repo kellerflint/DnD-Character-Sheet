@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./context/AuthenticateContext";
 import UserLogin from "./components/UserLogin";
 import UserRegister from "./components/UserRegister";
@@ -15,6 +15,12 @@ import Box from "@mui/material/Box";
 
 import "./App.css";
 
+const backgroundImages = [
+    "/dnd-wall1.jpg",
+    "/dnd-wall2.jpg",
+    "/dnd-wall3.jpg",
+];
+
 function App() {
    const { isAuthenticated, logout, user } = useAuth();
    const [showLoginModal, setShowLoginModal] = useState(false);
@@ -22,6 +28,12 @@ function App() {
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [showForgotPasswordModal, setShowForgotPasswordModal] =
       useState(false);
+   const [currentBackground, setCurrentBackground] = useState("");
+
+   useEffect(() => {
+      const index = Math.floor(Math.random() * backgroundImages.length);
+      setCurrentBackground(backgroundImages[index]);
+   }, []);
 
    const handleSwitchToLogin = () => {
       setShowRegisterModal(false);
@@ -40,83 +52,119 @@ function App() {
    };
 
    return (
-      <>
-         <AppBar position="static">
-            <Toolbar sx={{ justifyContent: "space-between" }}>
-               <Typography variant="h6">D&D Character Sheet</Typography>
-               {!isAuthenticated ? (
-                  <Box>
-                     <Button
-                        color="inherit"
-                        onClick={() => setShowLoginModal(true)}
-                     >
-                        Login
-                     </Button>
-                     <Button
-                        color="inherit"
-                        onClick={() => setShowRegisterModal(true)}
-                     >
-                        Register
-                     </Button>
-                  </Box>
-               ) : (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                     <Typography sx={{ marginRight: 2 }}>
-                        Welcome, {user.username}!
-                     </Typography>
-                     <Button color="inherit" onClick={logout}>
-                        Logout
-                     </Button>
+      <Box
+         sx={{
+            minHeight: "100vh",
+            width: "100vw",
+            overflowX: "hidden",
+            textAlign: "center",
+            backgroundImage: `url(${currentBackground})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundColor: "#1a1a1a",
+            color: "#f5f5f5",
+            position: "relative",
+            overflow: 'auto',
+         }}
+      >
+         <Box
+            sx={{
+               position: "absolute",
+               top: 0,
+               left: 0,
+               right: 0,
+               bottom: 0,
+               backgroundColor: "rgba(0, 0, 0, 0.5)",
+               zIndex: 1,
+            }}
+         />
 
-                     <SettingsMenu
-                        onDeleteAccount={() => setShowDeleteModal(true)}
+         <Box sx={{ position: 'relative', zIndex: 2, pb: 4 }}>
+            <AppBar
+               position="static"
+               elevation={0}
+               sx={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
+            >
+               <Toolbar sx={{ justifyContent: "space-between" }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                     <img
+                     src="/dice3.png" 
+                     alt="Spinning Die"
+                     className="dice-spin" 
                      />
+                     <Typography variant="h6">D&D Character Sheet</Typography>
                   </Box>
-               )}
-            </Toolbar>
-         </AppBar>
+                  {isAuthenticated ? (
+                     <Button variant="contained" color="primary">
+                        Save Character
+                     </Button>
+                  ) : (
+                     <p style={{ color: '#c5b358', margin: 0 }}>
+                        <i>Please log in to save your character.</i>
+                     </p>
+                  )}
+                  {!isAuthenticated ? (
+                     <Box>
+                        <Button
+                           color="primary"
+                           onClick={() => setShowLoginModal(true)}
+                        >
+                           Login
+                        </Button>
+                        <Button
+                           color="primary"
+                           onClick={() => setShowRegisterModal(true)}
+                        >
+                           Register
+                        </Button>
+                     </Box>
+                  ) : (
+                     <Box sx={{ display: "flex", alignItems: "center" }}>
+                        
+                        <Typography sx={{ marginRight: 2 }}>
+                           Welcome, {user.username}!
+                        </Typography>
+                        <Button color="inherit" onClick={logout}>
+                           Logout
+                        </Button>
 
-         <main>
-            <Box sx={{ textAlign: "center", my: 2 }}>
-               {isAuthenticated ? (
-                  // Character saving functionality not yet implemented
-                  <Button variant="contained" color="primary">
-                     Save Character
-                  </Button>
-               ) : (
-                  <p>
-                     <i>Please log in to save your character.</i>
-                  </p>
-               )}
-            </Box>
+                        <SettingsMenu
+                           onDeleteAccount={() => setShowDeleteModal(true)}
+                        />
+                     </Box>
+                  )}
+               </Toolbar>
+            </AppBar>
 
-            <CharacterSheet />
-         </main>
+            <main>
+               <CharacterSheet />
+            </main>
 
-         <UserLogin
-            open={showLoginModal}
-            closeModal={() => setShowLoginModal(false)}
-            switchToRegister={handleSwitchToRegister}
-            switchToForgotPassword={handleSwitchToForgotPassword}
-         />
+            <UserLogin
+               open={showLoginModal}
+               closeModal={() => setShowLoginModal(false)}
+               switchToRegister={handleSwitchToRegister}
+               switchToForgotPassword={handleSwitchToForgotPassword}
+            />
 
-         <UserRegister
-            open={showRegisterModal}
-            closeModal={() => setShowRegisterModal(false)}
-            switchToLogin={handleSwitchToLogin}
-         />
+            <UserRegister
+               open={showRegisterModal}
+               closeModal={() => setShowRegisterModal(false)}
+               switchToLogin={handleSwitchToLogin}
+            />
 
-         <UserDelete
-            open={showDeleteModal}
-            closeModal={() => setShowDeleteModal(false)}
-         />
+            <UserDelete
+               open={showDeleteModal}
+               closeModal={() => setShowDeleteModal(false)}
+            />
 
-         <ForgotPassword
-            open={showForgotPasswordModal}
-            closeModal={() => setShowForgotPasswordModal(false)}
-            switchToLogin={handleSwitchToLogin}
-         />
-      </>
+            <ForgotPassword
+               open={showForgotPasswordModal}
+               closeModal={() => setShowForgotPasswordModal(false)}
+               switchToLogin={handleSwitchToLogin}
+            />
+         </Box>
+      </Box>
    );
 }
 

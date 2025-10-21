@@ -49,9 +49,16 @@ function CharacterSheet() {
                      fullWidth
                   />
                </Grid>
-               <Grid size={{ xs: 6, md: 3 }}>
+               <Grid size={{ xs: 6, md: 2 }}>
                   <TextField
-                     label="Class & Level"
+                     label="Class"
+                     variant="standard"
+                     fullWidth
+                  />
+               </Grid>
+               <Grid size={{ xs: 6, md: 0.6 }}>
+                  <TextField
+                     label="Level"
                      variant="standard"
                      fullWidth
                   />
