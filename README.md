@@ -99,8 +99,6 @@ This is the fastest and most reliable way to deploy the project. The included fi
 
 ```bash
 git clone https://github.com/kellerflint/DnD-Character-Sheet.git
-
-cd DnD-Character-Sheet/bash-scripts
 ```
 
 2. Activate and Run the Setup Script:
