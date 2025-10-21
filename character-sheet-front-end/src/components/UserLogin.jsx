@@ -112,7 +112,7 @@ function UserLogin({
                   </Button>
                   <Button
                      onClick={switchToRegister}
-                     color="secondary"
+                     color="primary"
                      sx={{ mr: 1 }}
                   >
                      Need to Register?
