@@ -168,6 +168,7 @@ ufw enable
 ```
 
 ### Step 3: Configure the MySQL Database
+#### Create users
 
 After installing MySQL, you must log in to create the database and dedicated users for the application and for the development team to have remote access.
 
@@ -189,6 +190,21 @@ GRANT ALL PRIVILEGES ON character_sheet_db.* TO 'devuser'@'%';
 FLUSH PRIVILEGES;
 exit;
 ```
+#### Configure bind-address in mySQL config
+```bash
+cd ../etc/mysql/mysql.conf.d
+nano mysqld.cnf
+```
+In `mysqld.cnf`, change the bind-adress to `0.0.0.0`:
+```nano
+bind-adress       = 0.0.0.0
+```
+Enter CTRL + O to save changes, CTRL + X to exit out. You can get back to your root folder with `cd ~`.
+
+#### Restart MySQL
+```
+sudo systemctl restart mysql
+```
 
 ### Step 4: Clone and Prepare the Project
 
@@ -199,7 +215,7 @@ We will clone the project into /var/www, the standard directory for web content,
 mkdir -p /var/www/dnd-app
 
 # Clone the repository into the new directory
-git clone https://github.com/kellerflint/DnD-Character-Sheet.git /var/www/dnd-app/DnD-Character-Sheet
+git clone {URL-to-your-fork} /var/www/dnd-app/DnD-Character-Sheet
 
 # Give the Nginx web server user ownership of the files
 chown -R www-data:www-data /var/www/dnd-app/
