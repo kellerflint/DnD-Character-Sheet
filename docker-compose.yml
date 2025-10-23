@@ -1,5 +1,9 @@
 services:
+  database:
+    build: ./sql
   backend:
+    depends_on: 
+      - database
     build: ./character-sheet-back-end
     ports:
       - "5000:5000"
@@ -13,3 +17,6 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+  
+   
+
