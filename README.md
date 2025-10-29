@@ -317,3 +317,14 @@ cd ../character-sheet-front-end
 npm install
 npm run build
 ```
+
+## Docker
+### Docker Set Up
+### Docker Compose <-- how to restart/rebuild
+`docker compose down -v && docker compose up -d --build frontend`
+### Container Environmental Variables
+### Deployment Process <-- UPDATE FOR CONTAINERIZED APPROACH
+- npm i
+- env
+- docker compose up
+### Troubleshooting
