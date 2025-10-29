@@ -1,6 +1,21 @@
+volumes:
+  mysqlData:
 services:
   database:
-    build: ./sql
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./sql/db:/docker-entrypoint-initdb.d
+      - mysqlData:/var/lib/mysql
+
   backend:
     depends_on: 
       - database
