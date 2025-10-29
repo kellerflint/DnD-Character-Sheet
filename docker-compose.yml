@@ -23,7 +23,10 @@ services:
     ports:
       - "5000:5000"
     environment:
-      PORT: 5000
+      DB_HOST: database
+      DB_DATABASE: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     restart: unless-stopped
   frontend:
     depends_on:
