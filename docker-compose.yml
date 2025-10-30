@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: character_sheet_db
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql/db.sql:/docker-entrypoint-initdb.d/db.sql
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: ./character-sheet-back-end
+    environment:
+      DB_HOST: db
+      DB_USER: appuser
+      DB_PASSWORD: apppassword
+      DB_NAME: character_sheet_db
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 5000
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./character-sheet-back-end:/app
+      - /app/node_modules
+
+volumes:
+  db_data:
