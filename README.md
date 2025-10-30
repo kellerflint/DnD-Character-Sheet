@@ -5,6 +5,7 @@ This app creates a persistent, digital solution to maintaining and organizing Du
 
 ## Table of Contents
 1. [Quick Start](#quick-start)
+1. [VM Deployment](#vm-deployment)
 1. [Current Features](#current-features)
 1. [Data Model](#data-model)
 1. [Next Steps](#next-steps)
@@ -123,6 +124,10 @@ Make Docker automatically start after a VM reboot
 ```bash
 sudo systemctl enable docker
 ```
+
+### Running the App using Docker
+Complete the [Quick Start](#quick-start) section inside of the VM.
+
 
 ## Current Features
 - User is able to create an account and data is stored in MySQL
