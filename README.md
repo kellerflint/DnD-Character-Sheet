@@ -16,13 +16,13 @@ Fork and clone this project to your local machine or VM.
 ```bash
 git clone https://github.com/{USERNAME}/DnD-Character-Sheet.git # <- Update {USERNAME}
 ```
-#### 1. Run Docker
+#### 2. Run Docker
 Ensure that Docker is running on your computer or virtual machine.
 You may run the following command in Linux to check if Docker is running:
 ```
 sudo systemctl status docker
 ```
-#### 2. Set environmental variables
+#### 3. Set environmental variables
 Copy .env.example into .env files and add your information in the following locations:
 ```
 ROOT
@@ -68,6 +68,62 @@ docker compose ps
 ```
 docker compose logs
 ```
+
+## VM Deployment
+### Docker Setup
+#### Update and Prepare the System
+Make sure your VM is up-to-date
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+Install packages that help apt use HTTPS
+```bash
+sudo apt install -y ca-certificates curl gnupg
+```
+#### Add Docker's Official GPG Key and Repository
+Create the Docker directory for keyrings
+```bash
+sudo install -m 0755 -d /etc/apt/keyrings
+```
+Download and store Docker's GPG key
+```bash
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+Give the key proper permissions
+```bash
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
+Set up the stable repository
+``` bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+#### Install Docker and Docker Compose
+Update apt again, then install docker packages
+```bash
+sudo apt update
+```
+``` bash
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+Check to make sure docker is working
+```bash
+docker run hello-world
+```
+or
+```bash
+sudo docker run hello-world
+```
+![the desired output when running the previous commands](image.png)
+#### Enable Docker to Start on Boot
+Make Docker automatically start after a VM reboot
+```bash
+sudo systemctl enable docker
+```
+
 ## Current Features
 - User is able to create an account and data is stored in MySQL
 - User is able to log in and homepage displays their username
@@ -79,6 +135,8 @@ docker compose logs
 ### Resources
 - Backend has API connections to third-party API's that allow access to DnD 5E character creation features - There is a limited set of features since more will be added in future sprints
 - There is a rough draft of a DnD character sheet that can be integrated with the API's mentioned before - This feature is currently hard coded and will need updates
+
+
 ## Data Model
 ### Core Entities
 #### Existing
