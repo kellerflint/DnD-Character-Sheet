@@ -1,0 +1,42 @@
+volumes:
+  mysqlData:
+services:
+  database:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - mysqlData:/var/lib/mysql
+
+  backend:
+    depends_on: 
+      - database
+    build: ./character-sheet-back-end
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      DB_HOST: database
+      DB_DATABASE: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
+  frontend:
+    depends_on:
+      - backend
+    build: ./character-sheet-front-end
+    ports:
+      - "80:80"
+    restart: unless-stopped
+  
+   
+
