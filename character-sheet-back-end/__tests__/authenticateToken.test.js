@@ -32,4 +32,18 @@ describe("authenticateToken middleware function test suite", () => {
         expect(res.sendStatus).toHaveBeenCalledWith(403);
         expect(next).not.toHaveBeenCalled();
     });
+
+    test("next() called and attaches user due to valid token", () => {
+        req.headers["authentication"] = "valid token";
+        const mockUser = { id: 1, name: "Lebron"};
+
+        jwt.verify.mockImplementationOnce((token, secret, callback) => {
+            callback(null, mockUser);
+        });
+
+        authenticateToken(req, res, () => {
+            expect(req.user).toEqual(mockUser);
+            done();
+        });
+    })
 })
