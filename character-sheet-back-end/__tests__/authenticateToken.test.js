@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authenticateToken.js");
 
-// Mock the tocken
+// Mock the token
 jest.mock("jsonwebtoken");
 
 describe("authenticateToken middleware function test suite", () => {
