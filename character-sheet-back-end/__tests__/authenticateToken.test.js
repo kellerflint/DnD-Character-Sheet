@@ -4,7 +4,7 @@ const authenticateToken = require("../middleware/authenticateToken.js");
 // Mock the tocken
 jest.mock("jsonwebtoken");
 
-describe("authenticateToken middleware function", () => {
+describe("authenticateToken middleware function test suite", () => {
     let req, res, next;
 
     beforeEach(() => {
@@ -20,5 +20,16 @@ describe("authenticateToken middleware function", () => {
         authenticateToken(req, res, next);
         expect(res.sendStatus).toHaveBeenCalledWith(401);
         expect(next).not.toHaveBeenCalled();
-    })
+    });
+
+    test("Returns 403 if the token verification fails", () => {
+        req.headers["authorization"] = "an invalid token";
+        jwt.verify.mockImplementationOnce((token, secret, callback) => {
+            callback(new Error("Invalid Token"), null);
+        });
+
+        authenticateToken(req, res, next);
+        expect(res.sendStatus).toHaveBeenCalledWith(403);
+        expect(next).not.toHaveBeenCalled();
+    });
 })
