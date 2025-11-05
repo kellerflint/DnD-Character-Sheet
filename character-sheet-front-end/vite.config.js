@@ -13,7 +13,7 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: 'node',
+    environment: 'jsdom',              
     setupFiles: './src/setupTests.js',
     coverage: { reporter: ['text', 'json', 'html'] },
     poolOptions: { threads: false },

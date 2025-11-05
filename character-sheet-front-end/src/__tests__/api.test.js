@@ -1,3 +1,7 @@
+/**
+ * @vitest-environment node
+ */
+
 vi.mock("axios", () => {
     const mockAxiosInstance = {
       get: vi.fn(),
