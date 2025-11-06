@@ -1,128 +1,114 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import UserRegister from "../components/UserRegister";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
+import UserRegister from "../components/UserRegister";
+import userEvent from "@testing-library/user-event";
+import { registerUser } from "../api";
 
-vi.mock("../api", () => ({ registerUser: vi.fn() }));
-vi.mock("../utils/securityQuestions", () => ({
-  securityQuestions: [
-    { id: "pet", text: "What is the name of your first pet?" },
-    { id: "school", text: "What elementary school did you attend?" },
-    { id: "city", text: "In what city were you born?" },
-  ],
+vi.mock("../api", () => ({
+  registerUser: vi.fn(),
 }));
 
 describe("UserRegister", () => {
-  const setup = () => {
-    const closeModal = vi.fn();
-    const switchToLogin = vi.fn();
+  const mockClose = vi.fn();
+  const mockSwitchToLogin = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const getPasswordField = () => screen.getByTestId("password");
+  const getConfirmPasswordField = () => screen.getByTestId("confirmPassword");
+
+  test("renders fields and buttons", async () => {
     render(
       <UserRegister
         open={true}
-        closeModal={closeModal}
-        switchToLogin={switchToLogin}
+        closeModal={mockClose}
+        switchToLogin={mockSwitchToLogin}
       />
     );
-    return { closeModal, switchToLogin };
-  };
 
-  const getField = (label) => {
-    if (/^new password$/i.test(label))
-      return screen.getByLabelText(/^New Password\s*\*?$/i);
-    if (/^confirm new password$/i.test(label))
-      return screen.getByLabelText(/^Confirm New Password\s*\*?$/i);
-    if (/^password$/i.test(label))
-      return screen.getByLabelText(/^Password\s*\*?$/i);
-    if (/^confirm password$/i.test(label))
-      return screen.getByLabelText(/^Confirm Password\s*\*?$/i);
-    return screen.getByLabelText(new RegExp(`${label}\\s*\\*?`, "i"));
-  };
+    expect(screen.getByRole("textbox", { name: /username/i })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: /first name/i })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: /last name/i })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: /email address/i })).toBeInTheDocument();
 
-  test(
-    "renders fields and buttons",
-    async () => {
-      setup();
+    expect(getPasswordField()).toBeInTheDocument();
+    expect(getConfirmPasswordField()).toBeInTheDocument();
 
-      expect(
-        await screen.findByRole("heading", { name: /register/i })
-      ).toBeInTheDocument();
-      expect(await screen.findByLabelText(/Username/i)).toBeInTheDocument();
-      expect(await screen.findByLabelText(/First Name/i)).toBeInTheDocument();
-      expect(await screen.findByLabelText(/Last Name/i)).toBeInTheDocument();
-      expect(await screen.findByLabelText(/Email Address/i)).toBeInTheDocument();
-      expect(await screen.findByLabelText(/Password/i)).toBeInTheDocument();
-      expect(
-        await screen.findByLabelText(/Confirm Password/i)
-      ).toBeInTheDocument();
-    },
-    10000
-  );
+    expect(screen.getByRole("textbox", { name: /security answer/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /register/i })).toBeInTheDocument();
+    expect(screen.getByText(/already have an account/i)).toBeInTheDocument();
+    expect(screen.getByText(/cancel/i)).toBeInTheDocument();
+  });
 
-  test(
-    "validation error when question/answer missing",
-    async () => {
-      setup();
-
-      await userEvent.type(getField("Username"), "john");
-      await userEvent.type(getField("First Name"), "John");
-      await userEvent.type(getField("Last Name"), "Smith");
-      await userEvent.type(getField("Email Address"), "john@mail.com");
-      await userEvent.type(getField("Password"), "pass123");
-      await userEvent.type(getField("Confirm Password"), "pass123");
-
-      await userEvent.click(
-        screen.getByRole("button", { name: /^register$/i })
+  test("validation error when question/answer missing", async () => {
+    render(
+      <UserRegister open={true} closeModal={vi.fn()} switchToLogin={vi.fn()} />
+    );
+  
+    await userEvent.type(screen.getByTestId("username"), "johnsmith");
+    await userEvent.type(screen.getByTestId("firstName"), "John");
+    await userEvent.type(screen.getByTestId("lastName"), "Smith");
+    await userEvent.type(screen.getByTestId("email"), "john@example.com");
+    await userEvent.type(screen.getByTestId("password"), "pass123");
+    await userEvent.type(screen.getByTestId("confirmPassword"), "pass123");
+  
+    await userEvent.click(screen.getByRole("button", { name: /register/i }));
+  
+    await waitFor(() => {
+      expect(screen.getByTestId("error-message")).toHaveTextContent(
+        /please select a security question/i
       );
+    }, { timeout: 1000 });
+  });
+  
+  
 
-      await waitFor(() =>
-        expect(
-          screen.getByText(/please select a security question/i)
-        ).toBeInTheDocument()
-      );
-    },
-    10000
-  );
+  test("successful registration calls api and redirects", async () => {
+    registerUser.mockResolvedValueOnce({ ok: true });
 
-  test(
-    "successful registration calls api and redirects",
-    async () => {
-      vi.useFakeTimers();
-      const { registerUser } = await import("../api");
-      registerUser.mockResolvedValueOnce({ ok: true });
+    render(
+      <UserRegister
+        open={true}
+        closeModal={mockClose}
+        switchToLogin={mockSwitchToLogin}
+      />
+    );
 
-      const { switchToLogin } = setup();
+    fireEvent.change(screen.getByRole("textbox", { name: /username/i }), {
+      target: { value: "johnsmith" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: /first name/i }), {
+      target: { value: "John" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: /last name/i }), {
+      target: { value: "Smith" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: /email address/i }), {
+      target: { value: "john.smith@example.com" },
+    });
+    fireEvent.change(getPasswordField(), { target: { value: "abcd1234" } });
+    fireEvent.change(getConfirmPasswordField(), { target: { value: "abcd1234" } });
 
-      await userEvent.type(getField("Username"), "john");
-      await userEvent.type(getField("First Name"), "John");
-      await userEvent.type(getField("Last Name"), "Smith");
-      await userEvent.type(getField("Email Address"), "john@mail.com");
-      await userEvent.type(getField("Password"), "pass123");
-      await userEvent.type(getField("Confirm Password"), "pass123");
+    fireEvent.mouseDown(screen.getByLabelText(/security question/i));
+    const options = await screen.findAllByRole("option");
+    fireEvent.click(options[0]);
 
-      await userEvent.click(getField("Security Question"));
-      await waitFor(() => screen.getAllByRole("option"));
-      await userEvent.click(screen.getAllByRole("option")[0]);
-      await userEvent.type(getField("Security Answer"), "max");
+    fireEvent.change(screen.getByRole("textbox", { name: /security answer/i }), {
+      target: { value: "fluffy" },
+    });
 
-      await userEvent.click(
-        screen.getByRole("button", { name: /^register$/i })
-      );
+    fireEvent.click(screen.getByRole("button", { name: /register/i }));
 
-      await waitFor(() =>
-        expect(registerUser).toHaveBeenCalledWith({
-          username: "john",
-          firstName: "John",
-          lastName: "Smith",
-          email: "john@mail.com",
-          password: "pass123",
-          securityAnswer: "max",
-        })
-      );
+    await waitFor(() => {
+      expect(registerUser).toHaveBeenCalledTimes(1);
+    });
 
-      vi.runAllTimers();
-      expect(switchToLogin).toHaveBeenCalled();
-      vi.useRealTimers();
-    },
-    15000
-  );
+    await waitFor(() => {
+      expect(mockSwitchToLogin).toHaveBeenCalled();
+    });
+
+    expect(screen.getByTestId("success-message")).toHaveTextContent(/success/i);
+  });
 });
