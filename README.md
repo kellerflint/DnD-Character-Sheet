@@ -201,8 +201,9 @@ This App was created by students at Green River College during SDEV 372.
 ## Testing
 
 ### Backend Unit Tests
-- Command to run backend tests in character-sheet-back-end/: npm run test
-- Run coverage report: npm test -- --coverage
+- Command to run backend tests in character-sheet-back-end/ with coverage: npm run test  
 - Add test documentation later
 
 ### Frontend Unit Tests
+- Command to run frontend tests in character-sheet-front-end/ with coverage: npm run test  
+- Add test documentation later
