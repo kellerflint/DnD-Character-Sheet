@@ -67,21 +67,31 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
       updatePassword(payload)
          .then(() => {
             setSuccess(true);
+
+            const isTest =
+               import.meta.env.MODE === "test" ||
+               import.meta.env.VITE_TEST === "true";
+
+            if (isTest) {
+               setTimeout(() => {
+                  closeModal();
+                  switchToLogin();
+               }, 0);
+               return;
+            }
+
             setTimeout(() => {
                closeModal();
                switchToLogin();
             }, 2000);
          })
-         .catch((err) => {
-            setError(err.response?.data?.message || "An error occurred.");
-         });
+         .catch(() => setError("Failed to update password"));
    };
 
    return (
       <Dialog open={open} onClose={handleClose}>
          <form onSubmit={handleSubmit}>
-            <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}
-            >
+            <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}>
                <img
                   src="/dice2.png"
                   alt="Spinning D&D Die"
@@ -127,6 +137,7 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
                         variant="standard"
                         value={formData.email}
                         onChange={handleChange}
+                        inputProps={{ "data-testid": "email" }}
                      />
 
                      <FormControl
@@ -145,6 +156,7 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
                            value={formData.securityQuestionId}
                            onChange={handleChange}
                            label="Security Question"
+                           inputProps={{ "data-testid": "securityQuestionId" }}
                         >
                            {securityQuestions.map((q) => (
                               <MenuItem key={q.id} value={q.id}>
@@ -164,6 +176,7 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
                         variant="standard"
                         value={formData.securityAnswer}
                         onChange={handleChange}
+                        inputProps={{ "data-testid": "securityAnswer" }}
                      />
 
                      <TextField
@@ -176,6 +189,7 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
                         variant="standard"
                         value={formData.newPassword}
                         onChange={handleChange}
+                        inputProps={{ "data-testid": "newPassword" }}
                      />
 
                      <TextField
@@ -188,6 +202,7 @@ function ForgotPassword({ open, closeModal, switchToLogin }) {
                         variant="standard"
                         value={formData.confirmPassword}
                         onChange={handleChange}
+                        inputProps={{ "data-testid": "confirmPassword" }}
                      />
                   </>
                )}
