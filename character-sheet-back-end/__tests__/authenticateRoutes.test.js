@@ -1,6 +1,7 @@
 const request = require("supertest");
-const app = require("../server.js");
+const app = require("../app.js");
 const db = require("../config/db.js");
+const setupTestDB = require("../setupTestDB.js");
 
 let testingUser = {
     username: "testUser",
@@ -15,6 +16,7 @@ let authenticateToken = "";
 
 // will run one time before all the tests
 beforeAll(async () => {
+    await setupTestDB();
     await db.query("DELETE FROM users WHERE EMAIL = ?", [testingUser.email]);
 });
 
@@ -25,5 +27,23 @@ afterAll(async () => {
 });
 
 describe("Integration tests for 3 API Endpoints", () => {
-    
+
+    test("POST /api/register - should create a new user", async () => {
+    const res = await request(app)
+      .post("/api/register")
+      .send(testingUser);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toHaveProperty("message", "User created successfully");
+    expect(res.body).toHaveProperty("userId");
+
+    // Verify user exists in DB
+    const [rows] = await db.query(
+      "SELECT * FROM users WHERE email = ?",
+      [testingUser.email]
+    );
+    expect(rows.length).toBe(1);
+    expect(rows[0].username).toBe(testingUser.username);
+  });
+
 })
