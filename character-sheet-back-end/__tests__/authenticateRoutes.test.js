@@ -52,7 +52,7 @@ describe("Integration tests for 3 API Endpoints", () => {
 			.send({ email: testingUser.email, password: testingUser.password });
 
 		expect(res.statusCode).toBe(200);
-		expect(res.body).toHaveProperty("message", "login successful");
+		expect(res.body).toHaveProperty("message", "Login successful");
 		expect(res.body).toHaveProperty("token");
 	});
 
