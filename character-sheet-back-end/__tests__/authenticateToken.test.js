@@ -11,7 +11,7 @@ describe("authenticateToken middleware function test suite", () => {
         req = { headers: {} };
         res = {
             sendStatus: jest.fn(),
-        }
+        };
         next = jest.fn();
     });
 
