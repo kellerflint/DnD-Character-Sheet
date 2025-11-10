@@ -35,7 +35,7 @@ describe("authenticateToken middleware function test suite", () => {
 
     test("next() called and attaches user due to valid token", () => {
         req.headers["authentication"] = "valid token";
-        const mockUser = { id: 1, name: "Lebron"};
+        const mockUser = { id: 1, name: "Lebron" };
 
         jwt.verify.mockImplementationOnce((token, secret, callback) => {
             callback(null, mockUser);
