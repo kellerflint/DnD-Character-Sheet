@@ -201,9 +201,15 @@ This App was created by students at Green River College during SDEV 372.
 ## Testing
 
 ### Backend Unit Tests
-- Command to run backend tests in character-sheet-back-end/ with coverage: npm test  
-- Add test documentation later
+- Command to run backend unit tests in character-sheet-back-end/ with coverage: npm test:unit
+- Add additional test documentation later
 
 ### Frontend Unit Tests
-- Command to run frontend tests in character-sheet-front-end/ with coverage: npm test  
-- Add test documentation later
+- Command to run frontend unit tests in character-sheet-front-end/ with coverage: npm test  
+- Add additional test documentation later
+
+### Integration Tests for API endpoints and Database
+- Create a local MySQL database called: character_sheet_db_test
+- Change env values in the character-sheet-back-end/.env file to use localhost, the correct testing db name, and credentials for the testing db
+- Run the integration tests in the backend with npm test:integration
+- Add additional test documentation later
