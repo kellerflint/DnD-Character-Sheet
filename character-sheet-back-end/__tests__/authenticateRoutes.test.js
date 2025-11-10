@@ -54,6 +54,17 @@ describe("Integration tests for 3 API Endpoints", () => {
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toHaveProperty("message", "Login successful");
 		expect(res.body).toHaveProperty("token");
+
+		// store token for next test to access route
+		authenticateToken = res.body.token;
 	});
 
-})
+	test("GET /api/check - allow us to enter api check route with valid token", async() => {
+		const res = await request(app)
+			.get("/api/check")
+			.set("Authorization", `Bearer ${authenticateToken}`);
+
+		expect(res.statusCode).toBe(200);
+		expect(res.body).toEqual(`Hello, ${testingUser.email}! You have successfully connected to the backend.`);
+	});
+});

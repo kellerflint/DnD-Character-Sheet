@@ -45,5 +45,5 @@ describe("authenticateToken middleware function test suite", () => {
             expect(req.user).toEqual(mockUser);
             done();
         });
-    })
-})
+    });
+});
