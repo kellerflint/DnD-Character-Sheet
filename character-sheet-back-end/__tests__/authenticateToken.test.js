@@ -11,7 +11,7 @@ describe("authenticateToken middleware function test suite", () => {
         req = { headers: {} };
         res = {
             sendStatus: jest.fn(),
-        }
+        };
         next = jest.fn();
     });
 
@@ -23,7 +23,7 @@ describe("authenticateToken middleware function test suite", () => {
     });
 
     test("Returns 403 if the token verification fails", () => {
-        req.headers["authorization"] = "an invalid token";
+        req.headers["authorization"] = "Bearer invalidToken";
         jwt.verify.mockImplementationOnce((token, secret, callback) => {
             callback(new Error("Invalid Token"), null);
         });
@@ -34,16 +34,15 @@ describe("authenticateToken middleware function test suite", () => {
     });
 
     test("next() called and attaches user due to valid token", () => {
-        req.headers["authentication"] = "valid token";
-        const mockUser = { id: 1, name: "Lebron"};
+        req.headers["authorization"] = "Bearer validToken";
+        const mockUser = { id: 1, name: "Lebron" };
 
         jwt.verify.mockImplementationOnce((token, secret, callback) => {
             callback(null, mockUser);
         });
 
-        authenticateToken(req, res, () => {
-            expect(req.user).toEqual(mockUser);
-            done();
-        });
-    })
-})
+        authenticateToken(req, res, next);
+        expect(req.user).toEqual(mockUser);
+        expect(next).toHaveBeenCalled();
+    });
+});

@@ -201,9 +201,13 @@ This App was created by students at Green River College during SDEV 372.
 ## Testing
 
 ### Backend Unit Tests
-- Command to run backend tests in character-sheet-back-end/ with coverage: npm test  
-- Add test documentation later
+- Command to run backend unit tests in character-sheet-back-end/ with coverage: npm test:unit
+- Add additional test documentation later
 
 ### Frontend Unit Tests
-- Command to run frontend tests in character-sheet-front-end/ with coverage: npm test  
-- Add test documentation later
+- Command to run frontend unit tests in character-sheet-front-end/ with coverage: npm test  
+- Add additional test documentation later
+
+### Integration Tests for API endpoints and Database
+- Run the integration tests in the backend using a test database in docker: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from backend_test ; docker compose -f docker-compose.test.yml down -v
+- Add additional test documentation later
