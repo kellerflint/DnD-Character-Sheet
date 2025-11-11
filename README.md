@@ -209,7 +209,5 @@ This App was created by students at Green River College during SDEV 372.
 - Add additional test documentation later
 
 ### Integration Tests for API endpoints and Database
-- Create a local MySQL database called: character_sheet_db_test
-- Change env values in the character-sheet-back-end/.env file to use localhost, the correct testing db name, and credentials for the testing db
-- Run the integration tests in the backend with npm test:integration
+- Run the integration tests in the backend using a test database in docker: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from backend_test ; docker compose -f docker-compose.test.yml down -v
 - Add additional test documentation later

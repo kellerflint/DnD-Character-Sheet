@@ -23,4 +23,4 @@ export const updatePassword = async (credentials) => {
 export const deleteUser = async () => {
    const response = await apiConnection.delete("/api/delete");
    return response.data;
-}
+};
