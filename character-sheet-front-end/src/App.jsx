@@ -16,9 +16,9 @@ import Box from "@mui/material/Box";
 import "./App.css";
 
 const backgroundImages = [
-    "/dnd-wall1.jpg",
-    "/dnd-wall2.jpg",
-    "/dnd-wall3.jpg",
+   "/dnd-wall1.jpg",
+   "/dnd-wall2.jpg",
+   "/dnd-wall3.jpg",
 ];
 
 function App() {
@@ -88,9 +88,9 @@ function App() {
                <Toolbar sx={{ justifyContent: "space-between" }}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                      <img
-                     src="/dice3.png" 
-                     alt="Spinning Die"
-                     className="dice-spin" 
+                        src="/dice3.png"
+                        alt="Spinning Die"
+                        className="dice-spin"
                      />
                      <Typography variant="h6">D&D Character Sheet</Typography>
                   </Box>
@@ -108,19 +108,20 @@ function App() {
                         <Button
                            color="primary"
                            onClick={() => setShowLoginModal(true)}
+                           data-cy="open-login-modal"
                         >
                            Login
                         </Button>
                         <Button
                            color="primary"
                            onClick={() => setShowRegisterModal(true)}
+                           data-cy="open-register-modal"
                         >
                            Register
                         </Button>
                      </Box>
                   ) : (
                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        
                         <Typography sx={{ marginRight: 2 }}>
                            Welcome, {user.username}!
                         </Typography>
@@ -128,9 +129,7 @@ function App() {
                            Logout
                         </Button>
 
-                        <SettingsMenu
-                           onDeleteAccount={() => setShowDeleteModal(true)}
-                        />
+                        <SettingsMenu onDeleteAccount={() => setShowDeleteModal(true)} />
                      </Box>
                   )}
                </Toolbar>
