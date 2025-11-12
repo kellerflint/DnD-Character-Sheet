@@ -10,6 +10,7 @@ describe("User Account Deletion Flow", () => {
   };
 
   it("Deletes an existing user after logging in", () => {
+    // Register the test user first
     cy.visit("/");
     cy.get('[data-cy="open-register-modal"]').click();
     cy.get('[data-cy="register-username-input"]').type(testUser.username);
@@ -25,7 +26,7 @@ describe("User Account Deletion Flow", () => {
     cy.get('[data-cy="register-success-message"]', { timeout: 10000 })
       .should("contain.text", "Success");
 
-    // Log in
+    // Login the user
     cy.get('[data-cy="login-email-input"]').type(testUser.email);
     cy.get('[data-cy="login-password-input"]').type(testUser.password);
     cy.get('[data-cy="login-submit-button"]').click();
@@ -34,14 +35,14 @@ describe("User Account Deletion Flow", () => {
     cy.contains(`Welcome, ${testUser.username}!`, { timeout: 10000 }).should("exist");
     cy.get('[data-cy="settings-menu-button"]').should("be.visible").click();
 
-    // Open delete dialog
+    // Open the delete dialog
     cy.get('[data-cy="open-delete-dialog"]').click();
 
-    // Confirm and delete account
+    // Confirm and delete the account
     cy.get('[data-cy="confirm-delete-input"]').type("DELETE ACCOUNT");
     cy.get('[data-cy="confirm-delete-button"]').click();
 
-    // Verify user is logged out
+    // Verify the user is logged out
     cy.contains("Please log in to save your character.", { timeout: 10000 }).should("exist");
   });
 });
