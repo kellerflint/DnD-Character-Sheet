@@ -216,4 +216,11 @@ This App was created by students at Green River College during SDEV 372.
 - Add additional test documentation later
 
 ### End-to-End Tests
-- 
+- Ensure the application is running on docker with a new build: docker compose up --build
+- Run the tests either with our without the GUI:
+   1. Without the GUI: npm run test:e2e
+   2. With the GUI: npm run cypress:open
+      1. Select E2E Testing
+      2. Choose a browser (Electron is recommended)
+      3. Click on the spec files to run the tests
+- Add additional test documentation later
