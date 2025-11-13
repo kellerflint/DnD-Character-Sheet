@@ -10,6 +10,7 @@ This app creates a persistent, digital solution to maintaining and organizing Du
 1. [Data Model](#data-model)
 1. [Next Steps](#next-steps)
 1. [Credit](#credit)
+1. [Testing](#testing)
 ## Quick Start
 ### Prerequisites
 #### 1. Clone project
@@ -257,8 +258,8 @@ docker compose -f docker-compose.test.yml up --build --abort-on-container-exit -
 - All E2E tests pass in both terminal and GUI modes.
 
 **Coverage includes:**
-- User registration → login  
-- User login → delete account  
+- User registration -> login  
+- User login -> delete account  
 - Real frontend + backend + database behavior  
 - Form interactions, modals, and authentication  
 
