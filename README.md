@@ -10,6 +10,7 @@ This app creates a persistent, digital solution to maintaining and organizing Du
 1. [Data Model](#data-model)
 1. [Next Steps](#next-steps)
 1. [Credit](#credit)
+1. [Testing](#testing)
 ## Quick Start
 ### Prerequisites
 #### 1. Clone project
@@ -197,3 +198,82 @@ This App was created by students at Green River College during SDEV 372.
 - Dockerization
    - Augy
    - Rebecca
+- Testing
+   - Alex
+   - Felix
+
+## Testing
+
+### Backend Unit Tests
+- Implemented using **Jest** to test core utility and service logic.  
+- All backend unit tests pass locally, and full coverage reports can be generated.
+
+**Coverage includes:**
+- Token authentication
+
+**Run command:**
+```
+cd character-sheet-back-end
+npm run test:unit
+```
+
+### Frontend Unit Tests
+- Written with **Jest** and **React Testing Library** to verify component rendering and user interactions.  
+- These tests focus on form behavior, validation, and UI state changes.  
+- All frontend tests pass successfully with coverage reports.
+
+**Coverage includes:**
+- Critical UI components  
+- User input + button interactions  
+- Component rendering and validation
+- API route calls from Axios with mock data
+
+**Run command:**
+```
+cd character-sheet-front-end
+npm run test:unit
+```
+
+### Integration Tests (API + Database)
+- Integration tests verify backend API endpoints with a dedicated **Docker test database**.  
+- These tests ensure real request/response behavior and confirm that database state updates correctly.  
+- All integration tests pass using isolated test containers that are deleted after each test run.
+
+**Coverage includes:**
+- Three API endpoints  
+    - POST /api/register
+    - POST /api/login
+    - GET /api/check
+- Real MySQL queries to the test database
+- Verify database state 
+
+**Run command:**
+```
+docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from backend_test ; docker compose -f docker-compose.test.yml down -v
+```
+
+### End-to-End (E2E) Tests
+- E2E tests use **Cypress** to simulate real user actions across the full stack.  
+- These tests run against the actual Docker-deployed app and validate complete user flows.  
+- All E2E tests pass in both terminal and GUI modes.
+
+**Coverage includes:**
+- User registration -> login  
+- User login -> delete account  
+- Real frontend + backend + database behavior  
+- Form interactions, modals, and authentication  
+
+**Start the app:**
+```
+docker compose up --build
+```
+
+**Run in terminal:**
+```
+npm run test:e2e
+```
+
+**Run with GUI:**
+```
+npm run cypress:open
+```
