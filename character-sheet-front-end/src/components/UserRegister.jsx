@@ -174,6 +174,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             >
                <Box>
                   <Button
+                  className="register-button"
                      type="submit"
                      variant="contained"
                      disabled={isLoading}

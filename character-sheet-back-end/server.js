@@ -33,7 +33,12 @@ app.get("/api/health-check/:reference", async (req, res) => {
 });
 
 const authRoutes = require("./routes/authenticateRoutes");
+const deleteUserRoute = require("./routes/deleteUserRoute");
+const updatePasswordRoute = require("./routes/updatePasswordRoute");
+
 app.use("/", authRoutes);
+app.use("/", deleteUserRoute);
+app.use("/", updatePasswordRoute);
 
 app.listen(PORT, () => {
    console.log(`Server is running on http://localhost:${PORT}`);

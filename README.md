@@ -6,6 +6,7 @@ This app creates a persistent, digital solution to maintaining and organizing Du
 ## Table of Contents
 1. [Quick Start](#quick-start)
 1. [VM Deployment](#vm-deployment)
+1. [Testing](#testing)
 1. [Current Features](#current-features)
 1. [Data Model](#data-model)
 1. [Next Steps](#next-steps)
@@ -129,6 +130,60 @@ sudo systemctl enable docker
 Complete the [Quick Start](#quick-start) section inside of the VM.
 
 
+## Testing
+This project includes comprehensive testing coverage across multiple levels to ensure code quality and reliability.
+This includes Unit testing for frontend/backend, Integration and E2E testing. 
+
+### Backend Tests
+**Location:** `character-sheet-back-end/tests/`
+
+Run all backend tests (unit + integration):
+```bash
+cd character-sheet-back-end
+npm test
+```
+
+Run only integration tests:
+```bash
+npm run test:integration
+```
+
+Run only unit tests:
+```bash
+npm run test:unit
+```
+
+Run tests with coverage report:
+```bash
+npm run test:coverage
+```
+
+### Frontend Unit Tests
+**Location:** `character-sheet-front-end/src/__tests__/`
+
+Run all frontend unit tests:
+```bash
+cd character-sheet-front-end
+npm test
+```
+
+Run tests with coverage report:
+```bash
+npm run test:coverage
+```
+
+### End-to-End (E2E) Tests
+**Location:** `character-sheet-front-end/cypress/e2e/`
+
+**Prerequisites:** Ensure the frontend and backend are running
+
+Run E2E tests (interactive mode):
+```bash
+cd character-sheet-front-end
+npm run test:e2e
+```
+
+
 ## Current Features
 - User is able to create an account and data is stored in MySQL
 - User is able to log in and homepage displays their username
@@ -197,3 +252,6 @@ This App was created by students at Green River College during SDEV 372.
 - Dockerization
    - Augy
    - Rebecca
+- Testing
+   - Daniel
+   - Alston
