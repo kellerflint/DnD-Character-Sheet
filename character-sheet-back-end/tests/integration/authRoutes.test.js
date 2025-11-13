@@ -84,6 +84,29 @@ describe("POST /api/login route", () => {
     expect(res.status).toBe(400);
     expect(res.body.message).toBe("Email and password are required.");
   });
+
+  test("return 200 for succesfullly deleted user", async () => {
+    const jwt = require("jsonwebtoken");
+
+    // mocks JWT verification to return a valid user (callback pattern)
+    // __, __ are placeholders for token and secret
+    // callback is the callback function that is called when the verification is complete
+    jest.spyOn(jwt, "verify").mockImplementation((_, __, callback) => {
+      callback(null, {
+        id: 1,
+        email: "testing@test.com",
+        username: "testuser"
+      });
+    });
+
+    // database DELETE query
+    query.mockResolvedValueOnce([{ affectedRows: 1 }]);
+
+    const res = await request(app).delete("/api/delete").set("Authorization", "Bearer mock-token");
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe("User account deleted successfully.");
+  });
 });
 
 
