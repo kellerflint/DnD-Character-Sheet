@@ -7,8 +7,9 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "test": "jest",
-    "test:unit": "jest --testPathPattern=tests/unit",
-    "test:coverage": "jest --coverage"
+    "test:unit": "jest --testPathPatterns=tests/unit",
+    "test:coverage": "jest --coverage",
+    "test:integration": "jest --testPathPatterns=tests/integration"
   },
   "keywords": [],
   "author": "",
