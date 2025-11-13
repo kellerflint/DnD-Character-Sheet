@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,9 +19,14 @@ function SettingsMenu({ onDeleteAccount }) {
 
    return (
       <>
-         <IconButton color="inherit" onClick={handleMenuOpen}>
+         <IconButton
+            color="inherit"
+            onClick={handleMenuOpen}
+            data-cy="settings-menu-button"
+         >
             <SettingsIcon />
          </IconButton>
+
          <Menu
             id="account-menu"
             anchorEl={menuAnchor}
@@ -35,6 +39,7 @@ function SettingsMenu({ onDeleteAccount }) {
                   handleMenuClose();
                }}
                sx={{ color: "error.main" }}
+               data-cy="open-delete-dialog"
             >
                <DeleteForeverIcon sx={{ mr: 1 }} />
                Delete Account

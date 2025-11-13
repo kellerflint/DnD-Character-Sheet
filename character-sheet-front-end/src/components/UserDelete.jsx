@@ -27,7 +27,6 @@ function UserDelete({ open, closeModal }) {
 
       try {
          await deleteUser();
-
          logout();
          closeModal();
       } catch (err) {
@@ -43,7 +42,7 @@ function UserDelete({ open, closeModal }) {
    };
 
    return (
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} data-cy="delete-dialog">
          <DialogTitle sx={{ color: "error.main" }}>Delete Account</DialogTitle>
          <DialogContent>
             <DialogContentText>
@@ -51,14 +50,16 @@ function UserDelete({ open, closeModal }) {
                permanently deleted.
                <br />
                To confirm, please type{" "}
-               <strong style={{ color: "black" }}>DELETE ACCOUNT</strong> in the
-               box below.
+               <strong style={{ color: "black" }}>DELETE ACCOUNT</strong> in the box
+               below.
             </DialogContentText>
+
             {error && (
-               <Alert severity="warning" sx={{ mt: 2 }}>
+               <Alert severity="warning" sx={{ mt: 2 }} data-cy="delete-error-alert">
                   {error}
                </Alert>
             )}
+
             <TextField
                autoFocus
                margin="dense"
@@ -69,15 +70,20 @@ function UserDelete({ open, closeModal }) {
                variant="standard"
                value={confirmationText}
                onChange={(e) => setConfirmationText(e.target.value)}
+               data-cy="confirm-delete-input"
             />
          </DialogContent>
+
          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleClose} data-cy="cancel-delete-button">
+               Cancel
+            </Button>
             <Button
                onClick={handleDelete}
                variant="contained"
                color="error"
                disabled={!isConfirmed}
+               data-cy="confirm-delete-button"
             >
                Delete My Account
             </Button>

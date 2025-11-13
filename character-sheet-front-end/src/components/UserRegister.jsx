@@ -112,7 +112,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
   };
 
   return (
-    <Dialog open={open} onClose={closeModal}>
+    <Dialog open={open} onClose={closeModal} data-cy="register-dialog">
       <form noValidate onSubmit={handleSubmit}>
         <DialogTitle sx={{ display: "flex", alignItems: "center" }}>
           <img
@@ -123,10 +123,11 @@ function UserRegister({ open, closeModal, switchToLogin }) {
           />
           Register
         </DialogTitle>
+
         <DialogContent>
           <div
             role="alert"
-            data-testid="error-message"
+            data-cy="register-error-message"
             style={{
               color: error ? "red" : "transparent",
               textAlign: "center",
@@ -137,7 +138,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
           </div>
 
           <div
-            data-testid="success-message"
+            data-cy="register-success-message"
             style={{
               color: success ? "green" : "transparent",
               textAlign: "center",
@@ -161,12 +162,18 @@ function UserRegister({ open, closeModal, switchToLogin }) {
               value={formData[field.id]}
               onChange={handleChange}
               inputProps={{
-                "data-testid": field.id,
+                "data-cy": `register-${field.id}-input`,
               }}
             />
           ))}
 
-          <FormControl fullWidth required margin="dense" variant="standard">
+          <FormControl
+            fullWidth
+            required
+            margin="dense"
+            variant="standard"
+            data-cy="register-security-question"
+          >
             <InputLabel id="security-question-label">
               Security Question
             </InputLabel>
@@ -177,6 +184,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
               value={formData.securityQuestionId}
               onChange={handleChange}
               label="Security Question"
+              data-cy="register-security-question-select"
             >
               {securityQuestions.map((q) => (
                 <MenuItem key={q.id} value={q.id}>
@@ -199,13 +207,20 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             variant="standard"
             value={formData.securityAnswer}
             onChange={handleChange}
+            data-cy="register-security-answer-input"
           />
         </DialogContent>
+
         <DialogActions
           sx={{ justifyContent: "space-around", padding: "16px 24px" }}
         >
           <Box sx={{ position: "relative" }}>
-            <Button type="submit" variant="contained" disabled={isLoading}>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isLoading}
+              data-cy="register-submit-button"
+            >
               Register
             </Button>
             {isLoading && (
@@ -221,10 +236,17 @@ function UserRegister({ open, closeModal, switchToLogin }) {
               />
             )}
           </Box>
-          <Button onClick={switchToLogin} color="primary">
+
+          <Button
+            onClick={switchToLogin}
+            color="primary"
+            data-cy="switch-to-login-button"
+          >
             Already have an account?
           </Button>
-          <Button onClick={closeModal}>Cancel</Button>
+          <Button onClick={closeModal} data-cy="cancel-register-button">
+            Cancel
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

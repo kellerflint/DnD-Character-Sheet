@@ -197,6 +197,9 @@ This App was created by students at Green River College during SDEV 372.
 - Dockerization
    - Augy
    - Rebecca
+- Testing
+   - Alex
+   - Felix
 
 ## Testing
 
@@ -205,9 +208,19 @@ This App was created by students at Green River College during SDEV 372.
 - Add additional test documentation later
 
 ### Frontend Unit Tests
-- Command to run frontend unit tests in character-sheet-front-end/ with coverage: npm test  
+- Command to run frontend unit tests in character-sheet-front-end/ with coverage: npm test:unit
 - Add additional test documentation later
 
 ### Integration Tests for API endpoints and Database
 - Run the integration tests in the backend using a test database in docker: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from backend_test ; docker compose -f docker-compose.test.yml down -v
+- Add additional test documentation later
+
+### End-to-End Tests
+- Ensure the application is running on docker with a new build: docker compose up --build
+- Run the tests either with our without the GUI:
+   1. Without the GUI: npm run test:e2e
+   2. With the GUI: npm run cypress:open
+      1. Select E2E Testing
+      2. Choose a browser (Electron is recommended)
+      3. Click on the spec files to run the tests
 - Add additional test documentation later
