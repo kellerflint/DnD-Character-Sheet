@@ -33,6 +33,22 @@ router.post("/api/update-password", async (req, res) => {
         console.error("Update password error:", error);
         res.status(500).json({ message: "Server error" });
     }
+
+    it("should return 400 if required fields are missing", async () => {
+        const req = {
+          body: {
+            email: "",
+            securityAnswer: "",
+            newPassword: "",
+          },
+        };
+      
+        const res = mockResponse();
+      
+        await updatePasswordHandler(req, res);
+      
+        expect(res.status).toHaveBeenCalledWith(400);
+    });      
 });
 
 module.exports = router;
