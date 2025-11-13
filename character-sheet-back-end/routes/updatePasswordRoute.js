@@ -1,54 +1,48 @@
 const express = require("express");
-const bcrypt = require("bcryptjs");
 const router = express.Router();
 const db = require("../config/db");
 
-router.post("/api/update-password", async (req, res) => {
-    const { userId, newPassword } = req.body;
+// Extract handler so we can test it directly
+async function updatePasswordHandler(req, res) {
+  const { email, securityQuestion, securityAnswer, password } = req.body;
 
-    // validate input
-    if (!userId || !newPassword) {
-        return res.status(400).json({ message: "Missing required fields" });
-    }
+  // Validation
+  if (!email || !securityQuestion || !securityAnswer || !password) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
-    try {
-        // hash the new password
-        // salt rounds set to 10
-        const hashed = await bcrypt.hash(newPassword, 10);
+  try {
+    // Fetch user
+    const query = "SELECT * FROM users WHERE email = ?";
+    db.query(query, [email], (err, results) => {
+      if (err) return res.status(500).json({ error: "Database error" });
+      if (results.length === 0)
+        return res.status(404).json({ error: "User not found" });
 
-        // update the user's password in the database
-        const [result] = await db.query(
-            "UPDATE users SET password_hash = ? WHERE id = ?",
-            [hashed, userId]
-        );
+      const user = results[0];
 
-        // if no rows were affected, userId was not found
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "User not found" });
+      if (
+        user.securityQuestion !== securityQuestion ||
+        user.securityAnswer !== securityAnswer
+      ) {
+        return res.status(403).json({ error: "Security information incorrect" });
+      }
+
+      // Update password
+      const updateQuery = "UPDATE users SET password = ? WHERE email = ?";
+      db.query(updateQuery, [password, email], (updateErr) => {
+        if (updateErr) {
+          return res.status(500).json({ error: "Failed to update password" });
         }
 
-        // successful update response
-        res.status(200).json({ message: "Password updated" });
-    } catch (error) {
-        console.error("Update password error:", error);
-        res.status(500).json({ message: "Server error" });
-    }
+        return res.status(200).json({ message: "Password updated" });
+      });
+    });
+  } catch (e) {
+    return res.status(500).json({ error: "Server error" });
+  }
+}
 
-    it("should return 400 if required fields are missing", async () => {
-        const req = {
-          body: {
-            email: "",
-            securityAnswer: "",
-            newPassword: "",
-          },
-        };
-      
-        const res = mockResponse();
-      
-        await updatePasswordHandler(req, res);
-      
-        expect(res.status).toHaveBeenCalledWith(400);
-    });      
-});
+router.post("/", updatePasswordHandler);
 
-module.exports = router;
+module.exports = { router, updatePasswordHandler };
