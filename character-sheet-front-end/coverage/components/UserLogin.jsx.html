@@ -200,7 +200,21 @@
 <a name='L135'></a><a href='#L135'>135</a>
 <a name='L136'></a><a href='#L136'>136</a>
 <a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -258,7 +272,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">45x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,6 +290,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">43x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -395,10 +423,9 @@ function UserLogin({
    };
 &nbsp;
    return (
-      &lt;Dialog open={open} onClose={handleClose}&gt;
+      &lt;Dialog open={open} onClose={handleClose} data-cy="login-dialog"&gt;
          &lt;form onSubmit={handleSubmit}&gt;
-            &lt;DialogTitle sx={{ display: 'flex', alignItems: 'center' }}
-            &gt;
+            &lt;DialogTitle sx={{ display: "flex", alignItems: "center" }}&gt;
                &lt;img
                   src="/dice3.png"
                   alt="Spinning D&amp;D Die"
@@ -415,16 +442,19 @@ function UserLogin({
                      top: 8,
                      color: (theme) =&gt; theme.palette.grey[500],
                   }}
+                  data-cy="login-close-button"
                &gt;
                   &lt;CloseIcon /&gt;
                &lt;/IconButton&gt;
             &lt;/DialogTitle&gt;
+&nbsp;
             &lt;DialogContent&gt;
                {error &amp;&amp; (
-                  &lt;Alert severity="error" sx={{ mb: 2 }}&gt;
+                  &lt;Alert severity="error" sx={{ mb: 2 }} data-cy="login-error-alert"&gt;
                      {error}
                   &lt;/Alert&gt;
                )}
+&nbsp;
                &lt;TextField
                   autoFocus
                   required
@@ -436,7 +466,9 @@ function UserLogin({
                   variant="standard"
                   value={formData.email}
                   onChange={handleChange}
+                  data-cy="login-email-input"
                /&gt;
+&nbsp;
                &lt;TextField
                   required
                   margin="dense"
@@ -447,24 +479,35 @@ function UserLogin({
                   variant="standard"
                   value={formData.password}
                   onChange={handleChange}
+                  data-cy="login-password-input"
                /&gt;
             &lt;/DialogContent&gt;
+&nbsp;
             &lt;DialogActions
                sx={{ justifyContent: "space-between", padding: "16px 24px" }}
             &gt;
                &lt;Box&gt;
-                  &lt;Button type="submit" variant="contained" sx={{ mr: 2 }}&gt;
+                  &lt;Button
+                     type="submit"
+                     variant="contained"
+                     sx={{ mr: 2 }}
+                     data-cy="login-submit-button"
+                  &gt;
                      Login
                   &lt;/Button&gt;
                   &lt;Button
                      onClick={switchToRegister}
                      color="primary"
                      sx={{ mr: 1 }}
+                     data-cy="switch-to-register-button"
                   &gt;
                      Need to Register?
                   &lt;/Button&gt;
                &lt;/Box&gt;
-               &lt;Button onClick={switchToForgotPassword}&gt;
+               &lt;Button
+                  onClick={switchToForgotPassword}
+                  data-cy="forgot-password-button"
+               &gt;
                   Forgot Password?
                &lt;/Button&gt;
             &lt;/DialogActions&gt;
@@ -473,15 +516,14 @@ function UserLogin({
    );
 }
 &nbsp;
-export default UserLogin;
-&nbsp;</pre></td></tr></table></pre>
+export default UserLogin;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-06T18:28:14.903Z
+                at 2025-11-13T18:23:51.097Z
             </div>
         <script src="../prettify.js"></script>
         <script>

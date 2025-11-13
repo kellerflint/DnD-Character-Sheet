@@ -125,9 +125,11 @@ function UserRegister({ open, closeModal, switchToLogin }) {
         </DialogTitle>
 
         <DialogContent>
+          {/* ERROR MESSAGE */}
           <div
             role="alert"
             data-cy="register-error-message"
+            data-testid="error-message"
             style={{
               color: error ? "red" : "transparent",
               textAlign: "center",
@@ -137,8 +139,10 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             {error || ""}
           </div>
 
+          {/* SUCCESS MESSAGE */}
           <div
             data-cy="register-success-message"
+            data-testid="success-message"
             style={{
               color: success ? "green" : "transparent",
               textAlign: "center",
@@ -148,6 +152,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             {success || ""}
           </div>
 
+          {/* FORM FIELDS */}
           {formFields.map((field) => (
             <TextField
               key={field.id}
@@ -163,16 +168,19 @@ function UserRegister({ open, closeModal, switchToLogin }) {
               onChange={handleChange}
               inputProps={{
                 "data-cy": `register-${field.id}-input`,
+                "data-testid": field.id,
               }}
             />
           ))}
 
+          {/* SECURITY QUESTION */}
           <FormControl
             fullWidth
             required
             margin="dense"
             variant="standard"
             data-cy="register-security-question"
+            data-testid="securityQuestionId"
           >
             <InputLabel id="security-question-label">
               Security Question
@@ -197,6 +205,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             </FormHelperText>
           </FormControl>
 
+          {/* SECURITY ANSWER */}
           <TextField
             required
             margin="dense"
@@ -208,6 +217,9 @@ function UserRegister({ open, closeModal, switchToLogin }) {
             value={formData.securityAnswer}
             onChange={handleChange}
             data-cy="register-security-answer-input"
+            inputProps={{
+              "data-testid": "securityAnswer",
+            }}
           />
         </DialogContent>
 
@@ -220,6 +232,7 @@ function UserRegister({ open, closeModal, switchToLogin }) {
               variant="contained"
               disabled={isLoading}
               data-cy="register-submit-button"
+              data-testid="register-button"
             >
               Register
             </Button>
