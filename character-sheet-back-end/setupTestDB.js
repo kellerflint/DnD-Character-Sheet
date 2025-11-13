@@ -1,0 +1,17 @@
+const dbPool = require("./config/db.js");
+
+async function setupTestDB() {
+  await dbPool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      first_name VARCHAR(255) NOT NULL,
+      last_name VARCHAR(255) NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      security_hash VARCHAR(255) NOT NULL
+    )
+  `);
+};
+
+module.exports = setupTestDB;

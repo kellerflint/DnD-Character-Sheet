@@ -6,9 +6,16 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'http://localhost:3000',
         changeOrigin: true,
       },
-    }
-  }
+    },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',              
+    setupFiles: './src/setupTests.js',
+    coverage: { reporter: ['text', 'json', 'html'] },
+    poolOptions: { threads: false },
+  },
 })

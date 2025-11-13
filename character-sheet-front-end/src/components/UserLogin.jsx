@@ -56,10 +56,9 @@ function UserLogin({
    };
 
    return (
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} data-cy="login-dialog">
          <form onSubmit={handleSubmit}>
-            <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}
-            >
+            <DialogTitle sx={{ display: "flex", alignItems: "center" }}>
                <img
                   src="/dice3.png"
                   alt="Spinning D&D Die"
@@ -76,16 +75,19 @@ function UserLogin({
                      top: 8,
                      color: (theme) => theme.palette.grey[500],
                   }}
+                  data-cy="login-close-button"
                >
                   <CloseIcon />
                </IconButton>
             </DialogTitle>
+
             <DialogContent>
                {error && (
-                  <Alert severity="error" sx={{ mb: 2 }}>
+                  <Alert severity="error" sx={{ mb: 2 }} data-cy="login-error-alert">
                      {error}
                   </Alert>
                )}
+
                <TextField
                   autoFocus
                   required
@@ -97,7 +99,9 @@ function UserLogin({
                   variant="standard"
                   value={formData.email}
                   onChange={handleChange}
+                  data-cy="login-email-input"
                />
+
                <TextField
                   required
                   margin="dense"
@@ -108,24 +112,35 @@ function UserLogin({
                   variant="standard"
                   value={formData.password}
                   onChange={handleChange}
+                  data-cy="login-password-input"
                />
             </DialogContent>
+
             <DialogActions
                sx={{ justifyContent: "space-between", padding: "16px 24px" }}
             >
                <Box>
-                  <Button type="submit" variant="contained" sx={{ mr: 2 }}>
+                  <Button
+                     type="submit"
+                     variant="contained"
+                     sx={{ mr: 2 }}
+                     data-cy="login-submit-button"
+                  >
                      Login
                   </Button>
                   <Button
                      onClick={switchToRegister}
                      color="primary"
                      sx={{ mr: 1 }}
+                     data-cy="switch-to-register-button"
                   >
                      Need to Register?
                   </Button>
                </Box>
-               <Button onClick={switchToForgotPassword}>
+               <Button
+                  onClick={switchToForgotPassword}
+                  data-cy="forgot-password-button"
+               >
                   Forgot Password?
                </Button>
             </DialogActions>
