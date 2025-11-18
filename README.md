@@ -1,4 +1,4 @@
-# D&D Character Sheet
+# D&D Character Sheet 🎲
 > Get rid of the paper and embrace the digital.
 
 This app creates a persistent, digital solution to maintaining and organizing Dungeons and Dragons 5E Character  sheets.
