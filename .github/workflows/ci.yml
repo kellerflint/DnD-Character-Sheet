@@ -2,8 +2,7 @@ name: CI/CD Pipeline
 
 on:
    push:
-      branches: 
-         - main
+      branches: -Hf main
          - dev-branch
    pull_request:
       branches:
@@ -12,8 +11,53 @@ on:
 jobs:
    backend-tests:
       runs-on: ubuntu-latest
-
+      defaults:
+         run:
+            working-directory: ./character-sheet-back-end
       steps:
-         - uses: actions/checkout@v3
+         - name: Checkout Code
+           uses: actions/checkout@v3
 
-         
+         - name: Setup Node.js
+           uses: actions/setup-node@v3
+           with:
+              node-version: "18"
+              cache: "npm"
+              cache-dependency-path: ./character-sheet-back-end/package-lock.json
+
+         - name: Install Backend Dependencies
+           run: npm ci
+
+         - name: Run Backend Unit Tests
+           run: npm run test:unit
+           env:
+              PORT: 5000
+              DB_HOST: localhost
+              DB_NAME: character_sheet_db
+              DB_USER: ${{ secrets.TEST_DB_USER }}
+              DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+              JWT_SECRET: ${{ secrets.TEST_JWT_SECRET }}
+
+   frontend-tests:
+      runs-on: ubuntu-latest
+      defaults:
+         run:
+            working-directory: ./character-sheet-front-end
+      steps:
+         - name: Checkout Code
+           uses: actions/checkout@v3
+
+         - name: Setup Node.js
+           uses: actions/setup-node@v3
+           with:
+              node-version: "18"
+              cache: "npm"
+              cache-dependency-path: ./character-sheet-front-end/package-lock.json
+
+         - name: Install Frontend Dependencies
+           run: npm ci
+
+         - name: Run Frontend Unit Tests
+           run: npm test
+           env:
+              CI: true
