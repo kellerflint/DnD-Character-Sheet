@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     testEnvironment: "jsdom",
     transform: {
       "^.+\\.[jt]sx?$": "babel-jest",
@@ -9,4 +9,3 @@ export default {
     },
     setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
 };
-  
