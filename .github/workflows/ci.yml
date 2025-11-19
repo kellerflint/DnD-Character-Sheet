@@ -2,8 +2,10 @@ name: CI/CD Pipeline
 
 on:
    push:
-      branches: -Hf main
+      branches: 
+         - main
          - dev-branch
+         - cont-int
    pull_request:
       branches:
          - main
