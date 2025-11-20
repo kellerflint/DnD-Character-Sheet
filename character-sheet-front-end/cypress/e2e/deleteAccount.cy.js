@@ -1,25 +1,35 @@
 describe("Delete Account Flow", () => {
-    it("logs in, opens settings, deletes the account", () => {
-      cy.visit("http://localhost:5173"); // or your VM URL
-  
-      // LOGIN
-      cy.contains("Login").click();
-      cy.get("#email").type("test@example.com");
-      cy.get("#password").type("pass1234");
-      cy.contains("button", /login/i).click();
-  
-      // open settings menu
-      cy.get('[aria-label="Settings"]').click();
-      cy.contains(/delete account/i).click();
-  
-      // type confirmation
-      cy.get("#confirm-delete").type("DELETE ACCOUNT");
-  
-      // delete
-      cy.contains("Delete My Account").click();
-  
-      // verify logout
-      cy.contains("Login");
+    beforeEach(() => {
+
+        cy.intercept('POST', '**/login', {
+            statusCode: 200,
+            body: { token: 'fake-token' }
+        }).as('loginReq');
+
+        cy.intercept('DELETE', '**/users/*', {
+            statusCode: 200,
+            body: { message: 'Deleted' }
+        }).as('deleteReq');
+
+        cy.visit("/"); 
+    });
+
+    it("Logs in, opens settings, deletes the account", () => {
+
+        cy.contains("Login").click();
+        cy.get("#email").type("test@example.com");
+        cy.get("#password").type("pass1234");
+        cy.contains("button", /login/i).click();
+        cy.wait('@loginReq');
+
+        cy.get('[aria-label="Settings"]').click();
+        cy.contains(/delete account/i).click();
+
+        cy.get("#confirm-delete").type("DELETE ACCOUNT");
+
+        cy.contains("Delete My Account").click();
+        cy.wait('@deleteReq');
+
+        cy.contains("Login");
     });
 });
-  
