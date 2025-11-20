@@ -23,7 +23,7 @@ jobs:
          - name: Setup Node.js
            uses: actions/setup-node@v3
            with:
-              node-version: "18"
+              node-version: "lts/*"
               cache: "npm"
               cache-dependency-path: ./character-sheet-back-end/package-lock.json
 
@@ -52,7 +52,7 @@ jobs:
          - name: Setup Node.js
            uses: actions/setup-node@v3
            with:
-              node-version: "18"
+              node-version: "lts/*"
               cache: "npm"
               cache-dependency-path: ./character-sheet-front-end/package-lock.json
 
