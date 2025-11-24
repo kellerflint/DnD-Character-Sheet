@@ -34,7 +34,7 @@ app.get("/api/health-check/:reference", async (req, res) => {
 
 const authRoutes = require("./routes/authenticateRoutes");
 const deleteUserRoute = require("./routes/deleteUserRoute");
-const updatePasswordRoute = require("./routes/updatePasswordRoute");
+const { router: updatePasswordRoute } = require("./routes/updatePasswordRoute");
 
 app.use("/", authRoutes);
 app.use("/", deleteUserRoute);
