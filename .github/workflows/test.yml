@@ -56,3 +56,56 @@ jobs:
       - name: Run frontend unit tests
         working-directory: character-sheet-front-end
         run: npm test
+
+  #end to end tests with cypress
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Start full stack (database + backend + frontend)
+        run: docker compose up -d --build
+      - name: Wait for backend and frontend to be ready
+        run: echo "Waiting for backend on http://localhost:5050 ..."
+          for i in {1..30}; do
+            if curl -sSf http://localhost:5050 > /dev/null; then
+              echo "Backend is up!"
+              break
+            fi
+            echo "Still waiting for backend..."
+            sleep 2
+          done
+
+          echo "Waiting for frontend on http://localhost ..."
+          for i in {1..30}; do
+            if curl -sSf http://localhost > /dev/null; then
+              echo "Frontend is up!"
+              break
+            fi
+            echo "Still waiting for frontend..."
+            sleep 2
+          done
+
+      - name: Set up Node.js for Cypress
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: character-sheet-front-end/package-lock.json
+
+      - name: Install frontend dependencies (for Cypress)
+        working-directory: character-sheet-front-end
+        run: npm install
+
+      - name: Run Cypress end-to-end tests (headless)
+        working-directory: character-sheet-front-end
+        env:
+          CYPRESS_BASE_URL: http://localhost
+        run: npx cypress run
+
+      - name: Stop stack
+        if: always()
+        run: docker compose down -v
