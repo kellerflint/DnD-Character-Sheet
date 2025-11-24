@@ -1,16 +1,19 @@
 describe('Update Password', () => {
-    const testUser = {
-        username: 'updatetest',
-        firstName: 'Update',
-        lastName: 'Test',
-        email: 'updatetest@example.com',
-        password: 'OldPassword123!',
-        securityAnswer: 'fluffy'
-    };
+    let testUser;
 
     beforeEach(() => {
+        const uniqueId = Date.now();
+        testUser = {
+            username: `update${uniqueId}`,
+            firstName: 'Update',
+            lastName: 'Test',
+            email: `update${uniqueId}@example.com`,
+            password: 'OldPassword123!',
+            securityAnswer: 'fluffy'
+        };
+
         cy.request('POST', '/api/register', testUser).then((resp) => {
-            expect(resp.status).to.be.oneOf([201, 409]);
+            expect(resp.status).to.eq(201);
         });
         cy.visit('/');
     });
@@ -18,10 +21,10 @@ describe('Update Password', () => {
     it('should successfully update password', () => {
         const newPassword = 'NewPassword12345';
 
-        cy.contains('Login').click();
-        cy.contains('Forgot Password?').click();
+        cy.contains('Login').should('be.visible').click();
+        cy.contains('Forgot Password?').should('be.visible').click();
 
-        cy.get('#email').type(testUser.email);
+        cy.get('#email').should('be.visible').type(testUser.email);
         
         cy.get('#securityQuestionId').click();
         cy.contains('What is the name of your first pet?').click();
