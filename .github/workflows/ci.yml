@@ -5,8 +5,6 @@ on:
     branches:
       - main
       - dev-branch
-      - cont-int
-      - test-e2e-fixes
       - cont-dep
   pull_request:
     branches:
@@ -110,7 +108,7 @@ jobs:
 
   deploy:
     needs: integration-e2e-tests
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/cont-dep'
     runs-on: ubuntu-latest
     permissions:
       contents: read
