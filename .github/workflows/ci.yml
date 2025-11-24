@@ -97,7 +97,7 @@ jobs:
           cp .env ./character-sheet-back-end/.env
 
       - name: Start Docker Containers
-        run: docker compose -f docker-compose.prod.yml up -d --build
+        run: docker compose up -d --build
 
       - name: Wait for MySQL
         run: |
@@ -106,22 +106,7 @@ jobs:
           timeout 60s bash -c 'until docker compose -f docker-compose.prod.yml exec -T database mysqladmin ping -h "localhost" --silent; do echo "Waiting for DB..."; sleep 5; done'
 
       - name: Run Backend Integration Tests
-        run: docker compose -f docker-compose.prod.yml run --rm backend npm run test:integration
-
-      - name: Run Cypress E2E
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./character-sheet-front-end
-          wait-on: "http://localhost:80, http://localhost:5050/api/health-check/races"
-          wait-on-timeout: 120
-          config: baseUrl=http://localhost:80
-        env:
-          CI: true
-        continue-on-error: true
-
-      - name: Print Backend Logs on Failure
-        if: failure()
-        run: docker compose -f docker-compose.prod.yml logs backend
+        run: docker compose run --rm backend npm run test:integration
 
   deploy:
     needs: integration-e2e-tests

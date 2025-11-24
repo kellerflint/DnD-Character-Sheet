@@ -1,25 +1,25 @@
-volumes:
-  mysqlData:
 services:
   database:
     image: mysql:8.0
     container_name: mysql_container
-    restart: always
-    env_file:
-      - .env
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-      - mysqlData:/var/lib/mysql
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
 
   backend:
-    depends_on: 
-      - database
-    build: ./character-sheet-back-end
+    depends_on:
+      database:
+        condition: service_healthy
+    build:
+      context: ./character-sheet-back-end
+      dockerfile: Dockerfile
+    image: ghcr.io/${IMAGE_NAME}/backend:main
     ports:
       - "5050:5000"
     env_file:
@@ -29,14 +29,15 @@ services:
       DB_DATABASE: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-    restart: unless-stopped
+
   frontend:
     depends_on:
       - backend
-    build: ./character-sheet-front-end
+    build:
+      context: ./character-sheet-front-end
+      dockerfile: Dockerfile
+    image: ghcr.io/${IMAGE_NAME}/frontend:main
     ports:
       - "80:80"
-    restart: unless-stopped
-  
-   
-
+    env_file:
+      - .env
