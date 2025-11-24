@@ -6,6 +6,7 @@ on:
          - main
          - dev-branch
          - cont-int
+         - test-e2e-fixes
    pull_request:
       branches:
          - main

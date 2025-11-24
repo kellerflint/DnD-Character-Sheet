@@ -1,46 +1,40 @@
 describe('User Login', () => {
-    beforeEach(() => {
+    const testUser = {
+        username: 'logintest',
+        firstName: 'Login',
+        lastName: 'Test',
+        email: 'logintest@example.com',
+        password: 'TestPassword123!',
+        securityAnswer: 'fluffy'
+    };
 
-        cy.intercept('POST', '**/login', {
-            statusCode: 200,
-            body: {
-                token: 'fake-jwt-token',
-                user: { id: 1, email: 'testuser@example.com' }
-            }
-        }).as('loginRequest');
+    beforeEach(() => {
+        cy.request('POST', '/api/register', testUser).then((response) => {
+            expect(response.status).to.be.oneOf([201, 409]);
+        });
 
         cy.visit('/');
-
-        Cypress.on('uncaught:exception', () => false);
     });
 
-    it('Should successfully log in', () => {
+    it('should successfully log in an existing user', () => {
         cy.contains('Login').click();
-        cy.get('#email').type('testuser@example.com');
-        cy.get('#password').type('TestPassword123!');
+
+        cy.get('#email').type(testUser.email);
+        cy.get('#password').type(testUser.password);
 
         cy.get('button[type="submit"]').contains('Login').click();
-
-
-        cy.wait('@loginRequest');
-
 
         cy.get('#email').should('not.exist');
     });
 
-    it('Should show error message for invalid credentials', () => {
-
-        cy.intercept('POST', '**/login', {
-            statusCode: 401,
-            body: { message: 'Invalid credentials' }
-        }).as('loginFail');
+    it('should show error message for invalid credentials', () => {
+        const email = 'wronguser@test.com';
+        const password = 'WrongPassword123!';
 
         cy.contains('Login').click();
-        cy.get('#email').type('wrong@test.com');
-        cy.get('#password').type('WrongPass!');
+        cy.get('#email').type(email);
+        cy.get('#password').type(password);
         cy.get('button[type="submit"]').contains('Login').click();
-
-        cy.wait('@loginFail');
 
         cy.contains('Login failed. Please check your email and password.').should('be.visible');
     });
