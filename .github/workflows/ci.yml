@@ -103,7 +103,7 @@ jobs:
         run: |
           echo "Waiting for MySQL..."
           sleep 10
-          timeout 60s bash -c 'until docker compose -f docker-compose.prod.yml exec -T database mysqladmin ping -h "localhost" --silent; do echo "Waiting for DB..."; sleep 5; done'
+          timeout 60s bash -c 'until docker compose exec -T database mysqladmin ping -h "localhost" --silent; do echo "Waiting for DB..."; sleep 5; done'
 
       - name: Run Backend Integration Tests
         run: docker compose run --rm backend npm run test:integration
