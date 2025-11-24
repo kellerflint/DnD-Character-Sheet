@@ -48,3 +48,11 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: character-sheet-front-end/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: character-sheet-front-end
+        run: npm install
+
+      - name: Run frontend unit tests
+        working-directory: character-sheet-front-end
+        run: npm test
