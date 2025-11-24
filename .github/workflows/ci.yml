@@ -102,7 +102,7 @@ jobs:
            uses: cypress-io/github-action@v6
            with:
               working-directory: ./character-sheet-front-end
-              wait-on: "http://localhost:80, tcp:localhost:5050"
+              wait-on: "http://localhost:80, http://localhost:5050/api/health-check/races"
               wait-on-timeout: 120
               config: baseUrl=http://localhost:80
            env:
