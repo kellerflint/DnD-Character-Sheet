@@ -33,3 +33,18 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker compose down -v
+
+  #frontend unit tests
+  frontend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: character-sheet-front-end/package-lock.json
