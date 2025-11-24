@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev-branch
-      - cont-dep
   pull_request:
     branches:
       - main
@@ -167,7 +165,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "docker-compose.prod.yml"
+          source: "docker-compose.prod.yml,db.sql"
           target: "~/dnd-app"
 
       - name: Deploy to Server
