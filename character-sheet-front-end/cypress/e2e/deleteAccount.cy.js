@@ -1,5 +1,7 @@
 describe("Delete Account Flow", () => {
     it("logs in, opens settings, deletes the account", () => {
+ 
+      cy.intercept("POST", "**/register").as("registerRequest");
 
       cy.visit("/"); 
   
@@ -18,19 +20,22 @@ describe("Delete Account Flow", () => {
       cy.get("#securityAnswer").type("fluffy");
       cy.get(".register-button").click();
       
-      cy.contains("Login");
+      cy.wait("@registerRequest");
+
+      cy.contains("Login").should("be.visible");
 
       cy.get("#email").type(email);
       cy.get("#password").type(password);
       cy.contains("button", /login/i).click();
   
-      cy.get('[aria-label="Settings"]').click();
+      cy.get('[aria-label="Settings"]', { timeout: 10000 }).should("be.visible").click();
+      
       cy.contains(/delete account/i).click();
   
       cy.get("#confirm-delete").type("DELETE ACCOUNT");
   
       cy.contains("Delete My Account").click();
   
-      cy.contains("Login");
+      cy.contains("Login").should("be.visible");
     });
 });
