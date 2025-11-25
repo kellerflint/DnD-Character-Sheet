@@ -1,0 +1,105 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+      - dev-branch
+  pull_request:
+    branches:
+      - main
+      - dev-branch
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./character-sheet-back-end
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: ./character-sheet-back-end/package-lock.json
+
+      - name: Install Backend Dependencies
+        run: npm ci
+
+      - name: Run Backend Unit Tests
+        run: npm run test:unit
+        env:
+          PORT: 5000
+          DB_HOST: localhost
+          DB_NAME: character_sheet_db
+          DB_USER: ${{ secrets.TEST_DB_USER }}
+          DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
+          JWT_SECRET: ${{ secrets.TEST_JWT_SECRET }}
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./character-sheet-front-end
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: ./character-sheet-front-end/package-lock.json
+
+      - name: Install Frontend Dependencies
+        run: npm ci
+
+      - name: Run Frontend Unit Tests
+        run: npm test
+        env:
+          CI: true
+
+  integration-e2e-tests:
+    needs: [backend-tests, frontend-tests]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Lowercase Image Name
+        run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "PORT=5000" >> .env
+          echo "DB_HOST=database" >> .env
+          echo "DB_NAME=character_sheet_db" >> .env
+          echo "DB_USER=${{ secrets.TEST_DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.TEST_DB_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.TEST_JWT_SECRET }}" >> .env
+          echo "IMAGE_NAME=${{ env.IMAGE_NAME }}" >> .env
+          
+          cp .env ./character-sheet-back-end/.env
+
+      - name: Start Docker Containers
+        run: docker compose up -d --build
+
+      - name: Wait for MySQL
+        run: |
+          echo "Waiting for MySQL..."
+          sleep 10
+          timeout 60s bash -c 'until docker compose exec -T database mysqladmin ping -h "localhost" --silent; do echo "Waiting for DB..."; sleep 5; done'
+
+      - name: Run Backend Integration Tests
+        run: docker compose run --rm backend npm run test:integration

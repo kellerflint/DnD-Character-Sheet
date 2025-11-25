@@ -1,0 +1,109 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set Lowercase Image Name
+        run: |
+          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Backend
+        id: meta-backend
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend
+
+      - name: Build and Push Backend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./character-sheet-back-end
+          file: ./character-sheet-back-end/Dockerfile
+          push: true
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
+
+      - name: Extract metadata for Frontend
+        id: meta-frontend
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend
+
+      - name: Build and Push Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./character-sheet-front-end
+          file: ./character-sheet-front-end/Dockerfile
+          push: true
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+          build-args: |
+            VITE_API_BASE_URL=http://159.223.205.87
+
+      - name: Copy docker-compose to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "docker-compose.prod.yml,sql/db.sql"
+          target: "~/dnd-app"
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/dnd-app
+            mv docker-compose.prod.yml docker-compose.yml
+
+            export IMAGE_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            echo "PORT=5000" > .env
+            echo "DB_HOST=database" >> .env
+            echo "DB_NAME=character_sheet_db" >> .env
+            echo "DB_USER=${{ secrets.PROD_DB_USER }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.PROD_DB_PASSWORD }}" >> .env
+            echo "JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}" >> .env
+            echo "IMAGE_NAME=$IMAGE_NAME" >> .env
+
+            export GH_USERNAME=${{ github.actor }}
+
+            docker compose pull
+            docker compose up -d --remove-orphans
+            
+            docker image prune -f
+            
+            echo "Verifying Deployment..."
+            if [ $(docker ps -q | wc -l) -gt 0 ]; then
+              echo "Deployment Successful: Containers are running."
+            else
+              echo "Deployment Failed: No containers running."
+              exit 1
+            fi
