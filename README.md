@@ -7,6 +7,7 @@ This app creates a persistent, digital solution to maintaining and organizing Du
 1. [Quick Start](#quick-start)
 1. [VM Deployment](#vm-deployment)
 1. [Testing](#testing)
+1. [CI/CD](#cicd)
 1. [Current Features](#current-features)
 1. [Data Model](#data-model)
 1. [Next Steps](#next-steps)
@@ -183,6 +184,37 @@ cd character-sheet-front-end
 npm run test:e2e
 ```
 
+## CI/CD
+- Continuous Integration and Continuous Deployment have been integrated into the project
+- The `.github/workflows` folder contains the yml set up files
+- User must create the following GitHub Secrets for CI/CD to work properly:
+   - ![alt text](readme-images/secrets.png)
+- For Continuous Integration testing purposes, the user must update these GitHub Secrets with their information:
+   - ![alt text](readme-images/testing-secrets.png)
+- Within the `github/workflows/deploy.yml`, the user must update VITE_API_BASE_URL to their VM IP address for Continuous Deployment to work correctly
+- User must generate a GitHub Personal Access Token, if this step is not done your VM will deny access to GHCR:
+   - ![alt text](readme-images/GHET.png)
+
+   ## CI/CD Disclaimer
+   - While Continuous Integration and Continuous Deployment are functional, there are several pre-existing errors:
+      - Docker can build the SQL container and creates the database, but doesn't correctly generate the tables
+      - The E2E testing was not configured properly, causing tests to fail both locally and through CI. As such, they were removed from CI, but if you wish to test them for yourself then add the following code to the bottom of your test.yml file
+      ```bash
+      - name: Run Cypress E2E
+           uses: cypress-io/github-action@v6
+           with:
+              working-directory: ./character-sheet-front-end
+              wait-on: "http://localhost:80, http://localhost:5050/api/health-check/races"
+              wait-on-timeout: 120
+              config: baseUrl=http://localhost:80
+           env:
+              CI: true
+
+         - name: Print Backend Logs on Failure
+           if: failure()
+           run: docker compose logs backend
+      ```
+      - All other tests (Such as Unit and Integration) are passing which means they do work. It seems there were steps and/or instructions missing from the `README` that would have solved these issues
 
 ## Current Features
 - User is able to create an account and data is stored in MySQL
