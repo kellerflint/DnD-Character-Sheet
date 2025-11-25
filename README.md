@@ -183,6 +183,23 @@ cd character-sheet-front-end
 npm run test:e2e
 ```
 
+## CI/CD
+- Continuous Integration and Continuous Deployment have been integrated into the project
+- The `github/workflows` folder contains the yml set up file
+- User must need the following secrets to run:
+   - ![alt text](readme-images/secrets.png)
+- Within the `github/workflows/ci.yml`, the user must update VITE_API_BASE_URL to their VM IP address for deployment
+- For testing, the user must update these secrets with their information:
+   - ![alt text](readme-images/testing-secrets.png)
+- User must generate GitHub access token, if this step is not done they are denied access:
+   - ![alt text](readme-images/GHET.png)
+
+   ## CI/CD Disclaimer
+   - While Continuous Integration and Continuous Deployment are functioning, there are several pre-existing errors:
+      - Docker is not creating a proper connection with SQL, which causes the backend to crash
+      - Different errors with the backend docker causes the frontend to not send post requests for SQL data
+      - The E2E testing was not configured properly, causing tests to fail
+      - It seems there were steps and instructions missing from the `README` that would have solved these issues
 
 ## Current Features
 - User is able to create an account and data is stored in MySQL
